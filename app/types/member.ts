@@ -43,15 +43,11 @@ export interface MemberData {
 }
 
 /** Role display order for the members grid */
-export const ROLE_ORDER: MemberData["role"][] = [
-  "PJK",
-  "Ketua",
-  "Anggota",
-];
+export const ROLE_ORDER: MemberData["role"][] = ["PJK", "Ketua", "Anggota"];
 
-/** Role labels for display (Indonesian) */
+/** Role labels for display (English) */
 export const ROLE_LABELS: Record<MemberData["role"], string> = {
   PJK: "PJK",
-  Ketua: "Ketua Kelompok",
-  Anggota: "Anggota",
+  Ketua: "Leader",
+  Anggota: "Members",
 };

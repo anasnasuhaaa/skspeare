@@ -153,7 +153,7 @@ export default function HackTerminal({
       const newAttempts = attemptsLeft - 1;
       setAttemptsLeft(newAttempts);
       setErrorText(
-        `[ERROR] AKSES DITOLAK — Kredensial tidak valid.\n[SYSTEM] Percobaan terdeteksi. Sisa percobaan: ${newAttempts}`
+        `[ERROR] ACCESS DENIED — Invalid credentials.\n[SYSTEM] Attempt detected. Attempts remaining: ${newAttempts}`
       );
 
       if (formRef.current) {
@@ -287,11 +287,11 @@ export default function HackTerminal({
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/90 p-3 sm:p-4 crt-flicker scanlines"
+      className="fixed inset-0 z-1000 flex items-center justify-center bg-black/90 p-3 sm:p-4 crt-flicker scanlines"
     >
       <div
         ref={terminalRef}
-        className="w-full max-w-2xl md:max-w-4xl max-h-[85vh] h-[550px] md:h-[600px] bg-[#0a0f0d] border-2 border-[#4ade80] rounded-xl shadow-[0_0_25px_rgba(74,222,128,0.25)] flex flex-col overflow-hidden relative"
+        className="w-full max-w-2xl md:max-w-4xl max-h-[85vh] h-120 md:h-150 bg-[#0a0f0d] border-2 border-[#4ade80] rounded-xl shadow-[0_0_25px_rgba(74,222,128,0.25)] flex flex-col overflow-hidden relative"
       >
         {/* macOS Style Terminal Header */}
         <div className="bg-[#1e1e1e] border-b border-[#4ade80] px-4 py-3 flex justify-between items-center relative z-20">
@@ -312,7 +312,7 @@ export default function HackTerminal({
           <button
             onClick={handleAnimateClose}
             className="text-[#4ade80] hover:text-white transition-colors cursor-pointer p-1"
-            title="Tutup"
+            title="Close"
           >
             <X size={18} />
           </button>
@@ -348,7 +348,7 @@ export default function HackTerminal({
                     [SYSTEM] Status: ENCRYPTED
                     <br />
                     <br />
-                    AUTENTIKASI DIPERLUKAN.
+                    AUTHENTICATION REQUIRED.
                   </div>
 
                   <form
@@ -416,10 +416,10 @@ export default function HackTerminal({
             {phase === "login" && (
               <div className="self-end mt-4 w-36 sm:w-44 bg-[#fef08a] p-3 text-black transform -rotate-3 shadow-lg border-2 border-black rounded">
                 <div className="font-serif text-[10px] sm:text-xs opacity-75 underline">
-                  catatan:
+                  note:
                 </div>
                 <div className="font-sans text-[11px] sm:text-xs font-bold">
-                  password terminal:
+                  terminal password:
                 </div>
                 <div className="font-mono text-[10px] sm:text-xs mt-1 bg-yellow-300 p-1 font-bold text-center border border-black/30 rounded">
                   pi2026

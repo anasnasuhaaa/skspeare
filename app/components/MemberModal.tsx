@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
 import gsap from "gsap";
-import { MemberData } from "../types/member";
+import { MemberData, ROLE_LABELS } from "../types/member";
 import SpotifyEmbed from "./SpotifyEmbed";
 
 interface MemberModalProps {
@@ -83,7 +83,7 @@ export default function MemberModal({
   if (!shouldRender || !member) return null;
 
   return (
-    <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 sm:p-6 md:p-8">
+    <div className="fixed inset-0 z-1000 flex items-center justify-center p-4 sm:p-6 md:p-8">
       {/* Backdrop */}
       <div
         ref={backdropRef}
@@ -94,14 +94,14 @@ export default function MemberModal({
       {/* Modal Dialog Content */}
       <div
         ref={contentRef}
-        className="relative w-full max-w-3xl max-h-[85vh] overflow-y-auto bg-nb-white border-[4px] border-nb-black rounded-2xl shadow-[8px_8px_0px_var(--nb-black)] p-6 sm:p-8 md:p-10 z-10 flex flex-col gap-6 sm:gap-8"
+        className="relative w-full max-w-3xl max-h-[85vh] overflow-y-auto bg-nb-white border-4 border-nb-black rounded-2xl shadow-[8px_8px_0px_var(--nb-black)] p-6 sm:p-8 md:p-10 z-10 flex flex-col gap-6 sm:gap-8"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button - Stacking z-[1020] */}
         <button
           onClick={handleAnimateClose}
-          className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 sm:w-12 sm:h-12 bg-nb-red border-[3px] border-nb-black rounded-lg shadow-[4px_4px_0px_var(--nb-black)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_var(--nb-black)] text-nb-white flex items-center justify-center text-xl z-[1020] transition-all cursor-pointer"
-          aria-label="Tutup modal"
+          className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 sm:w-12 sm:h-12 bg-nb-red border-[3px] border-nb-black rounded-lg shadow-[4px_4px_0px_var(--nb-black)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_var(--nb-black)] text-nb-white flex items-center justify-center text-xl z-1020 transition-all cursor-pointer"
+          aria-label="Close modal"
         >
           <X size={24} strokeWidth={3} />
         </button>
@@ -109,7 +109,7 @@ export default function MemberModal({
         {/* Header */}
         <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 items-center sm:items-start pt-4 sm:pt-0">
           {/* Photo */}
-          <div className="relative w-32 h-32 sm:w-40 sm:h-40 shrink-0 rounded-xl overflow-hidden border-[4px] border-nb-black shadow-[4px_4px_0px_var(--nb-black)] bg-nb-cream">
+          <div className="relative w-32 h-32 sm:w-40 sm:h-40 shrink-0 rounded-xl overflow-hidden border-4 border-nb-black shadow-[4px_4px_0px_var(--nb-black)] bg-nb-cream">
             <Image
               src={member.photo}
               alt={member.name}
@@ -125,7 +125,7 @@ export default function MemberModal({
             </h2>
             <div className="flex flex-wrap gap-3 justify-center sm:justify-start">
               <span className="px-4 py-2 bg-nb-yellow border-[3px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] font-bold text-sm sm:text-base">
-                {member.role}
+                {ROLE_LABELS[member.role] || member.role}
               </span>
               {member.hometown && (
                 <span className="px-4 py-2 bg-nb-lime border-[3px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] font-bold text-sm sm:text-base">
@@ -140,7 +140,7 @@ export default function MemberModal({
         {member.quote && (
           <div className="bg-nb-cream border-[3px] border-nb-black rounded-xl p-5 sm:p-6 shadow-[4px_4px_0px_var(--nb-black)] relative">
             <div className="absolute -top-3 -left-3 bg-nb-blue border-[3px] border-nb-black rounded-lg px-3 py-1 font-bold text-xs sm:text-sm transform -rotate-3">
-              Kutipan
+              Quote
             </div>
             <p className="italic text-lg sm:text-xl font-bold text-nb-black text-center mt-2">
               &ldquo;{member.quote}&rdquo;
@@ -153,7 +153,7 @@ export default function MemberModal({
           {member.hobbies && member.hobbies.length > 0 && (
             <div className="flex flex-col gap-3">
               <h4 className="font-display font-black text-xl sm:text-2xl text-nb-black uppercase tracking-wide">
-                Hobi
+                Hobbies
               </h4>
               <div className="flex flex-wrap gap-2">
                 {member.hobbies.map((hobby, i) => (
@@ -179,7 +179,7 @@ export default function MemberModal({
                   href={`https://instagram.com/${member.instagramHandle}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-3 bg-nb-white border-[3px] border-nb-black rounded-lg shadow-[4px_4px_0px_var(--nb-black)] hover:bg-nb-pink hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_var(--nb-black)] font-bold text-sm sm:text-base text-nb-black transition-all"
+                  className="inline-flex items-center gap-2 px-5 py-3 bg-nb-white border-[3px] border-nb-black rounded-lg shadow-[4px_4px_0px_var(--nb-black)] hover:bg-nb-pink hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_var(--nb-black)] font-bold text-sm sm:text-base text-nb-black transition-all"
                 >
                   📸 @{member.instagramHandle}
                 </a>
@@ -190,11 +190,11 @@ export default function MemberModal({
 
         {/* Spotify */}
         {member.spotifyTrackUri && (
-          <div className="mt-4 pt-6 border-t-[4px] border-nb-black border-dashed">
+          <div className="mt-4 pt-6 border-t-4 border-nb-black border-dashed">
             <h4 className="font-display font-black text-xl sm:text-2xl text-nb-black uppercase tracking-wide mb-4">
-              🎵 Sedang Diputar
+              🎵 Now Playing
             </h4>
-            <div className="bg-nb-black rounded-2xl overflow-hidden border-[4px] border-nb-black shadow-[6px_6px_0px_var(--nb-black)]">
+            <div className="bg-nb-black rounded-2xl overflow-hidden border-4 border-nb-black shadow-[6px_6px_0px_var(--nb-black)]">
               <SpotifyEmbed trackUri={member.spotifyTrackUri} isOpen={isOpen} />
             </div>
           </div>
@@ -205,3 +205,4 @@ export default function MemberModal({
     </div>
   );
 }
+

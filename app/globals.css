@@ -6,16 +6,16 @@
 
 :root {
   /* Core palette — loud, high-contrast, characterful */
-  --nb-yellow: #FFE156;
-  --nb-pink: #FF6B9D;
-  --nb-blue: #4ECDC4;
-  --nb-green: #A8E6CF;
-  --nb-red: #FF6B6B;
-  --nb-orange: #FFAB76;
-  --nb-purple: #C3AED6;
-  --nb-lime: #C6F806;
-  --nb-cream: #FFF8E7;
-  --nb-white: #FEFEFE;
+  --nb-yellow: #ffe156;
+  --nb-pink: #ff6b9d;
+  --nb-blue: #4ecdc4;
+  --nb-green: #a8e6cf;
+  --nb-red: #ff6b6b;
+  --nb-orange: #ffab76;
+  --nb-purple: #c3aed6;
+  --nb-lime: #c6f806;
+  --nb-cream: #fff8e7;
+  --nb-white: #fefefe;
 
   /* Structural */
   --nb-black: #1a1a2e;
@@ -84,7 +84,9 @@ body {
   border: 3px solid var(--nb-black);
   border-radius: var(--nb-radius);
   box-shadow: var(--nb-shadow);
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  transition:
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
 }
 
 .nb-card:hover {
@@ -104,7 +106,9 @@ body {
   box-shadow: var(--nb-shadow);
   font-weight: 700;
   cursor: pointer;
-  transition: box-shadow 0.1s ease, transform 0.1s ease;
+  transition:
+    box-shadow 0.1s ease,
+    transform 0.1s ease;
 }
 
 .nb-btn:hover {
@@ -158,12 +162,24 @@ body {
 
 /* Glitch effect */
 @keyframes glitch {
-  0%   { transform: translate(0); }
-  20%  { transform: translate(-3px, 3px); }
-  40%  { transform: translate(-3px, -3px); }
-  60%  { transform: translate(3px, 3px); }
-  80%  { transform: translate(3px, -3px); }
-  100% { transform: translate(0); }
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-3px, 3px);
+  }
+  40% {
+    transform: translate(-3px, -3px);
+  }
+  60% {
+    transform: translate(3px, 3px);
+  }
+  80% {
+    transform: translate(3px, -3px);
+  }
+  100% {
+    transform: translate(0);
+  }
 }
 
 .glitch-active {
@@ -172,12 +188,24 @@ body {
 
 /* CRT flicker */
 @keyframes crt-flicker {
-  0%   { opacity: 0.97; }
-  5%   { opacity: 0.9; }
-  10%  { opacity: 0.98; }
-  15%  { opacity: 0.93; }
-  20%  { opacity: 0.99; }
-  100% { opacity: 0.98; }
+  0% {
+    opacity: 0.97;
+  }
+  5% {
+    opacity: 0.9;
+  }
+  10% {
+    opacity: 0.98;
+  }
+  15% {
+    opacity: 0.93;
+  }
+  20% {
+    opacity: 0.99;
+  }
+  100% {
+    opacity: 0.98;
+  }
 }
 
 .crt-flicker {
@@ -186,8 +214,13 @@ body {
 
 /* Typing cursor blink */
 @keyframes blink-cursor {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 .cursor-blink {
@@ -196,8 +229,14 @@ body {
 
 /* Matrix rain character */
 @keyframes matrix-fall {
-  0%   { transform: translateY(-100%); opacity: 1; }
-  100% { transform: translateY(100vh); opacity: 0; }
+  0% {
+    transform: translateY(-100%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
 }
 
 /* Modal backdrop */
@@ -219,4 +258,14 @@ body {
   background: var(--nb-black);
   border-radius: var(--nb-radius);
   border: 2px solid var(--nb-cream);
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

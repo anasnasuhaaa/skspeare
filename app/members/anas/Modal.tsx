@@ -79,7 +79,7 @@ export default function AnasModal({ isOpen, onClose }: ModalProps) {
   if (!shouldRender) return null;
 
   return (
-    <div className="fixed inset-0 z-[1000] flex items-center justify-center p-3 sm:p-4 md:p-6 bg-black/85 backdrop-blur-md scanlines">
+    <div className="fixed inset-0 z-1000 flex items-center justify-center p-3 sm:p-4 md:p-6 bg-black/85 backdrop-blur-md scanlines">
       {/* Backdrop */}
       <div
         ref={backdropRef}
@@ -90,7 +90,7 @@ export default function AnasModal({ isOpen, onClose }: ModalProps) {
       {/* Modal Dialog Content */}
       <div
         ref={contentRef}
-        className="w-full max-w-3xl max-h-[85vh] overflow-y-auto bg-[#0d1117] border-2 border-[#4ade80] rounded-xl shadow-[0_0_25px_rgba(74,222,128,0.25)] p-5 sm:p-6 md:p-8 relative z-10 text-[#4ade80]"
+        className="w-full max-w-3xl max-h-[75vh] overflow-y-auto no-scrollbar bg-[#0d1117] border-2 border-[#4ade80] rounded-xl shadow-[0_0_25px_rgba(74,222,128,0.25)] p-5 sm:p-6 md:p-8 relative z-10 text-[#4ade80]"
         onClick={(e) => e.stopPropagation()}
         style={{
           backgroundImage:
@@ -127,7 +127,7 @@ export default function AnasModal({ isOpen, onClose }: ModalProps) {
             <button
               onClick={handleAnimateClose}
               className="p-1 text-red-400 hover:bg-red-400/20 rounded transition-colors cursor-pointer"
-              title="Tutup Modal"
+              title="Close Modal"
             >
               <X size={16} />
             </button>
@@ -153,7 +153,7 @@ export default function AnasModal({ isOpen, onClose }: ModalProps) {
               {anasData.name}
             </h2>
             <div className="inline-block bg-[#4ade80] text-[#0d1117] px-3 py-1 font-mono font-bold text-xs sm:text-sm uppercase tracking-wider">
-              {anasData.role}
+              {anasData.role === "Ketua" ? "LEADER" : anasData.role}
             </div>
           </div>
         </div>
@@ -163,21 +163,21 @@ export default function AnasModal({ isOpen, onClose }: ModalProps) {
           <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
             <span className="text-[#4ade80]/70 w-32 shrink-0">{">"} NIM:</span>
             <span className="text-[#4ade80] font-bold">
-              {anasData.nim || "[DATA BELUM DIISI]"}
+              {anasData.nim || "[NO DATA]"}
             </span>
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
             <span className="text-[#4ade80]/70 w-32 shrink-0">
-              {">"} ASAL_DAERAH:
+              {">"} HOMETOWN:
             </span>
             <span className="text-[#4ade80] font-bold">
-              {anasData.hometown || "[DATA BELUM DIISI]"}
+              {anasData.hometown || "[NO DATA]"}
             </span>
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
-            <span className="text-[#4ade80]/70 w-32 shrink-0">{">"} HOBI:</span>
+            <span className="text-[#4ade80]/70 w-32 shrink-0">{">"} HOBBIES:</span>
             <div className="flex flex-wrap gap-2">
               {anasData.hobbies && anasData.hobbies.length > 0 ? (
                 anasData.hobbies.map((hobby, index) => (
@@ -189,7 +189,7 @@ export default function AnasModal({ isOpen, onClose }: ModalProps) {
                   </span>
                 ))
               ) : (
-                <span className="text-[#4ade80]/50">[TIDAK ADA DATA]</span>
+                <span className="text-[#4ade80]/50">[NO DATA]</span>
               )}
             </div>
           </div>
@@ -208,13 +208,13 @@ export default function AnasModal({ isOpen, onClose }: ModalProps) {
                 @{anasData.instagramHandle}
               </a>
             ) : (
-              <span className="text-[#4ade80]/50">[DATA BELUM DIISI]</span>
+              <span className="text-[#4ade80]/50">[NO DATA]</span>
             )}
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 pt-2">
             <span className="text-[#4ade80]/70 w-32 shrink-0">
-              {">"} KUTIPAN:
+              {">"} QUOTE:
             </span>
             <div className="text-[#4ade80] italic border-l-2 border-[#4ade80]/50 pl-3 py-0.5">
               {anasData.quote ? `"${anasData.quote}"` : '""'}

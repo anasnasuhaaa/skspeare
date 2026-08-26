@@ -76,9 +76,6 @@ export default function Gallery() {
         <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-black text-nb-black uppercase tracking-tight">
           Gallery
         </h2>
-        <p className="text-nb-black/80 font-bold mt-3 text-base sm:text-lg md:text-xl">
-          Dokumentasi kegiatan kami — arahkan kursor untuk pause
-        </p>
       </div>
 
       <div

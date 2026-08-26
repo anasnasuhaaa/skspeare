@@ -48,6 +48,26 @@ export default function MembersSection() {
     if (!el) return;
 
     const ctx = gsap.context(() => {
+      // Title entrance
+      const titleEl = el.querySelector(".gsap-team-title");
+      if (titleEl) {
+        gsap.fromTo(
+          titleEl,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: titleEl,
+              start: "top 90%",
+              once: true,
+            },
+          }
+        );
+      }
+
       const cards = el.querySelectorAll(".gsap-member-card");
       if (cards.length > 0) {
         gsap.fromTo(
@@ -57,7 +77,7 @@ export default function MembersSection() {
             opacity: 1,
             y: 0,
             duration: 0.5,
-            stagger: 0.06,
+            stagger: 0.04,
             ease: "power2.out",
             scrollTrigger: {
               trigger: el,
@@ -105,28 +125,25 @@ export default function MembersSection() {
       className="py-16 sm:py-24 px-4 bg-nb-cream"
     >
       <div className="container mx-auto max-w-6xl">
-        {/* Section Title - Solid Black Neobrutalism Heading */}
-        <div className="text-center mb-12 sm:mb-16">
+        {/* Section Title */}
+        <div className="text-center mb-10 sm:mb-14 gsap-team-title">
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-black text-nb-black uppercase tracking-tight">
             Meet The Team
           </h2>
-          <p className="text-nb-black/80 font-bold mt-3 text-base sm:text-lg">
-            Anggota kelompok Proxy Shakespeare
-          </p>
         </div>
 
-        {/* PJK (left) & Ketua Kelompok (right) — side by side */}
-        <div className="mb-14 sm:mb-20">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
+        {/* PJK (left) & Leader (right) — side by side in 2 columns */}
+        <div className="mb-10 sm:mb-16">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 max-w-2xl mx-auto">
             {/* PJK — left */}
             <div className="flex flex-col items-center">
-              <span className="px-5 py-1.5 bg-nb-orange border-[3px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] font-display font-black text-sm uppercase text-nb-black mb-4">
+              <span className="px-3.5 sm:px-5 py-1 sm:py-1.5 bg-nb-orange border-[2.5px] sm:border-[3px] border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] sm:shadow-[3px_3px_0px_var(--nb-black)] font-display font-black text-xs sm:text-sm uppercase text-nb-black mb-3 sm:mb-4">
                 {ROLE_LABELS["PJK"]}
               </span>
               {pjk.map((member) => (
                 <div
                   key={member.slug}
-                  className="w-full max-w-70 gsap-member-card"
+                  className="w-full max-w-70 gsap-member-card flex"
                 >
                   <MemberCard
                     member={member}
@@ -136,15 +153,15 @@ export default function MembersSection() {
               ))}
             </div>
 
-            {/* Ketua Kelompok — right */}
+            {/* Leader — right */}
             <div className="flex flex-col items-center">
-              <span className="px-5 py-1.5 bg-nb-yellow border-[3px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] font-display font-black text-sm uppercase text-nb-black mb-4">
+              <span className="px-3.5 sm:px-5 py-1 sm:py-1.5 bg-nb-yellow border-[2.5px] sm:border-[3px] border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] sm:shadow-[3px_3px_0px_var(--nb-black)] font-display font-black text-xs sm:text-sm uppercase text-nb-black mb-3 sm:mb-4">
                 {ROLE_LABELS["Ketua"]}
               </span>
               {ketua.map((member) => (
                 <div
                   key={member.slug}
-                  className="w-full max-w-70 gsap-member-card"
+                  className="w-full max-w-70 gsap-member-card flex"
                 >
                   <MemberCard
                     member={member}
@@ -156,17 +173,17 @@ export default function MembersSection() {
           </div>
         </div>
 
-        {/* Anggota — Grid */}
+        {/* Members — 2 columns on mobile, scaling up */}
         <div>
-          <div className="flex justify-center mb-8">
-            <span className="px-6 py-2 bg-nb-purple border-[3px] border-nb-black rounded-lg shadow-[4px_4px_0px_var(--nb-black)] font-display font-black text-base sm:text-lg uppercase text-nb-black">
+          <div className="flex justify-center mb-6 sm:mb-8">
+            <span className="px-5 sm:px-6 py-1.5 sm:py-2 bg-nb-purple border-[2.5px] sm:border-[3px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] sm:shadow-[4px_4px_0px_var(--nb-black)] font-display font-black text-sm sm:text-lg uppercase text-nb-black">
               {ROLE_LABELS["Anggota"]}
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
             {anggota.map((member) => (
-              <div key={member.slug} className="gsap-member-card">
+              <div key={member.slug} className="gsap-member-card flex">
                 <MemberCard
                   member={member}
                   onClick={() => handleCardClick(member)}
@@ -183,7 +200,7 @@ export default function MembersSection() {
           isOpen={showHackTerminal}
           onClose={handleClose}
           onHackSuccess={handleHackSuccess}
-          onCredentialSubmit={() => {}}
+          onCredentialSubmit={() => { }}
         />
       )}
 
