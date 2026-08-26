@@ -1,16 +1,17 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
-import { MemberData, ROLE_ORDER, ROLE_LABELS } from "../types/member";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { MemberData, ROLE_LABELS } from "../types/member";
 import members from "../data/members";
 import MemberCard from "./MemberCard";
 import MemberModal from "./MemberModal";
 
-// ============================================================
-// Dynamic imports for per-member MODAL components only.
-// All front cards are uniform — only modals can be customized.
-// ============================================================
+gsap.registerPlugin(ScrollTrigger);
+
+// Dynamic imports for per-member custom Modal components
 const memberModals: Record<
   string,
   React.ComponentType<{ isOpen: boolean; onClose: () => void }>
@@ -40,6 +41,37 @@ export default function MembersSection() {
   const [showModal, setShowModal] = useState(false);
   const [showHackTerminal, setShowHackTerminal] = useState(false);
 
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const ctx = gsap.context(() => {
+      const cards = el.querySelectorAll(".gsap-member-card");
+      if (cards.length > 0) {
+        gsap.fromTo(
+          cards,
+          { opacity: 0, y: 25 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            stagger: 0.06,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 85%",
+              once: true,
+            },
+          }
+        );
+      }
+    }, el);
+
+    return () => ctx.revert();
+  }, []);
+
   const handleCardClick = useCallback((member: MemberData) => {
     if (member.slug === "anas") {
       setSelectedMember(member);
@@ -61,29 +93,41 @@ export default function MembersSection() {
     setShowModal(true);
   }, []);
 
-  // Group members by role
+  // Filter members by role
   const pjk = members.filter((m) => m.role === "PJK");
-  const ketua = members.filter((m) => m.role === "Ketua Kelompok");
+  const ketua = members.filter((m) => m.role === "Ketua");
   const anggota = members.filter((m) => m.role === "Anggota");
 
   return (
-    <section id="team" className="py-16 sm:py-20 px-4 bg-nb-cream">
+    <section
+      id="team"
+      ref={sectionRef}
+      className="py-16 sm:py-24 px-4 bg-nb-cream"
+    >
       <div className="container mx-auto max-w-6xl">
-        {/* Section Title */}
-        <h2 className="text-4xl sm:text-5xl md:text-7xl nb-heading text-center mb-12 sm:mb-16 text-nb-black uppercase">
-          Meet The Team
-        </h2>
+        {/* Section Title - Solid Black Neobrutalism Heading */}
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-black text-nb-black uppercase tracking-tight">
+            Meet The Team
+          </h2>
+          <p className="text-nb-black/80 font-bold mt-3 text-base sm:text-lg">
+            Anggota kelompok Proxy Shakespeare
+          </p>
+        </div>
 
-        {/* PJK (left) + Ketua Kelompok (right) — side by side */}
-        <div className="mb-12 sm:mb-16">
-          <div className="grid grid-cols-2 gap-4 sm:gap-6 max-w-lg mx-auto">
+        {/* PJK (left) & Ketua Kelompok (right) — side by side */}
+        <div className="mb-14 sm:mb-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
             {/* PJK — left */}
             <div className="flex flex-col items-center">
-              <span className="nb-badge bg-nb-orange px-4 py-1.5 text-xs sm:text-sm text-nb-black mb-4">
+              <span className="px-5 py-1.5 bg-nb-orange border-[3px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] font-display font-black text-sm uppercase text-nb-black mb-4">
                 {ROLE_LABELS["PJK"]}
               </span>
               {pjk.map((member) => (
-                <div key={member.slug} className="w-full max-w-[200px]">
+                <div
+                  key={member.slug}
+                  className="w-full max-w-70 gsap-member-card"
+                >
                   <MemberCard
                     member={member}
                     onClick={() => handleCardClick(member)}
@@ -94,11 +138,14 @@ export default function MembersSection() {
 
             {/* Ketua Kelompok — right */}
             <div className="flex flex-col items-center">
-              <span className="nb-badge bg-nb-yellow px-4 py-1.5 text-xs sm:text-sm text-nb-black mb-4">
-                {ROLE_LABELS["Ketua Kelompok"]}
+              <span className="px-5 py-1.5 bg-nb-yellow border-[3px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] font-display font-black text-sm uppercase text-nb-black mb-4">
+                {ROLE_LABELS["Ketua"]}
               </span>
               {ketua.map((member) => (
-                <div key={member.slug} className="w-full max-w-[200px]">
+                <div
+                  key={member.slug}
+                  className="w-full max-w-70 gsap-member-card"
+                >
                   <MemberCard
                     member={member}
                     onClick={() => handleCardClick(member)}
@@ -109,33 +156,36 @@ export default function MembersSection() {
           </div>
         </div>
 
-        {/* Anggota — grid */}
+        {/* Anggota — Grid */}
         <div>
-          <div className="flex justify-center mb-6 sm:mb-8">
-            <span className="nb-badge bg-nb-purple px-6 py-2 text-base sm:text-xl text-nb-black">
+          <div className="flex justify-center mb-8">
+            <span className="px-6 py-2 bg-nb-purple border-[3px] border-nb-black rounded-lg shadow-[4px_4px_0px_var(--nb-black)] font-display font-black text-base sm:text-lg uppercase text-nb-black">
               {ROLE_LABELS["Anggota"]}
             </span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {anggota.map((member) => (
-              <MemberCard
-                key={member.slug}
-                member={member}
-                onClick={() => handleCardClick(member)}
-              />
+              <div key={member.slug} className="gsap-member-card">
+                <MemberCard
+                  member={member}
+                  onClick={() => handleCardClick(member)}
+                />
+              </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Anas's Hack Terminal */}
-      <HackTerminal
-        isOpen={showHackTerminal}
-        onClose={handleClose}
-        onHackSuccess={handleHackSuccess}
-        onCredentialSubmit={() => {}}
-      />
+      {/* Anas's Hack Terminal Overlay */}
+      {showHackTerminal && (
+        <HackTerminal
+          isOpen={showHackTerminal}
+          onClose={handleClose}
+          onHackSuccess={handleHackSuccess}
+          onCredentialSubmit={() => {}}
+        />
+      )}
 
       {/* Member Modal */}
       {selectedMember && showModal && (() => {

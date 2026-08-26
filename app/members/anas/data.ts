@@ -3,7 +3,7 @@ import { MemberData } from "@/app/types/member";
 const anasData: MemberData = {
   slug: "anas",
   name: "Anas Nasuha",
-  role: "Ketua Kelompok",
+  role: "Ketua",
   // TODO: replace with your own NIM
   nim: "M0403251114",
   photo: "/member/anas.png",

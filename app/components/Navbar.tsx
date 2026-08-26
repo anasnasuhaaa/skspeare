@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
   { label: "About", href: "#about" },
@@ -22,69 +20,75 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-[90] bg-nb-cream/95 backdrop-blur-sm border-b-[3px] border-nb-black">
-      <div className="container mx-auto px-4 flex items-center justify-between h-16">
-        {/* Logo */}
+    <nav className="fixed top-0 left-0 right-0 z-[90] bg-nb-cream/95 backdrop-blur-sm border-b-[3px] border-nb-black shadow-[0_4px_0_var(--nb-black)]">
+      <div className="container mx-auto px-4 flex items-center justify-between h-20">
+        {/* Logo Text - Neobrutalism Solid Black */}
         <a
           href="#"
           onClick={(e) => {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
-          className="font-display font-extrabold text-xl text-nb-black tracking-tight"
+          className="font-display font-black text-2xl sm:text-3xl text-nb-black uppercase tracking-tight hover:-translate-y-0.5 transition-transform"
         >
-          <span className="inline-block bg-nb-yellow px-2 py-0.5 border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] mr-1">
-            🎭
-          </span>
           Proxy Shakespeare
         </a>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-4">
           {NAV_LINKS.map((link) => (
             <button
               key={link.href}
               onClick={() => handleClick(link.href)}
-              className="nb-btn bg-nb-white px-4 py-2 text-sm font-bold text-nb-black hover:bg-nb-yellow transition-colors"
+              className="px-5 py-2 text-base font-bold text-nb-black bg-nb-white border-[3px] border-nb-black rounded-lg shadow-[4px_4px_0px_var(--nb-black)] hover:bg-nb-yellow hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[2px_2px_0px_var(--nb-black)] transition-all cursor-pointer"
             >
               {link.label}
             </button>
           ))}
         </div>
 
-        {/* Mobile Hamburger */}
+        {/* Mobile Hamburger (CSS Animated Neobrutalism Button) */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden nb-btn bg-nb-white p-2"
+          className="md:hidden flex flex-col justify-center items-center w-12 h-12 bg-nb-white border-[3px] border-nb-black rounded-lg shadow-[4px_4px_0px_var(--nb-black)] active:translate-y-[2px] active:translate-x-[2px] active:shadow-[2px_2px_0px_var(--nb-black)] transition-all cursor-pointer p-2"
+          aria-label="Toggle Menu"
         >
-          {isOpen ? <X size={20} /> : <Menu size={20} />}
+          <span
+            className={`w-6 h-1 bg-nb-black rounded-full transition-all duration-300 transform ${
+              isOpen ? "rotate-45 translate-y-2" : "mb-1"
+            }`}
+          />
+          <span
+            className={`w-6 h-1 bg-nb-black rounded-full transition-all duration-300 ${
+              isOpen ? "opacity-0 scale-0" : "mb-1 opacity-100"
+            }`}
+          />
+          <span
+            className={`w-6 h-1 bg-nb-black rounded-full transition-all duration-300 transform ${
+              isOpen ? "-rotate-45 -translate-y-2" : ""
+            }`}
+          />
         </button>
       </div>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden overflow-hidden bg-nb-cream border-t-[3px] border-nb-black"
-          >
-            <div className="container mx-auto px-4 py-4 flex flex-col gap-2">
-              {NAV_LINKS.map((link) => (
-                <button
-                  key={link.href}
-                  onClick={() => handleClick(link.href)}
-                  className="nb-btn bg-nb-white px-4 py-3 text-left font-bold text-nb-black hover:bg-nb-yellow transition-colors w-full"
-                >
-                  {link.label}
-                </button>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Mobile Menu Dropdown */}
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-nb-cream border-t-[3px] border-nb-black shadow-[0_4px_0_var(--nb-black)] ${
+          isOpen ? "max-h-72 opacity-100 py-4" : "max-h-0 opacity-0 py-0"
+        }`}
+      >
+        <div className="container mx-auto px-4 flex flex-col gap-3">
+          {NAV_LINKS.map((link) => (
+            <button
+              key={link.href}
+              onClick={() => handleClick(link.href)}
+              className="px-6 py-3 text-left font-bold text-nb-black bg-nb-white border-[3px] border-nb-black rounded-lg shadow-[4px_4px_0px_var(--nb-black)] hover:bg-nb-yellow hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[2px_2px_0px_var(--nb-black)] transition-all w-full text-lg cursor-pointer"
+            >
+              {link.label}
+            </button>
+          ))}
+        </div>
+      </div>
     </nav>
   );
 }

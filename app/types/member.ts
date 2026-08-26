@@ -12,7 +12,7 @@ export interface MemberData {
   name: string;
 
   /** Group role */
-  role: "PJK" | "Ketua Kelompok" | "Anggota";
+  role: "PJK" | "Ketua" | "Anggota";
 
   /** Student ID number */
   nim: string;
@@ -45,13 +45,13 @@ export interface MemberData {
 /** Role display order for the members grid */
 export const ROLE_ORDER: MemberData["role"][] = [
   "PJK",
-  "Ketua Kelompok",
+  "Ketua",
   "Anggota",
 ];
 
 /** Role labels for display (Indonesian) */
 export const ROLE_LABELS: Record<MemberData["role"], string> = {
   PJK: "PJK",
-  "Ketua Kelompok": "Ketua Kelompok",
+  Ketua: "Ketua Kelompok",
   Anggota: "Anggota",
 };

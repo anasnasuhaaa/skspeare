@@ -63,10 +63,16 @@
 /* ============================================================
    BASE STYLES
    ============================================================ */
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-body);
+  overflow-x: hidden;
 }
 
 /* ============================================================
@@ -127,31 +133,7 @@ body {
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.1;
-}
-
-/* ============================================================
-   MARQUEE
-   ============================================================ */
-.marquee-track {
-  display: flex;
-  gap: 2rem;
-  will-change: transform;
-}
-
-.marquee-wrapper {
-  overflow: hidden;
-  transform: rotate(-3deg);
-  border-top: 3px solid var(--nb-black);
-  border-bottom: 3px solid var(--nb-black);
-}
-
-/* ============================================================
-   GALLERY CAROUSEL
-   ============================================================ */
-.gallery-track {
-  display: flex;
-  gap: 1.5rem;
-  will-change: transform;
+  color: var(--nb-black);
 }
 
 /* ============================================================
@@ -167,8 +149,8 @@ body {
     0deg,
     transparent,
     transparent 2px,
-    rgba(0, 255, 65, 0.03) 2px,
-    rgba(0, 255, 65, 0.03) 4px
+    rgba(74, 222, 128, 0.03) 2px,
+    rgba(74, 222, 128, 0.03) 4px
   );
   pointer-events: none;
   z-index: 10;
@@ -218,30 +200,13 @@ body {
   100% { transform: translateY(100vh); opacity: 0; }
 }
 
-/* Progress bar fill */
-@keyframes progress-fill {
-  0%   { width: 0%; }
-  100% { width: 100%; }
-}
-
-/* Screen flash */
-@keyframes screen-flash {
-  0%   { opacity: 0; }
-  50%  { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-/* ============================================================
-   MODAL BACKDROP
-   ============================================================ */
+/* Modal backdrop */
 .modal-backdrop {
-  background: rgba(26, 26, 46, 0.6);
+  background: rgba(26, 26, 46, 0.65);
   backdrop-filter: blur(4px);
 }
 
-/* ============================================================
-   SCROLLBAR STYLING
-   ============================================================ */
+/* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 10px;
 }
