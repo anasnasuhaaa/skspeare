@@ -1,26 +1,257 @@
 @import "tailwindcss";
 
+/* ============================================================
+   NEOBRUTALISM ROUNDED — Design System
+   ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Core palette — loud, high-contrast, characterful */
+  --nb-yellow: #FFE156;
+  --nb-pink: #FF6B9D;
+  --nb-blue: #4ECDC4;
+  --nb-green: #A8E6CF;
+  --nb-red: #FF6B6B;
+  --nb-orange: #FFAB76;
+  --nb-purple: #C3AED6;
+  --nb-lime: #C6F806;
+  --nb-cream: #FFF8E7;
+  --nb-white: #FEFEFE;
+
+  /* Structural */
+  --nb-black: #1a1a2e;
+  --nb-border: 3px solid var(--nb-black);
+  --nb-border-thick: 4px solid var(--nb-black);
+  --nb-radius: 16px;
+  --nb-radius-lg: 24px;
+  --nb-radius-full: 9999px;
+
+  /* Shadows — hard offset, no blur */
+  --nb-shadow: 4px 4px 0px var(--nb-black);
+  --nb-shadow-md: 6px 6px 0px var(--nb-black);
+  --nb-shadow-lg: 8px 8px 0px var(--nb-black);
+  --nb-shadow-hover: 2px 2px 0px var(--nb-black);
+
+  /* Typography */
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-body: var(--font-geist-sans), system-ui, sans-serif;
+  --font-code: var(--font-geist-mono), "Courier New", monospace;
+
+  /* Page background */
+  --background: var(--nb-cream);
+  --foreground: var(--nb-black);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-nb-yellow: var(--nb-yellow);
+  --color-nb-pink: var(--nb-pink);
+  --color-nb-blue: var(--nb-blue);
+  --color-nb-green: var(--nb-green);
+  --color-nb-red: var(--nb-red);
+  --color-nb-orange: var(--nb-orange);
+  --color-nb-purple: var(--nb-purple);
+  --color-nb-lime: var(--nb-lime);
+  --color-nb-cream: var(--nb-cream);
+  --color-nb-white: var(--nb-white);
+  --color-nb-black: var(--nb-black);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-code);
+  --font-display: var(--font-display);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* ============================================================
+   BASE STYLES
+   ============================================================ */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+}
+
+/* ============================================================
+   NEOBRUTALISM UTILITY CLASSES
+   ============================================================ */
+
+/* Card base */
+.nb-card {
+  border: 3px solid var(--nb-black);
+  border-radius: var(--nb-radius);
+  box-shadow: var(--nb-shadow);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.nb-card:hover {
+  box-shadow: var(--nb-shadow-md);
+  transform: translate(-2px, -2px);
+}
+
+.nb-card:active {
+  box-shadow: var(--nb-shadow-hover);
+  transform: translate(2px, 2px);
+}
+
+/* Button base */
+.nb-btn {
+  border: 3px solid var(--nb-black);
+  border-radius: var(--nb-radius);
+  box-shadow: var(--nb-shadow);
+  font-weight: 700;
+  cursor: pointer;
+  transition: box-shadow 0.1s ease, transform 0.1s ease;
+}
+
+.nb-btn:hover {
+  box-shadow: var(--nb-shadow-hover);
+  transform: translate(2px, 2px);
+}
+
+.nb-btn:active {
+  box-shadow: none;
+  transform: translate(4px, 4px);
+}
+
+/* Badge / sticker */
+.nb-badge {
+  border: 2px solid var(--nb-black);
+  border-radius: var(--nb-radius-full);
+  box-shadow: 2px 2px 0px var(--nb-black);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Section heading */
+.nb-heading {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+/* ============================================================
+   MARQUEE
+   ============================================================ */
+.marquee-track {
+  display: flex;
+  gap: 2rem;
+  will-change: transform;
+}
+
+.marquee-wrapper {
+  overflow: hidden;
+  transform: rotate(-3deg);
+  border-top: 3px solid var(--nb-black);
+  border-bottom: 3px solid var(--nb-black);
+}
+
+/* ============================================================
+   GALLERY CAROUSEL
+   ============================================================ */
+.gallery-track {
+  display: flex;
+  gap: 1.5rem;
+  will-change: transform;
+}
+
+/* ============================================================
+   TERMINAL / HACK EFFECTS — for Anas's card
+   ============================================================ */
+
+/* Scanlines overlay */
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 65, 0.03) 2px,
+    rgba(0, 255, 65, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Glitch effect */
+@keyframes glitch {
+  0%   { transform: translate(0); }
+  20%  { transform: translate(-3px, 3px); }
+  40%  { transform: translate(-3px, -3px); }
+  60%  { transform: translate(3px, 3px); }
+  80%  { transform: translate(3px, -3px); }
+  100% { transform: translate(0); }
+}
+
+.glitch-active {
+  animation: glitch 0.1s infinite;
+}
+
+/* CRT flicker */
+@keyframes crt-flicker {
+  0%   { opacity: 0.97; }
+  5%   { opacity: 0.9; }
+  10%  { opacity: 0.98; }
+  15%  { opacity: 0.93; }
+  20%  { opacity: 0.99; }
+  100% { opacity: 0.98; }
+}
+
+.crt-flicker {
+  animation: crt-flicker 0.15s infinite;
+}
+
+/* Typing cursor blink */
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
+.cursor-blink {
+  animation: blink-cursor 1s step-end infinite;
+}
+
+/* Matrix rain character */
+@keyframes matrix-fall {
+  0%   { transform: translateY(-100%); opacity: 1; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+/* Progress bar fill */
+@keyframes progress-fill {
+  0%   { width: 0%; }
+  100% { width: 100%; }
+}
+
+/* Screen flash */
+@keyframes screen-flash {
+  0%   { opacity: 0; }
+  50%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ============================================================
+   MODAL BACKDROP
+   ============================================================ */
+.modal-backdrop {
+  background: rgba(26, 26, 46, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+/* ============================================================
+   SCROLLBAR STYLING
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--nb-cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--nb-black);
+  border-radius: var(--nb-radius);
+  border: 2px solid var(--nb-cream);
 }
