@@ -8,9 +8,10 @@ import { MemberData } from "../types/member";
 interface MemberCardProps {
   member: MemberData;
   onClick: () => void;
+  priority?: boolean;
 }
 
-export default function MemberCard({ member, onClick }: MemberCardProps) {
+export default function MemberCard({ member, onClick, priority = false }: MemberCardProps) {
   return (
     <div
       onClick={onClick}
@@ -22,6 +23,7 @@ export default function MemberCard({ member, onClick }: MemberCardProps) {
           src={member.photo}
           alt={member.name}
           fill
+          priority={priority}
           className="object-cover group-hover:scale-105 transition-transform duration-300"
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 300px"
         />

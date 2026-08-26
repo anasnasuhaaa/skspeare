@@ -34,6 +34,7 @@ export default function AnasCard({ onClick }: { onClick: () => void }) {
             src={anasData.photo}
             alt={anasData.name}
             fill
+            sizes="(max-width: 640px) 112px, 128px"
             className="rounded-full object-cover p-1 grayscale group-hover:grayscale-0 transition-all duration-300"
           />
         </div>

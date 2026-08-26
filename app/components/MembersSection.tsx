@@ -87,6 +87,35 @@ export default function MembersSection() {
           }
         );
       }
+
+      // Floating particles
+      const geoParticles = el.querySelectorAll(".geo-particle");
+      geoParticles.forEach((particle, i) => {
+        gsap.to(particle, {
+          y: i % 2 === 0 ? -10 : 10,
+          x: i % 3 === 0 ? 6 : -6,
+          rotation: i % 2 === 0 ? "+=15" : "-=15",
+          duration: 2.4 + (i % 4) * 0.35,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+      });
+
+      // Twinkling sparkles
+      const sparkles = el.querySelectorAll(".sparkle-particle");
+      sparkles.forEach((sparkle, i) => {
+        gsap.to(sparkle, {
+          scale: 1.45,
+          opacity: 1,
+          rotation: i % 2 === 0 ? "+=90" : "-=90",
+          duration: 1.3 + (i % 3) * 0.35,
+          repeat: -1,
+          yoyo: true,
+          ease: "power1.inOut",
+          delay: (i * 0.15) % 1.2,
+        });
+      });
     }, el);
 
     return () => ctx.revert();
@@ -122,9 +151,63 @@ export default function MembersSection() {
     <section
       id="team"
       ref={sectionRef}
-      className="py-16 sm:py-24 px-4 bg-nb-cream"
+      className="py-16 sm:py-24 px-4 relative overflow-hidden"
     >
-      <div className="container mx-auto max-w-6xl">
+      {/* Local Decorative Particles & Sparkles (Safe Zone) */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none overflow-hidden z-0"
+      >
+        {/* Top Left Cross & Sparkle */}
+        <div className="geo-particle absolute top-8 left-[2%] sm:left-[4%] flex items-center justify-center w-7 h-7 sm:w-10 sm:h-10 bg-nb-lime border-2 sm:border-[2.5px] border-nb-black rounded-md shadow-[2px_2px_0px_var(--nb-black)] sm:shadow-[3px_3px_0px_var(--nb-black)] font-black text-base sm:text-2xl text-nb-black select-none rotate-12">
+          +
+        </div>
+        <div className="sparkle-particle absolute top-16 left-[10%] text-nb-yellow text-lg sm:text-2xl font-black select-none opacity-40">
+          ✦
+        </div>
+
+        {/* Top Right Asterisk & Sparkle */}
+        <div className="geo-particle absolute top-10 right-[2%] sm:right-[4%] flex items-center justify-center w-7 h-7 sm:w-10 sm:h-10 bg-nb-orange border-2 sm:border-[2.5px] border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] sm:shadow-[3px_3px_0px_var(--nb-black)] text-nb-black font-black text-sm sm:text-xl select-none -rotate-12">
+          ✶
+        </div>
+        <div className="sparkle-particle absolute top-20 right-[12%] text-nb-pink text-base sm:text-xl font-black select-none opacity-35">
+          ✧
+        </div>
+
+        {/* Mid Left Proxy Badge (Desktop) */}
+        <div className="geo-particle absolute top-[38%] left-[2%] hidden xl:flex items-center gap-1 px-3 py-1 bg-nb-lime border-2 border-nb-black rounded-full shadow-[2px_2px_0px_var(--nb-black)] font-mono font-bold text-xs text-nb-black select-none rotate-6">
+          <span>⚡</span> PROXY
+        </div>
+        <div className="sparkle-particle absolute top-[45%] left-[8%] hidden md:block text-nb-orange text-sm sm:text-lg font-black select-none opacity-30">
+          ✧
+        </div>
+
+        {/* Mid Right Drama Badge (Desktop) */}
+        <div className="geo-particle absolute top-[38%] right-[2%] hidden xl:flex items-center gap-1 px-3 py-1 bg-nb-pink border-2 border-nb-black rounded-full shadow-[2px_2px_0px_var(--nb-black)] font-display font-black text-xs text-nb-black select-none -rotate-3">
+          <span>💻</span>CODE
+        </div>
+        <div className="sparkle-particle absolute top-[48%] right-[8%] hidden md:block text-nb-purple text-base sm:text-xl font-black select-none opacity-35">
+          ✶
+        </div>
+
+        {/* Bottom Left Purple Star */}
+        <div className="geo-particle absolute bottom-12 left-[2%] sm:left-[3.5%] flex items-center justify-center w-7 h-7 sm:w-9 sm:h-9 bg-nb-purple border-2 sm:border-[2.5px] border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] sm:shadow-[3px_3px_0px_var(--nb-black)] text-nb-black font-black text-xs sm:text-lg select-none rotate-12">
+          ★
+        </div>
+        <div className="sparkle-particle absolute bottom-16 left-[10%] text-nb-lime text-base sm:text-xl font-black select-none opacity-40">
+          ✧
+        </div>
+
+        {/* Bottom Right Blue Sparkle */}
+        <div className="geo-particle absolute bottom-10 right-[2%] sm:right-[3.5%] flex items-center justify-center w-7 h-7 sm:w-9 sm:h-9 bg-nb-blue border-2 sm:border-[2.5px] border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] sm:shadow-[3px_3px_0px_var(--nb-black)] text-nb-black font-black text-xs sm:text-lg select-none rotate-6">
+          ✸
+        </div>
+        <div className="sparkle-particle absolute bottom-14 right-[10%] text-nb-yellow text-base sm:text-xl font-black select-none opacity-40">
+          ✦
+        </div>
+      </div>
+
+      <div className="container mx-auto max-w-6xl relative z-10">
         {/* Section Title */}
         <div className="text-center mb-10 sm:mb-14 gsap-team-title">
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-black text-nb-black uppercase tracking-tight">
@@ -148,6 +231,7 @@ export default function MembersSection() {
                   <MemberCard
                     member={member}
                     onClick={() => handleCardClick(member)}
+                    priority={true}
                   />
                 </div>
               ))}
@@ -166,6 +250,7 @@ export default function MembersSection() {
                   <MemberCard
                     member={member}
                     onClick={() => handleCardClick(member)}
+                    priority={true}
                   />
                 </div>
               ))}
@@ -182,11 +267,12 @@ export default function MembersSection() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
-            {anggota.map((member) => (
+            {anggota.map((member, i) => (
               <div key={member.slug} className="gsap-member-card flex">
                 <MemberCard
                   member={member}
                   onClick={() => handleCardClick(member)}
+                  priority={i < 4}
                 />
               </div>
             ))}

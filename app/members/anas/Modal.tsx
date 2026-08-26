@@ -143,6 +143,7 @@ export default function AnasModal({ isOpen, onClose }: ModalProps) {
                 src={anasData.photo}
                 alt={anasData.name}
                 fill
+                sizes="(max-width: 640px) 112px, 144px"
                 className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
               />
             </div>

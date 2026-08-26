@@ -3,18 +3,14 @@ import AboutSection from "./components/AboutSection";
 import Marquee from "./components/Marquee";
 import MembersSection from "./components/MembersSection";
 import Gallery from "./components/Gallery";
-import GeometricParticles from "./components/GeometricParticles";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-nb-cream overflow-x-hidden flex flex-col relative">
-      {/* Background Floating Geometric & Sparkling Particles */}
-      <GeometricParticles />
-
+    <div className="min-h-screen bg-nb-cream overflow-x-hidden flex flex-col">
       {/* Fixed Navbar */}
       <Navbar />
 
-      <main className="flex-1 relative z-10">
+      <main className="flex-1">
         {/* Hero / About Section */}
         <AboutSection />
 
@@ -50,12 +46,9 @@ export default function Home() {
             <span className="px-3.5 py-1 bg-nb-pink text-nb-black font-bold border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] text-xs">
               Tailwind CSS
             </span>
-            <span className="px-3.5 py-1 bg-nb-blue text-nb-black font-bold border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] text-xs">
-              Neobrutalism
-            </span>
           </div>
           <p className="mt-8 text-nb-cream/50 text-xs font-mono">
-            © 2025 Proxy Shakespeare. All rights reserved.
+            © 2026 Proxy Shakespeare. All rights reserved.
           </p>
         </div>
       </footer>

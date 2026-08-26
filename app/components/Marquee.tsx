@@ -60,7 +60,7 @@ export default function Marquee({ direction = "left" }: MarqueeProps) {
   return (
     <div className="w-full overflow-hidden py-4 my-2">
       <div
-        className="w-[110%] -ml-[5%] overflow-hidden bg-nb-yellow py-3 sm:py-4 border-y-[3px] border-nb-black shadow-[0_4px_0_var(--nb-black)]"
+        className="w-[110%] ml-[-5%] overflow-hidden bg-nb-yellow py-3 sm:py-4 border-y-[3px] border-nb-black shadow-[0_4px_0_var(--nb-black)]"
         style={{
           transform: direction === "right" ? "rotate(2deg)" : "rotate(-2deg)",
         }}

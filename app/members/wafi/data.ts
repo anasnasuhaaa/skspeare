@@ -2,7 +2,7 @@ import { MemberData } from "@/app/types/member";
 
 const wafiData: MemberData = {
   slug: "wafi",
-  name: "Wafi",
+  name: "Kak Wafi",
   role: "PJK",
   // TODO: replace with your own NIM
   nim: "",

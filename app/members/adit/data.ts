@@ -2,7 +2,7 @@ import { MemberData } from "@/app/types/member";
 
 const aditData: MemberData = {
   slug: "adit",
-  name: "Muhamad Adiya Firmasyah",
+  name: "Muhamad Aditya Firmasyah",
   role: "Anggota",
   // TODO: replace with your own NIM
   nim: "",

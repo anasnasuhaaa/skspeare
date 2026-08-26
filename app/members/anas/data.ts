@@ -6,7 +6,7 @@ const anasData: MemberData = {
   role: "Ketua",
   // TODO: replace with your own NIM
   nim: "M0403251114",
-  photo: "/member/anas.png",
+  photo: "/member/anas2.png",
   // TODO: replace with your LinkedIn profile URL
   linkedinUrl: "https://www.linkedin.com/in/anas-nasuha-026186327",
   // TODO: replace with your CV link or file path
