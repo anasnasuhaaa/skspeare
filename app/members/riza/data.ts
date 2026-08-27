@@ -12,7 +12,7 @@ const rizaData: MemberData = {
   // TODO: replace with your CV link or file path
   cvUrl: "",
   // TODO: replace with your hometown/region
-  hometown: "Bogor",
+  hometown: "Bogor, West Java",
   // TODO: replace with your hobbies
   hobbies: ["Fotografi"],
   // TODO: replace with your Instagram handle (without @)
@@ -20,7 +20,8 @@ const rizaData: MemberData = {
   // TODO: replace with your personal quote
   quote: "it is what it is",
   // TODO: replace with your Spotify track URL
-  spotifyTrackUri: "",
+  spotifyTrackUri:
+    "https://open.spotify.com/track/0QJIn98saoDlJtyAJ3HSHK?si=23a71cf3dc7940c2",
 };
 
 export default rizaData;

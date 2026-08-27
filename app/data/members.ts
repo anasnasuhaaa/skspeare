@@ -15,16 +15,16 @@ import farikhaData from "@/app/members/farikha/data";
 const members: MemberData[] = [
   wafiData,
   anasData,
-  aditData,
-  salmanData,
   rizaData,
-  kesyaData,
+  aditData,
   kekeData,
-  radlyData,
-  kevinData,
-  abiyyuData,
   khansaData,
   farikhaData,
+  salmanData,
+  kesyaData,
+  abiyyuData,
+  radlyData,
+  kevinData,
 ];
 
 export default members;
