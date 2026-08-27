@@ -53,6 +53,45 @@ export default function Gallery() {
           delay: (i * 0.15) % 1.2,
         });
       });
+
+      // Floating motion for Gallery title badge
+      const galleryTitleBadge = el.querySelector(".floating-gallery-badge");
+      if (galleryTitleBadge) {
+        gsap.to(galleryTitleBadge, {
+          y: -7,
+          rotation: "-=2.5",
+          duration: 2.7,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+      }
+
+      // Pulse wiggle for highlighted GALLERY chip
+      const galleryWordChip = el.querySelector(".gallery-word-chip");
+      if (galleryWordChip) {
+        gsap.to(galleryWordChip, {
+          scale: 1.06,
+          rotation: "+=3",
+          duration: 1.9,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+      }
+
+      // Rotation for corner sparkle
+      const gallerySparkle = el.querySelector(".gallery-sparkle-accent");
+      if (gallerySparkle) {
+        gsap.to(gallerySparkle, {
+          rotation: "-=360",
+          scale: 1.25,
+          duration: 3,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+      }
     }, el);
 
     return () => ctx.revert();
@@ -110,34 +149,54 @@ export default function Gallery() {
     };
   }, [selectedPhotoIndex, photos.length]);
 
+  const rotations = ["-rotate-2", "rotate-2", "-rotate-1", "rotate-3", "-rotate-2", "rotate-1"];
+
   const PhotoBlock = ({ prefix }: { prefix: string }) => (
-    <div className="flex gap-4 sm:gap-6 shrink-0 pr-4 sm:pr-6">
-      {oneBlock.map((photo, i) => (
-        <div
-          key={`${prefix}-${i}`}
-          onClick={() => setSelectedPhotoIndex(i % photos.length)}
-          className="shrink-0 w-60 h-45 sm:w-75 sm:h-55 md:w-90 md:h-65 bg-nb-white border-[3px] sm:border-4 border-nb-black rounded-2xl shadow-[4px_4px_0px_var(--nb-black)] sm:shadow-[6px_6px_0px_var(--nb-black)] overflow-hidden relative group hover:-translate-y-1 hover:shadow-[8px_8px_0px_var(--nb-black)] transition-all duration-200 cursor-pointer"
-        >
-          <Image
-            src={photo}
-            alt={`Dokumentasi kegiatan ${(i % 3) + 1}`}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-            sizes="(max-width: 640px) 240px, (max-width: 1024px) 300px, 360px"
-          />
-          {/* Subtle hover icon overlay */}
-          <div className="absolute inset-0 bg-nb-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-            <span className="px-3 py-1 bg-nb-yellow border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] font-display font-black text-xs text-nb-black uppercase tracking-wider">
-              View Full 🔍
-            </span>
+    <div className="flex gap-5 sm:gap-8 shrink-0 pr-5 sm:pr-8 py-4 items-center">
+      {oneBlock.map((photo, i) => {
+        const tilt = rotations[i % rotations.length];
+        return (
+          <div
+            key={`${prefix}-${i}`}
+            onClick={() => setSelectedPhotoIndex(i % photos.length)}
+            className={`shrink-0 w-64 sm:w-78 md:w-88 bg-nb-white border-[3px] sm:border-4 border-nb-black rounded-xl shadow-[5px_5px_0px_var(--nb-black)] sm:shadow-[7px_7px_0px_var(--nb-black)] p-2.5 sm:p-3.5 pb-6 sm:pb-8 relative group cursor-pointer ${tilt} hover:rotate-0 hover:scale-105 hover:-translate-y-2 hover:shadow-[10px_10px_0px_var(--nb-black)] transition-all duration-300 ease-out`}
+          >
+            {/* Top Washi Tape / Pin Effect */}
+            <div
+              aria-hidden="true"
+              className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-12 sm:w-16 h-4 sm:h-5 bg-nb-yellow/80 border border-nb-black/40 -rotate-2 z-20 shadow-[1px_1px_0px_rgba(0,0,0,0.15)] pointer-events-none select-none"
+            ></div>
+
+            {/* Photo Viewport */}
+            <div className="relative w-full aspect-4/3 rounded-lg overflow-hidden border-2 border-nb-black bg-nb-black/5">
+              <Image
+                src={photo}
+                alt={`Dokumentasi kegiatan ${(i % 3) + 1}`}
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                sizes="(max-width: 640px) 260px, (max-width: 1024px) 320px, 360px"
+              />
+              {/* Hover Badge */}
+              <div className="absolute inset-0 bg-nb-black/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                <span className="px-3 py-1 bg-nb-yellow border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] font-display font-black text-xs text-nb-black uppercase tracking-wider">
+                  View Full 🔍
+                </span>
+              </div>
+            </div>
+
+            {/* Polaroid Bottom Label */}
+            <div className="mt-2.5 sm:mt-3 flex items-center justify-between px-1 font-mono text-[10px] sm:text-xs text-nb-black font-bold">
+              <span>★ MEMORY #0{(i % 3) + 1}</span>
+              <span className="opacity-60 text-[9px] sm:text-[10px]">ILKOMERZ 62</span>
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 
   return (
-    <section id="gallery" ref={sectionRef} className="py-14 sm:py-20 overflow-hidden border-t-[3px] border-nb-black relative">
+    <section id="gallery" ref={sectionRef} className="py-14 sm:py-20 overflow-hidden relative">
       {/* Local Decorative Particles & Sparkles (Safe Zone) */}
       <div
         aria-hidden="true"
@@ -170,10 +229,23 @@ export default function Gallery() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-10 text-center relative z-10">
-        <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-black text-nb-black uppercase tracking-tight">
-          Gallery
-        </h2>
+      {/* Floating Neobrutalism Title Header */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12 text-center relative z-10 flex flex-col items-center">
+        {/* Main Floating Badge */}
+        <div className="relative inline-block">
+          <div className="floating-gallery-badge inline-flex items-center gap-2 sm:gap-3 bg-nb-white border-[3.5px] sm:border-4 border-nb-black rounded-2xl shadow-[6px_6px_0px_var(--nb-black)] sm:shadow-[8px_8px_0px_var(--nb-black)] px-6 sm:px-10 py-3 sm:py-4 rotate-1 hover:rotate-0 transition-transform duration-300">
+            <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-black text-nb-black uppercase tracking-tight flex items-center gap-2 sm:gap-3 flex-wrap justify-center">
+              <span>PHOTO</span>
+              <span className="gallery-word-chip bg-nb-blue text-nb-black px-3 sm:px-4 py-0.5 sm:py-1 border-[2.5px] border-nb-black rounded-xl shadow-[3px_3px_0px_var(--nb-black)] -rotate-2 inline-block">
+                GALLERY
+              </span>
+            </h2>
+          </div>
+          {/* Corner Sparkle */}
+          <div className="gallery-sparkle-accent absolute -top-3 -left-3 sm:-left-4 w-7 h-7 sm:w-8 sm:h-8 bg-nb-yellow border-2 border-nb-black rounded-full shadow-[2px_2px_0px_var(--nb-black)] flex items-center justify-center font-black text-xs select-none -rotate-12">
+            ✦
+          </div>
+        </div>
       </div>
 
       <div

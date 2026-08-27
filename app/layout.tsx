@@ -19,6 +19,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+import TabTitleEffect from "./components/TabTitleEffect";
+
 export const metadata: Metadata = {
   title: "Proxy Shakespeare | Pekan Ilkomerz 62",
   description:
@@ -31,6 +33,11 @@ export const metadata: Metadata = {
     "IPB University",
   ],
   authors: [{ name: "Proxy Shakespeare Team" }],
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
   openGraph: {
     title: "Proxy Shakespeare | Pekan Ilkomerz 62",
     description:
@@ -58,6 +65,8 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        {/* Dynamic Tab Title Effect when tab is inactive */}
+        <TabTitleEffect />
         {children}
         {/* Spotify iFrame API — loaded once, used by all member modals */}
         <Script

@@ -109,6 +109,16 @@ export default function MemberModal({
     cleanInstagram ||
     member.spotifyTrackUri;
 
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const handleCopy = (text: string, label: string) => {
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+      setToastMessage(`Copied ${label}! 📋`);
+      setTimeout(() => setToastMessage(null), 2400);
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-1000 flex items-center justify-center p-4 sm:p-6 md:p-8">
       {/* Backdrop */}
@@ -124,6 +134,14 @@ export default function MemberModal({
         className="relative w-full max-w-3xl max-h-[85vh] overflow-y-auto bg-nb-white border-4 border-nb-black rounded-2xl shadow-[8px_8px_0px_var(--nb-black)] p-6 sm:p-8 md:p-10 z-10 flex flex-col gap-6 sm:gap-8"
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Floating Toast Notification */}
+        {toastMessage && (
+          <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[1050] bg-nb-yellow border-[3px] border-nb-black rounded-xl px-5 py-2.5 shadow-[4px_4px_0px_var(--nb-black)] font-display font-black text-xs sm:text-sm text-nb-black uppercase tracking-wider animate-in fade-in slide-in-from-bottom-3 duration-200 flex items-center gap-2">
+            <span>✨</span>
+            <span>{toastMessage}</span>
+          </div>
+        )}
+
         {/* Close Button - Stacking z-[1020] */}
         <button
           onClick={handleAnimateClose}
@@ -155,9 +173,14 @@ export default function MemberModal({
                 {ROLE_LABELS[member.role] || member.role}
               </span>
               {member.nim && (
-                <span className="px-4 py-2 bg-nb-white border-[3px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] font-mono font-bold text-sm sm:text-base">
-                  NIM: {member.nim}
-                </span>
+                <button
+                  onClick={() => handleCopy(member.nim!, `NIM ${member.nim}`)}
+                  className="px-4 py-2 bg-nb-white border-[3px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] font-mono font-bold text-sm sm:text-base hover:bg-nb-yellow/30 hover:translate-y-0.5 hover:translate-x-0.5 hover:shadow-[1.5px_1.5px_0px_var(--nb-black)] transition-all cursor-pointer flex items-center gap-1.5"
+                  title="Click to copy NIM"
+                >
+                  <span>NIM: {member.nim}</span>
+                  <span className="text-xs opacity-60">📋</span>
+                </button>
               )}
               {member.hometown && (
                 <span className="px-4 py-2 bg-nb-lime border-[3px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] font-bold text-sm sm:text-base">
@@ -170,9 +193,14 @@ export default function MemberModal({
 
         {/* Quote */}
         {member.quote && (
-          <div className="bg-nb-cream border-[3px] border-nb-black rounded-xl p-5 sm:p-6 shadow-[4px_4px_0px_var(--nb-black)] relative">
-            <div className="absolute -top-3 -left-3 bg-nb-blue border-[3px] border-nb-black rounded-lg px-3 py-1 font-bold text-xs sm:text-sm transform -rotate-3">
-              Quote
+          <div
+            onClick={() => handleCopy(`"${member.quote}"`, "Quote")}
+            className="bg-nb-cream border-[3px] border-nb-black rounded-xl p-5 sm:p-6 shadow-[4px_4px_0px_var(--nb-black)] relative cursor-pointer hover:bg-nb-yellow/20 transition-colors"
+            title="Click to copy quote"
+          >
+            <div className="absolute -top-3 -left-3 bg-nb-blue border-[3px] border-nb-black rounded-lg px-3 py-1 font-bold text-xs sm:text-sm transform -rotate-3 flex items-center gap-1">
+              <span>Quote</span>
+              <span className="text-[10px] opacity-70">📋</span>
             </div>
             <p className="italic text-lg sm:text-xl font-bold text-nb-black text-center mt-2">
               &ldquo;{member.quote}&rdquo;
@@ -206,7 +234,7 @@ export default function MemberModal({
               <h4 className="font-display font-black text-xl sm:text-2xl text-nb-black uppercase tracking-wide">
                 Instagram
               </h4>
-              <div>
+              <div className="flex items-center gap-2">
                 <a
                   href={`https://instagram.com/${cleanInstagram}`}
                   target="_blank"
@@ -215,6 +243,14 @@ export default function MemberModal({
                 >
                   📸 @{cleanInstagram}
                 </a>
+                <button
+                  type="button"
+                  onClick={() => handleCopy(`@${cleanInstagram}`, `@${cleanInstagram}`)}
+                  className="p-3 bg-nb-yellow border-[3px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] hover:translate-y-0.5 hover:translate-x-0.5 hover:shadow-[1.5px_1.5px_0px_var(--nb-black)] transition-all cursor-pointer font-bold text-sm"
+                  title="Copy Instagram username"
+                >
+                  📋
+                </button>
               </div>
             </div>
           )}

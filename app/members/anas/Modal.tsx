@@ -17,8 +17,17 @@ interface ModalProps {
 // ==========================================
 export default function AnasModal({ isOpen, onClose }: ModalProps) {
   const [shouldRender, setShouldRender] = useState(isOpen);
+  const [toastText, setToastText] = useState<string | null>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+
+  const handleCopy = (text: string, label: string) => {
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+      setToastText(`[COPIED] ${label} -> CLIPBOARD`);
+      setTimeout(() => setToastText(null), 2400);
+    }
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -93,6 +102,14 @@ export default function AnasModal({ isOpen, onClose }: ModalProps) {
 
   return (
     <div className="fixed inset-0 z-1000 flex items-center justify-center p-3 sm:p-4 md:p-6 bg-black/85 backdrop-blur-md scanlines">
+      {/* Retro Toast */}
+      {toastText && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-1050 bg-black border-2 border-[#4ade80] rounded px-4 py-2 text-[#4ade80] font-mono text-xs shadow-[0_0_15px_rgba(74,222,128,0.5)] flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-[#4ade80] animate-ping"></span>
+          <span>{toastText}</span>
+        </div>
+      )}
+
       {/* Backdrop */}
       <div
         ref={backdropRef}
@@ -176,18 +193,24 @@ export default function AnasModal({ isOpen, onClose }: ModalProps) {
         <div className="font-mono space-y-3 mb-6 bg-black/50 p-4 sm:p-5 border border-[#4ade80]/30 rounded backdrop-blur-sm text-xs sm:text-sm md:text-base">
           <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
             <span className="text-[#4ade80]/70 w-32 shrink-0">{">"} NIM:</span>
-            <span className="text-[#4ade80] font-bold">
-              {anasData.nim || "[NO DATA]"}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-white font-bold">{anasData.nim}</span>
+              <button
+                type="button"
+                onClick={() => handleCopy(anasData.nim, `NIM ${anasData.nim}`)}
+                className="text-[10px] bg-[#4ade80]/15 hover:bg-[#4ade80]/30 text-[#4ade80] px-1.5 py-0.5 rounded cursor-pointer transition-colors"
+                title="Copy NIM"
+              >
+                [COPY]
+              </button>
+            </div>
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
             <span className="text-[#4ade80]/70 w-32 shrink-0">
               {">"} HOMETOWN:
             </span>
-            <span className="text-[#4ade80] font-bold">
-              {anasData.hometown || "[NO DATA]"}
-            </span>
+            <span className="text-white">{anasData.hometown}</span>
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
@@ -213,31 +236,46 @@ export default function AnasModal({ isOpen, onClose }: ModalProps) {
               {">"} INSTAGRAM:
             </span>
             {anasData.instagramHandle ? (
-              <a
-                href={`https://instagram.com/${anasData.instagramHandle
-                  .replace(/^https?:\/\/(www\.)?instagram\.com\//, "")
-                  .replace(/^@/, "")
-                  .replace(/\/$/, "")}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#4ade80] font-bold hover:underline hover:text-white transition-colors"
-              >
-                @{anasData.instagramHandle
-                  .replace(/^https?:\/\/(www\.)?instagram\.com\//, "")
-                  .replace(/^@/, "")
-                  .replace(/\/$/, "")}
-              </a>
+              <div className="flex items-center gap-2">
+                <a
+                  href={`https://instagram.com/${anasData.instagramHandle
+                    .replace(/^https?:\/\/(www\.)?instagram\.com\//, "")
+                    .replace(/^@/, "")
+                    .replace(/\/$/, "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#4ade80] font-bold hover:underline hover:text-white transition-colors"
+                >
+                  @{anasData.instagramHandle
+                    .replace(/^https?:\/\/(www\.)?instagram\.com\//, "")
+                    .replace(/^@/, "")
+                    .replace(/\/$/, "")}
+                </a>
+                <button
+                  type="button"
+                  onClick={() => handleCopy(`@${anasData.instagramHandle.replace(/^@/, "")}`, `@${anasData.instagramHandle}`)}
+                  className="text-[10px] bg-[#4ade80]/15 hover:bg-[#4ade80]/30 text-[#4ade80] px-1.5 py-0.5 rounded cursor-pointer transition-colors"
+                  title="Copy Instagram handle"
+                >
+                  [COPY]
+                </button>
+              </div>
             ) : (
               <span className="text-[#4ade80]/50">[NO DATA]</span>
             )}
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 pt-2">
+          <div
+            onClick={() => handleCopy(anasData.quote || "", "Quote")}
+            className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 pt-2 cursor-pointer group"
+            title="Click to copy quote"
+          >
             <span className="text-[#4ade80]/70 w-32 shrink-0">
               {">"} QUOTE:
             </span>
-            <div className="text-[#4ade80] italic border-l-2 border-[#4ade80]/50 pl-3 py-0.5">
-              {anasData.quote ? `"${anasData.quote}"` : '""'}
+            <div className="text-[#4ade80] italic border-l-2 border-[#4ade80]/50 pl-3 py-0.5 group-hover:bg-[#4ade80]/10 rounded-r transition-colors flex items-center justify-between">
+              <span>{anasData.quote ? `"${anasData.quote}"` : '""'}</span>
+              <span className="text-[10px] opacity-60 ml-2 font-mono">[COPY]</span>
             </div>
           </div>
         </div>

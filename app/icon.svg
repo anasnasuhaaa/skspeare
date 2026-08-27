@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Hard Shadow -->
+  <rect x="8" y="8" width="48" height="48" rx="10" fill="#000000" />
+  <!-- Card Base -->
+  <rect x="4" y="4" width="48" height="48" rx="10" fill="#FFE500" stroke="#000000" stroke-width="4" stroke-linejoin="round" />
+  <!-- Neobrutalist 4-point Starburst -->
+  <path d="M 28 12 C 28 22 28 22 18 28 C 28 34 28 34 28 44 C 28 34 28 34 38 28 C 28 22 28 22 28 12 Z" fill="#000000" />
+  <!-- Sparkle Accent -->
+  <circle cx="38" cy="18" r="3" fill="#FF529A" stroke="#000000" stroke-width="1.5" />
+</svg>
+
