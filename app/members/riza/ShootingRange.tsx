@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { Volume2, VolumeX, Crosshair, FastForward, Target } from "lucide-react";
 
 interface ShootingRangeProps {
@@ -110,7 +111,7 @@ class ShootingRangeSoundEngine {
 
       subOsc.start(now);
       subOsc.stop(now + 0.1);
-    } catch {}
+    } catch { }
   }
 
   // 2. Metallic Target Hit (High-resonance steel chime + gong resonance)
@@ -154,7 +155,7 @@ class ShootingRangeSoundEngine {
       clickGain.connect(ctx.destination);
       click.start(now);
       click.stop(now + 0.05);
-    } catch {}
+    } catch { }
   }
 
   // 3. Miss Sound (Classic Ricochet Whistle + Wooden Barrier Thud)
@@ -194,7 +195,7 @@ class ShootingRangeSoundEngine {
       thudGain.connect(ctx.destination);
       thud.start(now);
       thud.stop(now + 0.14);
-    } catch {}
+    } catch { }
   }
 
   // 4. Triumphant 5/5 Target Cleared Fanfare
@@ -237,7 +238,7 @@ class ShootingRangeSoundEngine {
         osc.start(startTime);
         osc.stop(startTime + duration + 0.05);
       });
-    } catch {}
+    } catch { }
   }
 }
 
@@ -436,11 +437,10 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
             {[0, 1, 2, 3, 4].map((i) => (
               <div
                 key={i}
-                className={`w-3.5 h-3.5 rounded-full border-2 border-nb-white transition-all duration-300 ${
-                  i < hitsCount
+                className={`w-3.5 h-3.5 rounded-full border-2 border-nb-white transition-all duration-300 ${i < hitsCount
                     ? "bg-nb-lime scale-110 shadow-[0_0_8px_var(--color-nb-lime)]"
                     : "bg-nb-black/60"
-                }`}
+                  }`}
                 title={`Target ${i + 1} status`}
               />
             ))}
@@ -489,9 +489,8 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className={`relative w-full flex-1 min-h-[380px] sm:min-h-[440px] md:min-h-[490px] bg-gradient-to-b from-[#1b1c24] via-[#2c2e3e] to-[#16171f] overflow-hidden cursor-crosshair border-x-[3px] border-b-[3px] border-nb-black rounded-b-xl flex items-center justify-center ${
-          muzzleFlash ? "brightness-150" : ""
-        }`}
+        className={`relative w-full flex-1 min-h-95 sm:min-h-110 md:min-h-122.5 bg-linear-to-b from-[#1b1c24] via-[#2c2e3e] to-[#16171f] overflow-hidden cursor-crosshair border-x-[3px] border-b-[3px] border-nb-black rounded-b-xl flex items-center justify-center ${muzzleFlash ? "brightness-150" : ""
+          }`}
       >
         {/* ============================================================
             🎨 HANDCRAFTED SVG SHOOTING RANGE BOOTH SCENE
@@ -523,7 +522,7 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
         </svg>
 
         {/* Overhead Range Spotlight Accents */}
-        <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-nb-yellow/15 to-transparent pointer-events-none z-1" />
+        <div className="absolute top-0 inset-x-0 h-16 bg-linear-to-b from-nb-yellow/15 to-transparent pointer-events-none z-1" />
         <div className="absolute top-2 left-6 px-3 py-1 bg-nb-yellow/20 border border-nb-yellow/40 rounded text-[10px] font-mono text-nb-yellow pointer-events-none hidden sm:block">
           ● RANGE LIVE // LANE #07
         </div>
@@ -533,16 +532,14 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
           <div
             key={hole.id}
             style={{ left: `${hole.x}%`, top: `${hole.y}%` }}
-            className={`absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10 transition-opacity duration-500 ${
-              hole.isHit ? "w-4 h-4" : "w-3 h-3"
-            }`}
+            className={`absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10 transition-opacity duration-500 ${hole.isHit ? "w-4 h-4" : "w-3 h-3"
+              }`}
           >
             <div
-              className={`w-full h-full rounded-full border ${
-                hole.isHit
+              className={`w-full h-full rounded-full border ${hole.isHit
                   ? "bg-nb-lime border-nb-black shadow-[0_0_8px_var(--color-nb-lime)]"
                   : "bg-black/90 border-gray-600 shadow-[inset_0_1px_2px_black]"
-              }`}
+                }`}
             />
           </div>
         ))}
@@ -620,11 +617,10 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
             }}
             onClick={(e) => handleHitTarget(e, activeTarget)}
             onTouchStart={(e) => handleHitTarget(e, activeTarget)}
-            className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-15 transition-all duration-300 ${
-              isTargetHitAnimating
+            className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-15 transition-all duration-300 ${isTargetHitAnimating
                 ? "scale-125 rotate-45 opacity-0 duration-200"
                 : "animate-in zoom-in-75 duration-200 hover:scale-110 active:scale-95"
-            }`}
+              }`}
             title={`Tembak Target #${currentTargetIndex + 1}`}
           >
             {/* Hanging Rope Wire */}
@@ -678,22 +674,21 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
         )}
 
         {/* ============================================================
-            🔫 REALISTIC FIRST-PERSON SHOOTER POV (Pistol & Hand Aiming)
-            True FPS Aim Down Sight Perspective with Shaded 5-Finger Hand
+            🔫 FIRST-PERSON SHOOTER POV (Pistol & Hand Aiming)
+            Custom asset: public/asset/pistol-riza.png
             ============================================================ */}
         <div
           style={{
-            transform: `translateX(calc(-40% + ${gunOffsetX}px)) translateY(${gunOffsetY}px) rotate(${gunAimAngle}deg) ${
-              isGunRecoiling ? "translateY(18px) rotate(-8deg) scale(0.96)" : "translateY(0px) rotate(0deg) scale(1)"
-            }`,
-            transformOrigin: "85% 100%",
+            transform: `translateX(calc(-56% + ${gunOffsetX}px)) translateY(${gunOffsetY}px) rotate(${gunAimAngle}deg) ${isGunRecoiling ? "translateY(16px) rotate(-4deg) scale(0.97)" : "translateY(0px) rotate(0deg) scale(1)"
+              }`,
+            transformOrigin: "56% 100%",
           }}
-          className="absolute bottom-0 right-1/2 pointer-events-none z-25 transition-transform duration-100 ease-out flex flex-col items-center"
+          className="absolute -bottom-4 sm:-bottom-6 left-1/2 pointer-events-none z-25 transition-transform duration-100 ease-out flex flex-col items-center"
         >
           {/* Muzzle Flash Shockwave & Flame Burst right from barrel tip */}
           {isGunRecoiling && (
-            <div className="absolute -top-16 left-[46%] -translate-x-1/2 z-35 animate-in zoom-in-75 duration-75">
-              <svg width="100" height="100" viewBox="0 0 120 120" fill="none">
+            <div className="absolute top-[16%] left-[55.9%] -translate-x-1/2 -translate-y-1/2 z-35 animate-in zoom-in-75 duration-75 pointer-events-none">
+              <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
                 <defs>
                   <radialGradient id="blastGlow" cx="50%" cy="50%" r="50%">
                     <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
@@ -720,299 +715,17 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
             </div>
           )}
 
-          {/* High-Fidelity SVG Hand & Handgun in First-Person Aiming Perspective */}
-          <svg
-            width="260"
-            height="260"
-            viewBox="0 0 320 320"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 drop-shadow-[0_16px_24px_rgba(0,0,0,0.85)]"
-          >
-            <defs>
-              {/* Gun Metal Metallic Gradients */}
-              <linearGradient id="gunSlideTop" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#4b5563" />
-                <stop offset="30%" stopColor="#374151" />
-                <stop offset="85%" stopColor="#1f2937" />
-                <stop offset="100%" stopColor="#111827" />
-              </linearGradient>
-
-              <linearGradient id="gunSlideSide" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#374151" />
-                <stop offset="50%" stopColor="#1f2937" />
-                <stop offset="100%" stopColor="#0f172a" />
-              </linearGradient>
-
-              <linearGradient id="gunFrame" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#1e293b" />
-                <stop offset="60%" stopColor="#0f172a" />
-                <stop offset="100%" stopColor="#020617" />
-              </linearGradient>
-
-              <linearGradient id="metallicHighlight" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#9ca3af" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#4b5563" stopOpacity="0.2" />
-              </linearGradient>
-
-              {/* Realistic Hand Skin Tone Gradients with Shading & Depth */}
-              <linearGradient id="skinBase" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#f7c8aa" />
-                <stop offset="45%" stopColor="#df9a75" />
-                <stop offset="80%" stopColor="#b86b47" />
-                <stop offset="100%" stopColor="#874326" />
-              </linearGradient>
-
-              <linearGradient id="skinHighlight" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#ffe6d4" />
-                <stop offset="60%" stopColor="#f5bd98" />
-                <stop offset="100%" stopColor="#cf7f57" />
-              </linearGradient>
-
-              <linearGradient id="skinShadow" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#7a371c" />
-                <stop offset="60%" stopColor="#9d4f2a" />
-                <stop offset="100%" stopColor="#c7734a" />
-              </linearGradient>
-
-              <linearGradient id="nailGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#ffeedd" />
-                <stop offset="100%" stopColor="#e3a78b" />
-              </linearGradient>
-
-              {/* Tactical Wrist Sleeve Gradient */}
-              <linearGradient id="sleeveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#1e293b" />
-                <stop offset="60%" stopColor="#0f172a" />
-                <stop offset="100%" stopColor="#020617" />
-              </linearGradient>
-            </defs>
-
-            {/* ============================================================
-                1. PLAYER FOREARM & WRIST (Coming from bottom-right)
-                ============================================================ */}
-            <path
-              d="M200 320 L270 320 C290 300 310 270 305 230 C295 210 270 200 240 220 L195 290 Z"
-              fill="url(#sleeveGrad)"
-              stroke="#0f172a"
-              strokeWidth="3.5"
+          {/* First-Person Pistol Image Asset */}
+          <div className="relative w-72.5 sm:w-90 md:w-107.5 aspect-3/2 drop-shadow-[0_16px_24px_rgba(0,0,0,0.85)]">
+            <Image
+              src="/asset/pistol-riza.png"
+              alt="Pistol Riza"
+              fill
+              priority
+              className="object-contain pointer-events-none select-none"
+              sizes="(max-width: 640px) 290px, (max-width: 768px) 360px, 430px"
             />
-            {/* Tactical Sleeve Cuff Fold */}
-            <path
-              d="M210 280 C235 255 265 245 285 250"
-              fill="none"
-              stroke="#ffe156"
-              strokeWidth="2.5"
-              strokeDasharray="4 4"
-            />
-
-            {/* Back of Hand & Wrist Joint Flesh */}
-            <path
-              d="M190 285 C215 250 245 220 235 185 C225 155 205 160 185 175 L165 250 Z"
-              fill="url(#skinBase)"
-              stroke="#1a1a2e"
-              strokeWidth="3"
-            />
-
-            {/* ============================================================
-                2. PISTOL IN FIRST-PERSON AIMING PERSPECTIVE
-                (Looking down the top slide directly towards the crosshair)
-                ============================================================ */}
-
-            {/* Pistol Grip Base / Magazine Plate (peeking below fingers) */}
-            <path
-              d="M175 270 L195 295 L180 305 L160 280 Z"
-              fill="#0f172a"
-              stroke="#1a1a2e"
-              strokeWidth="3"
-            />
-
-            {/* Frame / Receiver (Polymer lower body behind fingers) */}
-            <path
-              d="M125 135 L175 125 L185 185 L155 220 L135 185 Z"
-              fill="url(#gunFrame)"
-              stroke="#1a1a2e"
-              strokeWidth="3"
-            />
-
-            {/* Trigger Guard Loop (Front of trigger) */}
-            <path
-              d="M125 155 C110 165 105 185 120 200 C130 208 145 208 152 195"
-              fill="none"
-              stroke="#1a1a2e"
-              strokeWidth="4"
-              strokeLinecap="round"
-            />
-
-            {/* Tactical Gold Trigger */}
-            <path
-              d="M135 165 Q130 180 138 188"
-              fill="none"
-              stroke="#ffe156"
-              strokeWidth="3.5"
-              strokeLinecap="round"
-            />
-
-            {/* Slide Assembly (Foreshortened 3D Perspective pointing towards target) */}
-            {/* Slide Left Cheek / Perspective Taper */}
-            <path
-              d="M110 95 L145 75 L150 130 L115 145 Z"
-              fill="url(#gunSlideSide)"
-              stroke="#1a1a2e"
-              strokeWidth="3"
-            />
-
-            {/* Slide Top Flat Surface (Converging towards front barrel tip) */}
-            <path
-              d="M145 75 L160 68 L165 120 L150 130 Z"
-              fill="url(#gunSlideTop)"
-              stroke="#1a1a2e"
-              strokeWidth="3"
-            />
-
-            {/* Slide Top Metallic Specular Highlight Edge */}
-            <line x1="146" y1="76" x2="151" y2="129" stroke="url(#metallicHighlight)" strokeWidth="2" />
-
-            {/* Slide Rear Face (Closest to player's eye) */}
-            <path
-              d="M115 145 L150 130 L168 135 L135 152 Z"
-              fill="#111827"
-              stroke="#1a1a2e"
-              strokeWidth="3"
-            />
-
-            {/* Slide Serrations (Rear Cocking Grips) */}
-            <line x1="120" y1="135" x2="128" y2="132" stroke="#4b5563" strokeWidth="2.5" strokeLinecap="round" />
-            <line x1="125" y1="138" x2="133" y2="135" stroke="#4b5563" strokeWidth="2.5" strokeLinecap="round" />
-            <line x1="130" y1="141" x2="138" y2="138" stroke="#4b5563" strokeWidth="2.5" strokeLinecap="round" />
-
-            {/* Beavertail & Hammer (resting above hand web) */}
-            <path
-              d="M152 148 C160 145 168 152 165 160 C160 165 152 162 150 155 Z"
-              fill="#374151"
-              stroke="#1a1a2e"
-              strokeWidth="2.5"
-            />
-
-            {/* ============================================================
-                3. IRON SIGHTS (3-DOT ILLUMINATED TRITIUM SIGHTS)
-                Aimed directly forward towards center crosshair
-                ============================================================ */}
-            {/* Rear Sight Notch (Left & Right Wings) */}
-            <rect x="122" y="130" width="6" height="7" rx="1" fill="#1f2937" stroke="#1a1a2e" strokeWidth="1.5" />
-            <circle cx="125" cy="133" r="1.8" fill="#4ade80" /> {/* Glowing Tritium Green Dot Left */}
-
-            <rect x="142" y="123" width="6" height="7" rx="1" fill="#1f2937" stroke="#1a1a2e" strokeWidth="1.5" />
-            <circle cx="145" cy="126" r="1.8" fill="#4ade80" /> {/* Glowing Tritium Green Dot Right */}
-
-            {/* Front Sight Post at tip of slide (Aligned in middle of rear notch) */}
-            <rect x="149" y="68" width="4" height="6" rx="0.8" fill="#1f2937" stroke="#1a1a2e" strokeWidth="1.2" />
-            <circle cx="151" cy="71" r="1.3" fill="#ffe156" /> {/* Glowing Tritium Yellow Dot Front */}
-
-            {/* ============================================================
-                4. REALISTIC PLAYER HAND & 5 DISTINCT FINGERS
-                Shaded fingers firmly wrapping the grip + trigger finger
-                ============================================================ */}
-
-            {/* A. THUMB (Ibu Jari) - Positioned on left flank pointing forward along frame */}
-            <g id="thumb">
-              {/* Thumb Muscle / Thenar Eminence */}
-              <path
-                d="M175 195 C190 190 210 205 205 230 C200 245 185 245 170 225 Z"
-                fill="url(#skinShadow)"
-                stroke="#1a1a2e"
-                strokeWidth="2.5"
-              />
-              {/* Thumb Body */}
-              <path
-                d="M150 165 C165 155 180 170 178 190 C175 205 160 205 148 185 Z"
-                fill="url(#skinBase)"
-                stroke="#1a1a2e"
-                strokeWidth="3"
-              />
-              {/* Thumb Knuckle Crease & Highlight */}
-              <path d="M162 172 Q168 180 162 188" stroke="#7a371c" strokeWidth="1.8" fill="none" />
-              {/* Thumbnail */}
-              <path
-                d="M150 167 Q154 163 158 168 Q155 174 151 172 Z"
-                fill="url(#nailGradient)"
-                stroke="#9d4f2a"
-                strokeWidth="1"
-              />
-            </g>
-
-            {/* B. INDEX / TRIGGER FINGER (Jari Telunjuk) - Reaching into trigger guard */}
-            <g id="index-finger">
-              {/* Knuckle base on hand */}
-              <circle cx="178" cy="180" r="10" fill="url(#skinHighlight)" />
-
-              {/* First segment (Proximal phalanx extending along frame) */}
-              <path
-                d="M175 172 L150 165 C142 165 138 172 142 178 L168 188 Z"
-                fill="url(#skinHighlight)"
-                stroke="#1a1a2e"
-                strokeWidth="3"
-              />
-
-              {/* Second & Third segment (Curving around trigger) */}
-              <path
-                d="M144 167 C130 165 125 175 130 186 C135 194 148 194 152 184 L148 175 Z"
-                fill="url(#skinBase)"
-                stroke="#1a1a2e"
-                strokeWidth="2.8"
-              />
-              {/* Finger Joint Creases */}
-              <line x1="145" y1="168" x2="148" y2="182" stroke="#7a371c" strokeWidth="1.5" />
-              {/* Fingernail peeking on trigger pad */}
-              <ellipse cx="132" cy="182" rx="3.5" ry="4.5" fill="url(#nailGradient)" stroke="#9d4f2a" strokeWidth="1" />
-            </g>
-
-            {/* C. MIDDLE FINGER (Jari Tengah) - Wrapping high on the grip under trigger guard */}
-            <g id="middle-finger">
-              <path
-                d="M158 192 C142 190 135 200 138 212 C142 220 156 220 168 210 L176 198 Z"
-                fill="url(#skinBase)"
-                stroke="#1a1a2e"
-                strokeWidth="3"
-              />
-              {/* Knuckle shadow & highlight */}
-              <path d="M150 196 Q156 204 152 212" stroke="#7a371c" strokeWidth="1.8" fill="none" />
-              {/* Fingernail */}
-              <ellipse cx="140" cy="204" rx="4" ry="5" fill="url(#nailGradient)" stroke="#9d4f2a" strokeWidth="1" />
-            </g>
-
-            {/* D. RING FINGER (Jari Manis) - Wrapping mid grip */}
-            <g id="ring-finger">
-              <path
-                d="M165 212 C148 212 142 222 145 234 C148 242 162 242 174 230 L180 218 Z"
-                fill="url(#skinBase)"
-                stroke="#1a1a2e"
-                strokeWidth="3"
-              />
-              {/* Knuckle Crease */}
-              <path d="M156 218 Q162 226 158 234" stroke="#7a371c" strokeWidth="1.8" fill="none" />
-              {/* Fingernail */}
-              <ellipse cx="146" cy="226" rx="4" ry="5" fill="url(#nailGradient)" stroke="#9d4f2a" strokeWidth="1" />
-            </g>
-
-            {/* E. PINKY FINGER (Jari Kelingking) - Wrapping bottom grip */}
-            <g id="pinky-finger">
-              <path
-                d="M170 232 C155 234 150 244 152 254 C155 262 168 262 178 250 L184 238 Z"
-                fill="url(#skinShadow)"
-                stroke="#1a1a2e"
-                strokeWidth="3"
-              />
-              {/* Knuckle Crease */}
-              <path d="M162 238 Q168 246 164 252" stroke="#7a371c" strokeWidth="1.8" fill="none" />
-              {/* Fingernail */}
-              <ellipse cx="154" cy="246" rx="3.5" ry="4.5" fill="url(#nailGradient)" stroke="#9d4f2a" strokeWidth="1" />
-            </g>
-
-            {/* Palm Creases & Tendon Depth Lines */}
-            <path d="M185 220 Q195 240 188 260" stroke="#7a371c" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.6" />
-            <path d="M205 235 Q215 250 210 270" stroke="#7a371c" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.6" />
-          </svg>
+          </div>
         </div>
 
         {/* ============================================================
