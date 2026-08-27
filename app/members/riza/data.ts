@@ -5,20 +5,20 @@ const rizaData: MemberData = {
   name: "M. Dzikry Fairul Riza H",
   role: "Anggota",
   // TODO: replace with your own NIM
-  nim: "",
-  photo: "/member/demo-user.jpg",
+  nim: "M0403251115",
+  photo: "/member/riza.jpg",
   // TODO: replace with your LinkedIn profile URL
-  linkedinUrl: "",
+  linkedinUrl: "www.linkedin.com/in/m-dzikry-fairul-riza-hadiputra-660963428",
   // TODO: replace with your CV link or file path
   cvUrl: "",
   // TODO: replace with your hometown/region
-  hometown: "",
+  hometown: "Bogor",
   // TODO: replace with your hobbies
-  hobbies: [],
+  hobbies: ["Fotografi"],
   // TODO: replace with your Instagram handle (without @)
-  instagramHandle: "",
+  instagramHandle: "fairulriza_",
   // TODO: replace with your personal quote
-  quote: "",
+  quote: "it is what it is",
   // TODO: replace with your Spotify track URL
   spotifyTrackUri: "",
 };
