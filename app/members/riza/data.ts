@@ -21,7 +21,7 @@ const rizaData: MemberData = {
   quote: "it is what it is",
   // TODO: replace with your Spotify track URL
   spotifyTrackUri:
-    "https://open.spotify.com/track/0QJIn98saoDlJtyAJ3HSHK?si=23a71cf3dc7940c2",
+    "https://open.spotify.com/track/6Jv7kjGkhY2fT4yuBF3aTz?si=5a47117952dc4593",
 };
 
 export default rizaData;
