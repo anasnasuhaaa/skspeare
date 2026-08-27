@@ -2,7 +2,16 @@
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { Volume2, VolumeX, Crosshair, FastForward, Target } from "lucide-react";
+import {
+  Volume2,
+  VolumeX,
+  Crosshair,
+  FastForward,
+  Target,
+  Info,
+  Trophy,
+  CheckCircle2,
+} from "lucide-react";
 
 interface ShootingRangeProps {
   onSuccess: () => void;
@@ -350,7 +359,7 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
       const x = ((clientX - rect.left) / rect.width) * 100;
       const y = ((clientY - rect.top) / rect.height) * 100;
       setMousePos({ x, y });
-      addHitEffect(x, y, `🎯 +${target.points}`);
+      addHitEffect(x, y, `+${target.points} PTS`);
       setBulletHoles((prev) => [...prev.slice(-15), { id: Date.now(), x, y, isHit: true }]);
     }
 
@@ -389,7 +398,7 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
       const x = ((e.clientX - rect.left) / rect.width) * 100;
       const y = ((e.clientY - rect.top) / rect.height) * 100;
       setMousePos({ x, y });
-      addHitEffect(x, y, "💥 MISS");
+      addHitEffect(x, y, "MISS");
       setBulletHoles((prev) => [...prev.slice(-15), { id: Date.now(), x, y, isHit: false }]);
     }
   };
@@ -419,28 +428,38 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
     <div
       tabIndex={0}
       onKeyDown={handleKeyDown}
-      className="w-full h-full flex flex-col items-center justify-between text-nb-black font-sans select-none focus:outline-none"
+      className="w-full h-full flex flex-col items-center justify-between text-[#ECE8E1] select-none focus:outline-none bg-[#0F1923]"
     >
       {/* Top Arcade Status Bar */}
-      <div className="w-full flex items-center justify-between gap-2 p-3 sm:p-4 bg-nb-black border-b-[3px] border-nb-black text-nb-white rounded-t-xl z-20">
+      <div className="w-full flex items-center justify-between gap-2 p-3 sm:p-4 bg-[#0F1923] border-b border-[#303946] text-[#ECE8E1] z-20">
         {/* Left: Mission & Hit Counters */}
         <div className="flex items-center gap-2 sm:gap-4">
-          <div className="flex items-center gap-1.5 bg-nb-yellow text-nb-black px-2.5 sm:px-3 py-1 rounded-lg border-2 border-nb-black font-display font-black text-xs sm:text-sm">
-            <Target size={16} strokeWidth={3} className="text-nb-black" />
+          <div
+            className="flex items-center gap-1.5 bg-[#161F28] border border-[#FF4655]/60 text-[#ECE8E1] px-2.5 sm:px-3 py-1 font-valorant-mono text-xs sm:text-sm tracking-wider"
+            style={{
+              clipPath:
+                "polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))",
+            }}
+          >
+            <Target size={14} className="text-[#FF4655]" />
             <span>
-              TARGETS: <strong className="font-mono text-sm sm:text-base">{hitsCount}/5</strong>
+              TARGETS:{" "}
+              <strong className="font-valorant-mono text-[#FF4655] text-sm sm:text-base">
+                {hitsCount}/5
+              </strong>
             </span>
           </div>
 
-          {/* Hit Indicators Dots */}
+          {/* Hit Indicators Segment Bars */}
           <div className="hidden sm:flex items-center gap-1.5">
             {[0, 1, 2, 3, 4].map((i) => (
               <div
                 key={i}
-                className={`w-3.5 h-3.5 rounded-full border-2 border-nb-white transition-all duration-300 ${i < hitsCount
-                    ? "bg-nb-lime scale-110 shadow-[0_0_8px_var(--color-nb-lime)]"
-                    : "bg-nb-black/60"
-                  }`}
+                className={`w-5 h-2 -skew-x-12 border transition-all duration-300 ${
+                  i < hitsCount
+                    ? "bg-[#FF4655] border-[#FF4655] shadow-[0_0_8px_rgba(255,70,85,0.8)]"
+                    : "bg-[#1F2326] border-[#303946]"
+                }`}
                 title={`Target ${i + 1} status`}
               />
             ))}
@@ -449,9 +468,13 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
 
         {/* Center: Live Score / Accuracy */}
         {gameState === "playing" && (
-          <div className="hidden md:flex items-center gap-4 text-xs font-mono">
-            <span className="text-nb-lime font-bold">SCORE: {score} PTS</span>
-            <span className="text-nb-orange font-bold">ACCURACY: {accuracy}%</span>
+          <div className="hidden md:flex items-center gap-4 text-xs font-valorant-mono">
+            <span className="text-[#ECE8E1] font-bold">
+              SCORE: <strong className="text-[#FF4655]">{score} PTS</strong>
+            </span>
+            <span className="text-[#8B978F] font-bold">
+              ACCURACY: {accuracy}%
+            </span>
           </div>
         )}
 
@@ -460,23 +483,33 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
           <button
             type="button"
             onClick={() => setSoundMuted(!soundMuted)}
-            className="p-1.5 sm:px-2.5 sm:py-1 bg-nb-white/10 hover:bg-nb-white/20 text-nb-white border border-nb-white/30 rounded-lg text-xs font-mono flex items-center gap-1 transition-colors cursor-pointer"
+            className="p-1.5 sm:px-2.5 sm:py-1 bg-[#161F28] hover:bg-[#1F2933] text-[#ECE8E1] border border-[#303946] text-xs font-valorant-mono flex items-center gap-1 transition-colors cursor-pointer"
+            style={{
+              clipPath:
+                "polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 4px 100%, 0 calc(100% - 4px))",
+            }}
             title={soundMuted ? "Unmute sound effects" : "Mute sound effects"}
             aria-label={soundMuted ? "Unmute sound effects" : "Mute sound effects"}
           >
-            {soundMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
-            <span className="hidden sm:inline">{soundMuted ? "MUTED" : "SFX"}</span>
+            {soundMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+            <span className="hidden sm:inline">
+              {soundMuted ? "MUTED" : "SFX"}
+            </span>
           </button>
 
-          {/* Mandatory Accessible Skip Button */}
+          {/* Accessible Skip Button */}
           <button
             type="button"
             onClick={onSkip}
-            className="px-2.5 sm:px-3.5 py-1 bg-nb-pink hover:bg-nb-yellow text-nb-black border-2 border-nb-black rounded-lg font-display font-black text-xs uppercase shadow-[2px_2px_0px_var(--nb-white)] hover:translate-y-0.5 hover:translate-x-0.5 transition-all cursor-pointer flex items-center gap-1"
+            className="px-2.5 sm:px-3.5 py-1 bg-[#FF4655] hover:bg-[#E03645] text-white font-valorant-mono font-bold text-xs uppercase transition-all cursor-pointer flex items-center gap-1 shadow-[0_0_10px_rgba(255,70,85,0.3)]"
+            style={{
+              clipPath:
+                "polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 4px 100%, 0 calc(100% - 4px))",
+            }}
             title="Lewati mini-game dan langsung buka profil Riza"
             aria-label="Lewati game dan tampilkan kartu profil langsung"
           >
-            <FastForward size={14} strokeWidth={3} />
+            <FastForward size={13} strokeWidth={2.5} />
             <span>Lewati</span>
           </button>
         </div>
@@ -489,42 +522,115 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className={`relative w-full flex-1 min-h-95 sm:min-h-110 md:min-h-122.5 bg-linear-to-b from-[#1b1c24] via-[#2c2e3e] to-[#16171f] overflow-hidden cursor-crosshair border-x-[3px] border-b-[3px] border-nb-black rounded-b-xl flex items-center justify-center ${muzzleFlash ? "brightness-150" : ""
-          }`}
+        className={`relative w-full flex-1 min-h-95 sm:min-h-110 md:min-h-122.5 bg-gradient-to-b from-[#0B0E14] via-[#111822] to-[#0F1923] overflow-hidden cursor-crosshair border-x border-b border-[#303946] flex items-center justify-center ${
+          muzzleFlash ? "brightness-150" : ""
+        }`}
       >
         {/* ============================================================
-            🎨 HANDCRAFTED SVG SHOOTING RANGE BOOTH SCENE
+            🎨 HANDCRAFTED SVG SHOOTING RANGE BOOTH SCENE (Valorant Style)
             ============================================================ */}
         <svg
           className="absolute inset-0 w-full h-full pointer-events-none opacity-40 z-0"
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Perspective Firing Lanes */}
-          <line x1="10%" y1="100%" x2="35%" y2="0%" stroke="#ffe156" strokeWidth="2" strokeDasharray="8 6" />
-          <line x1="90%" y1="100%" x2="65%" y2="0%" stroke="#ffe156" strokeWidth="2" strokeDasharray="8 6" />
-          <line x1="50%" y1="100%" x2="50%" y2="0%" stroke="#4ecdc4" strokeWidth="1.5" strokeDasharray="4 8" />
+          {/* Perspective Firing Lanes in Valorant Red & Cyan */}
+          <line
+            x1="10%"
+            y1="100%"
+            x2="35%"
+            y2="0%"
+            stroke="#FF4655"
+            strokeWidth="1.5"
+            strokeDasharray="8 6"
+          />
+          <line
+            x1="90%"
+            y1="100%"
+            x2="65%"
+            y2="0%"
+            stroke="#FF4655"
+            strokeWidth="1.5"
+            strokeDasharray="8 6"
+          />
+          <line
+            x1="50%"
+            y1="100%"
+            x2="50%"
+            y2="0%"
+            stroke="#00F5D4"
+            strokeWidth="1.5"
+            strokeDasharray="4 8"
+          />
 
           {/* Distance Markers */}
-          <line x1="25%" y1="70%" x2="75%" y2="70%" stroke="#ffffff" strokeWidth="1" strokeOpacity="0.2" />
-          <text x="50%" y="68%" fill="#ffffff" fillOpacity="0.35" fontSize="12" fontFamily="monospace" textAnchor="middle">
+          <line
+            x1="25%"
+            y1="70%"
+            x2="75%"
+            y2="70%"
+            stroke="#ECE8E1"
+            strokeWidth="1"
+            strokeOpacity="0.2"
+          />
+          <text
+            x="50%"
+            y="68%"
+            fill="#ECE8E1"
+            fillOpacity="0.35"
+            fontSize="12"
+            fontFamily="monospace"
+            textAnchor="middle"
+          >
             - 15 METERS -
           </text>
 
-          <line x1="32%" y1="45%" x2="68%" y2="45%" stroke="#ffffff" strokeWidth="1" strokeOpacity="0.2" />
-          <text x="50%" y="43%" fill="#ffffff" fillOpacity="0.35" fontSize="11" fontFamily="monospace" textAnchor="middle">
+          <line
+            x1="32%"
+            y1="45%"
+            x2="68%"
+            y2="45%"
+            stroke="#ECE8E1"
+            strokeWidth="1"
+            strokeOpacity="0.2"
+          />
+          <text
+            x="50%"
+            y="43%"
+            fill="#ECE8E1"
+            fillOpacity="0.35"
+            fontSize="11"
+            fontFamily="monospace"
+            textAnchor="middle"
+          >
             - 25 METERS -
           </text>
 
-          <line x1="38%" y1="20%" x2="62%" y2="20%" stroke="#ffffff" strokeWidth="1" strokeOpacity="0.2" />
-          <text x="50%" y="18%" fill="#ffffff" fillOpacity="0.3" fontSize="10" fontFamily="monospace" textAnchor="middle">
+          <line
+            x1="38%"
+            y1="20%"
+            x2="62%"
+            y2="20%"
+            stroke="#ECE8E1"
+            strokeWidth="1"
+            strokeOpacity="0.2"
+          />
+          <text
+            x="50%"
+            y="18%"
+            fill="#ECE8E1"
+            fillOpacity="0.3"
+            fontSize="10"
+            fontFamily="monospace"
+            textAnchor="middle"
+          >
             - 50 METERS -
           </text>
         </svg>
 
         {/* Overhead Range Spotlight Accents */}
-        <div className="absolute top-0 inset-x-0 h-16 bg-linear-to-b from-nb-yellow/15 to-transparent pointer-events-none z-1" />
-        <div className="absolute top-2 left-6 px-3 py-1 bg-nb-yellow/20 border border-nb-yellow/40 rounded text-[10px] font-mono text-nb-yellow pointer-events-none hidden sm:block">
-          ● RANGE LIVE // LANE #07
+        <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-[#FF4655]/15 to-transparent pointer-events-none z-1" />
+        <div className="absolute top-2 left-6 px-3 py-1 bg-[#161F28] border border-[#FF4655]/40 text-[10px] font-valorant-mono text-[#FF4655] pointer-events-none hidden sm:block">
+          ● RANGE LIVE // SECTOR_07
         </div>
 
         {/* Bullet Impact Decals */}
@@ -532,14 +638,16 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
           <div
             key={hole.id}
             style={{ left: `${hole.x}%`, top: `${hole.y}%` }}
-            className={`absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10 transition-opacity duration-500 ${hole.isHit ? "w-4 h-4" : "w-3 h-3"
-              }`}
+            className={`absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10 transition-opacity duration-500 ${
+              hole.isHit ? "w-4 h-4" : "w-3 h-3"
+            }`}
           >
             <div
-              className={`w-full h-full rounded-full border ${hole.isHit
-                  ? "bg-nb-lime border-nb-black shadow-[0_0_8px_var(--color-nb-lime)]"
+              className={`w-full h-full rounded-full border ${
+                hole.isHit
+                  ? "bg-[#FF4655] border-[#ECE8E1] shadow-[0_0_8px_#FF4655]"
                   : "bg-black/90 border-gray-600 shadow-[inset_0_1px_2px_black]"
-                }`}
+              }`}
             />
           </div>
         ))}
@@ -548,8 +656,13 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
         {hitEffects.map((effect) => (
           <div
             key={effect.id}
-            style={{ left: `${effect.x}%`, top: `${effect.y}%` }}
-            className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none z-30 font-display font-black text-sm sm:text-base text-nb-yellow bg-nb-black px-2.5 py-1 rounded-lg border-2 border-nb-yellow shadow-[2px_2px_0px_var(--nb-black)] animate-bounce"
+            className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none z-30 font-valorant-mono font-bold text-xs sm:text-sm text-[#ECE8E1] bg-[#161F28] px-2.5 py-1 border border-[#FF4655] shadow-[0_0_12px_rgba(255,70,85,0.6)] animate-bounce"
+            style={{
+              left: `${effect.x}%`,
+              top: `${effect.y}%`,
+              clipPath:
+                "polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 4px 100%, 0 calc(100% - 4px))",
+            }}
           >
             {effect.text}
           </div>
@@ -559,47 +672,74 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
             1. BRIEFING / START SCREEN STATE
             ============================================================ */}
         {gameState === "briefing" && (
-          <div className="relative z-30 max-w-md w-11/12 bg-nb-white border-4 border-nb-black rounded-2xl shadow-[8px_8px_0px_var(--nb-black)] p-5 sm:p-7 text-center flex flex-col items-center animate-in zoom-in-95 duration-200">
-            <div className="w-14 h-14 sm:w-16 sm:h-16 bg-nb-yellow border-[3px] border-nb-black rounded-2xl shadow-[3px_3px_0px_var(--nb-black)] flex items-center justify-center text-3xl mb-3 rotate-3">
-              🎯
+          <div
+            className="relative z-30 max-w-md w-11/12 bg-[#0F1923] border border-[#303946] shadow-[0_0_30px_rgba(0,0,0,0.8)] p-5 sm:p-7 text-center flex flex-col items-center animate-in zoom-in-95 duration-200 text-[#ECE8E1]"
+            style={{
+              clipPath:
+                "polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px))",
+            }}
+          >
+            {/* Tactical Corner Accents */}
+            <div className="absolute top-2 left-2 w-2.5 h-2.5 border-t border-l border-[#FF4655] pointer-events-none" />
+            <div className="absolute bottom-2 right-2 w-2.5 h-2.5 border-b border-r border-[#FF4655] pointer-events-none" />
+
+            <div
+              className="w-14 h-14 sm:w-16 sm:h-16 bg-[#161F28] border border-[#FF4655] flex items-center justify-center mb-3 shadow-[0_0_15px_rgba(255,70,85,0.4)]"
+              style={{
+                clipPath:
+                  "polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))",
+              }}
+            >
+              <Crosshair size={28} className="text-[#FF4655]" />
             </div>
 
-            <span className="px-3 py-0.5 bg-nb-lime border-2 border-nb-black rounded-full font-mono text-[11px] font-black uppercase text-nb-black mb-2">
-              Sharpshooter Gateway
+            <span className="px-3 py-0.5 bg-[#161F28] border border-[#FF4655]/60 font-valorant-mono text-[11px] font-bold uppercase text-[#ECE8E1] mb-2 tracking-wider">
+              // CONTRACT PROTOCOL
             </span>
 
-            <h3 className="text-xl sm:text-2xl font-display font-black text-nb-black uppercase tracking-tight mb-2">
+            <h3 className="text-2xl sm:text-3xl font-valorant-title font-bold text-[#ECE8E1] uppercase tracking-wide mb-2">
               Riza&apos;s Shooting Range
             </h3>
 
-            <p className="text-xs sm:text-sm text-nb-black/80 font-medium mb-5 leading-relaxed">
-              Uji ketangkasan membidikmu! Tembak <strong>5 target sasaran</strong> untuk membuka dan melihat kartu profil lengkap Riza.
+            <p className="text-xs sm:text-sm text-[#8B978F] font-valorant-sub font-medium mb-5 leading-relaxed">
+              Uji ketangkasan membidikmu! Tembak{" "}
+              <strong className="text-[#ECE8E1]">5 target sasaran</strong> untuk
+              membuka dan melihat kartu profil lengkap Riza.
             </p>
 
             <div className="w-full flex flex-col sm:flex-row gap-2.5">
               <button
                 type="button"
                 onClick={handleStartGame}
-                className="flex-1 px-4 py-3 bg-nb-yellow hover:bg-nb-lime border-[3px] border-nb-black rounded-xl font-display font-black text-sm uppercase text-nb-black shadow-[4px_4px_0px_var(--nb-black)] hover:translate-y-0.5 hover:translate-x-0.5 hover:shadow-[2px_2px_0px_var(--nb-black)] active:translate-y-1 active:shadow-none transition-all cursor-pointer flex items-center justify-center gap-2"
+                className="flex-1 px-4 py-3 bg-[#FF4655] hover:bg-[#E03645] font-valorant-sub font-bold text-sm uppercase text-white shadow-[0_0_15px_rgba(255,70,85,0.4)] transition-all cursor-pointer flex items-center justify-center gap-2"
+                style={{
+                  clipPath:
+                    "polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))",
+                }}
                 autoFocus
               >
-                <Crosshair size={18} strokeWidth={3} />
+                <Crosshair size={18} strokeWidth={2.5} />
                 <span>Mulai Menembak</span>
               </button>
 
               <button
                 type="button"
                 onClick={onSkip}
-                className="px-4 py-3 bg-nb-cream hover:bg-nb-pink border-[3px] border-nb-black rounded-xl font-display font-black text-xs sm:text-sm uppercase text-nb-black shadow-[4px_4px_0px_var(--nb-black)] hover:translate-y-0.5 hover:translate-x-0.5 hover:shadow-[2px_2px_0px_var(--nb-black)] transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                className="px-4 py-3 bg-[#161F28] hover:bg-[#1F2933] border border-[#303946] hover:border-[#FF4655] font-valorant-sub font-bold text-xs sm:text-sm uppercase text-[#ECE8E1] transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                style={{
+                  clipPath:
+                    "polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))",
+                }}
                 title="Lewati game langsung ke profil"
               >
-                <FastForward size={16} strokeWidth={2.5} />
+                <FastForward size={15} strokeWidth={2} />
                 <span>Lewati</span>
               </button>
             </div>
 
-            <div className="mt-4 text-[11px] font-mono text-nb-black/60 flex items-center gap-1.5">
-              <span>💡 Touch/tap langsung di layar ponsel atau klik mouse di PC</span>
+            <div className="mt-4 text-[11px] font-valorant-mono text-[#8B978F] flex items-center gap-1.5">
+              <Info size={13} className="text-[#FF4655]" />
+              <span>Touch/tap langsung di layar ponsel atau klik mouse di PC</span>
             </div>
           </div>
         )}
@@ -617,36 +757,43 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
             }}
             onClick={(e) => handleHitTarget(e, activeTarget)}
             onTouchStart={(e) => handleHitTarget(e, activeTarget)}
-            className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-15 transition-all duration-300 ${isTargetHitAnimating
+            className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-15 transition-all duration-300 ${
+              isTargetHitAnimating
                 ? "scale-125 rotate-45 opacity-0 duration-200"
                 : "animate-in zoom-in-75 duration-200 hover:scale-110 active:scale-95"
-              }`}
+            }`}
             title={`Tembak Target #${currentTargetIndex + 1}`}
           >
             {/* Hanging Rope Wire */}
-            <div className="absolute bottom-full left-1/2 -translate-x-1/2 w-0.5 h-32 bg-gray-400/60 pointer-events-none" />
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 w-0.5 h-32 bg-[#303946]/80 pointer-events-none" />
 
-            {/* Target Outer Plate (Wood/Steel Frame) */}
-            <div className="w-full h-full rounded-full bg-nb-white border-[3.5px] border-nb-black shadow-[0_0_20px_rgba(255,225,86,0.35)] p-1 flex items-center justify-center relative overflow-hidden group">
+            {/* Target Outer Plate */}
+            <div className="w-full h-full rounded-full bg-[#0F1923] border-2 border-[#FF4655] shadow-[0_0_20px_rgba(255,70,85,0.5)] p-1 flex items-center justify-center relative overflow-hidden group">
               {/* Outer Ring */}
-              <div className="w-full h-full rounded-full border-[3px] border-nb-red flex items-center justify-center bg-nb-cream">
+              <div className="w-full h-full rounded-full border border-[#FF4655]/60 flex items-center justify-center bg-[#161F28]">
                 {/* Middle Ring */}
-                <div className="w-3/4 h-3/4 rounded-full border-[3px] border-nb-black flex items-center justify-center bg-nb-blue/30">
-                  {/* Bullseye Gold Center */}
-                  <div className="w-1/2 h-1/2 rounded-full bg-nb-red border-2 border-nb-black flex items-center justify-center text-nb-white font-black text-[10px] font-mono shadow-[inset_0_0_6px_rgba(0,0,0,0.5)]">
-                    ★
+                <div className="w-3/4 h-3/4 rounded-full border border-[#FF4655]/80 flex items-center justify-center bg-[#0F1923]">
+                  {/* Bullseye Center */}
+                  <div className="w-1/2 h-1/2 rounded-full bg-[#FF4655] flex items-center justify-center text-white font-bold text-[10px] font-valorant-mono shadow-[0_0_10px_rgba(255,70,85,0.8)]">
+                    +
                   </div>
                 </div>
               </div>
 
               {/* Crosshair Wire Overlay on Target */}
               <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                <div className="w-full h-0.5 bg-nb-black/40" />
-                <div className="h-full w-0.5 bg-nb-black/40 absolute" />
+                <div className="w-full h-px bg-[#FF4655]/50" />
+                <div className="h-full w-px bg-[#FF4655]/50 absolute" />
               </div>
 
               {/* Target Number Badge */}
-              <div className="absolute -top-1.5 -right-1.5 bg-nb-yellow border-2 border-nb-black rounded-full px-1.5 py-0.2 font-mono text-[9px] font-black text-nb-black shadow-[1px_1px_0px_var(--nb-black)]">
+              <div
+                className="absolute -top-1 -right-1 bg-[#FF4655] text-white px-1.5 py-0.2 font-valorant-mono text-[9px] font-bold shadow-[0_0_6px_rgba(255,70,85,0.6)]"
+                style={{
+                  clipPath:
+                    "polygon(0 0, calc(100% - 3px) 0, 100% 3px, 100% 100%, 3px 100%, 0 calc(100% - 3px))",
+                }}
+              >
                 #{currentTargetIndex + 1}
               </div>
             </div>
@@ -657,30 +804,48 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
             3. CLEARED / VICTORY STATE
             ============================================================ */}
         {gameState === "cleared" && (
-          <div className="relative z-30 max-w-sm w-11/12 bg-nb-yellow border-4 border-nb-black rounded-2xl shadow-[8px_8px_0px_var(--nb-black)] p-6 text-center animate-in zoom-in duration-300">
-            <div className="w-16 h-16 bg-nb-lime border-[3px] border-nb-black rounded-2xl shadow-[4px_4px_0px_var(--nb-black)] flex items-center justify-center text-4xl mx-auto mb-3 animate-bounce">
-              🏆
+          <div
+            className="relative z-30 max-w-sm w-11/12 bg-[#0F1923] border border-[#FF4655] shadow-[0_0_30px_rgba(255,70,85,0.5)] p-6 text-center animate-in zoom-in duration-300 text-[#ECE8E1]"
+            style={{
+              clipPath:
+                "polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px))",
+            }}
+          >
+            <div
+              className="w-14 h-14 bg-[#161F28] border border-[#FF4655] flex items-center justify-center text-[#FF4655] mx-auto mb-3 shadow-[0_0_15px_rgba(255,70,85,0.4)] animate-bounce"
+              style={{
+                clipPath:
+                  "polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px))",
+              }}
+            >
+              <Trophy size={26} />
             </div>
-            <h3 className="text-2xl font-display font-black uppercase text-nb-black mb-1">
+            <h3 className="text-3xl font-valorant-title font-bold uppercase text-[#ECE8E1] tracking-wider mb-1">
               TARGETS CLEARED!
             </h3>
-            <p className="text-xs sm:text-sm font-mono text-nb-black/80 mb-3">
-              Skor Akhir: <strong>{score} PTS</strong> ({accuracy}% Akurasi)
+            <p className="text-xs sm:text-sm font-valorant-mono text-[#8B978F] mb-3">
+              Skor Akhir:{" "}
+              <strong className="text-[#ECE8E1]">{score} PTS</strong> (
+              {accuracy}% Akurasi)
             </p>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-nb-white border-2 border-nb-black rounded-lg font-mono text-xs font-bold animate-pulse">
-              <span>🔓 Membuka Profil Riza...</span>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#161F28] border border-[#FF4655]/60 font-valorant-mono text-xs text-[#ECE8E1] animate-pulse">
+              <CheckCircle2 size={13} className="text-[#FF4655]" />
+              <span>Membuka Profil Riza...</span>
             </div>
           </div>
         )}
 
         {/* ============================================================
-            🔫 FIRST-PERSON SHOOTER POV (Pistol & Hand Aiming)
+            FIRST-PERSON SHOOTER POV (Pistol & Hand Aiming)
             Custom asset: public/asset/pistol-riza.png
             ============================================================ */}
         <div
           style={{
-            transform: `translateX(calc(-56% + ${gunOffsetX}px)) translateY(${gunOffsetY}px) rotate(${gunAimAngle}deg) ${isGunRecoiling ? "translateY(16px) rotate(-4deg) scale(0.97)" : "translateY(0px) rotate(0deg) scale(1)"
-              }`,
+            transform: `translateX(calc(-56% + ${gunOffsetX}px)) translateY(${gunOffsetY}px) rotate(${gunAimAngle}deg) ${
+              isGunRecoiling
+                ? "translateY(16px) rotate(-4deg) scale(0.97)"
+                : "translateY(0px) rotate(0deg) scale(1)"
+            }`,
             transformOrigin: "56% 100%",
           }}
           className="absolute -bottom-4 sm:-bottom-6 left-1/2 pointer-events-none z-25 transition-transform duration-100 ease-out flex flex-col items-center"
@@ -692,22 +857,22 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
                 <defs>
                   <radialGradient id="blastGlow" cx="50%" cy="50%" r="50%">
                     <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
-                    <stop offset="35%" stopColor="#ffe156" stopOpacity="0.9" />
-                    <stop offset="70%" stopColor="#ff6b6b" stopOpacity="0.75" />
-                    <stop offset="100%" stopColor="#ff6b6b" stopOpacity="0" />
+                    <stop offset="35%" stopColor="#FF4655" stopOpacity="0.9" />
+                    <stop offset="70%" stopColor="#FF4655" stopOpacity="0.75" />
+                    <stop offset="100%" stopColor="#FF4655" stopOpacity="0" />
                   </radialGradient>
                 </defs>
                 {/* Outer Blast Flare */}
                 <polygon
                   points="60,0 72,40 115,40 80,68 95,115 60,86 25,115 40,68 5,40 48,40"
                   fill="url(#blastGlow)"
-                  stroke="#1a1a2e"
+                  stroke="#0F1923"
                   strokeWidth="2.5"
                 />
                 {/* Secondary Sparks */}
                 <polygon
                   points="60,18 68,46 98,46 74,65 84,98 60,78 36,98 46,65 22,46 52,46"
-                  fill="#ffe156"
+                  fill="#FF4655"
                 />
                 {/* Core White Hot Center */}
                 <circle cx="60" cy="60" r="16" fill="#ffffff" />
@@ -729,7 +894,7 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
         </div>
 
         {/* ============================================================
-            🎯 CUSTOM CROSSHAIR RETICLE (Desktop Mouse Tracker)
+            CUSTOM CROSSHAIR RETICLE (Desktop Mouse Tracker)
             ============================================================ */}
         {isInsideRange && gameState === "playing" && (
           <div
@@ -740,28 +905,31 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
             className="absolute pointer-events-none -translate-x-1/2 -translate-y-1/2 z-40 hidden md:block"
           >
             {/* Outer Reticle Ring */}
-            <div className="w-10 h-10 rounded-full border-2 border-nb-yellow/80 flex items-center justify-center">
+            <div className="w-10 h-10 border border-[#FF4655]/70 flex items-center justify-center rotate-45">
               {/* Inner Center Dot */}
-              <div className="w-1.5 h-1.5 bg-nb-red rounded-full shadow-[0_0_6px_var(--color-nb-red)]" />
+              <div className="w-1.5 h-1.5 bg-[#FF4655] rounded-full shadow-[0_0_6px_#FF4655]" />
               {/* Crosshair Lines */}
-              <div className="absolute w-14 h-0.5 bg-nb-yellow/50" />
-              <div className="absolute h-14 w-0.5 bg-nb-yellow/50" />
+              <div className="absolute w-12 h-px bg-[#FF4655]/40" />
+              <div className="absolute h-12 w-px bg-[#FF4655]/40" />
             </div>
           </div>
         )}
       </div>
 
       {/* Bottom Hint Banner */}
-      <div className="w-full py-2 px-4 bg-nb-cream border-t-[3px] border-nb-black rounded-b-xl flex items-center justify-between text-xs font-mono text-nb-black/75">
-        <span className="truncate">
-          {gameState === "playing"
-            ? `🎯 Target ${currentTargetIndex + 1} of 5 — Bidik dan tembak!`
-            : "🎯 Selesaikan tantangan menembak untuk membuka kartu profil."}
+      <div className="w-full py-2 px-4 bg-[#0F1923] border-t border-[#303946] flex items-center justify-between text-xs font-valorant-mono text-[#8B978F]">
+        <span className="truncate flex items-center gap-1.5">
+          <Target size={12} className="text-[#FF4655]" />
+          <span>
+            {gameState === "playing"
+              ? `Target ${currentTargetIndex + 1} of 5 — Bidik dan tembak!`
+              : "Selesaikan tantangan menembak untuk membuka kartu profil."}
+          </span>
         </span>
         <button
           type="button"
           onClick={onSkip}
-          className="underline hover:text-nb-red cursor-pointer font-bold shrink-0 ml-2"
+          className="text-[#FF4655] hover:underline cursor-pointer font-bold shrink-0 ml-2"
         >
           Langsung Lewati →
         </button>
