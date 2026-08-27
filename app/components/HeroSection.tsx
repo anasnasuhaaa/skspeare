@@ -205,18 +205,8 @@ export default function HeroSection() {
             }}
             className="hero-cta-btn px-6 sm:px-8 py-2.5 sm:py-3 bg-nb-yellow hover:bg-nb-lime border-[2.5px] sm:border-[3px] border-nb-black rounded-xl shadow-[3px_3px_0px_var(--nb-black)] font-display font-black text-xs sm:text-sm uppercase text-nb-black tracking-wide hover:translate-y-0.5 hover:translate-x-0.5 hover:shadow-[1.5px_1.5px_0px_var(--nb-black)] active:translate-y-0.75 active:shadow-none transition-all cursor-pointer flex items-center gap-2"
           >
-            <span>Explore About Us</span>
+            <span>EXPLORE About Us</span>
             <ArrowDown size={14} strokeWidth={3} className="animate-bounce" />
-          </button>
-
-          <button
-            onClick={() => {
-              document.getElementById("team")?.scrollIntoView({ behavior: "smooth" });
-            }}
-            className="hero-cta-btn px-6 sm:px-8 py-2.5 sm:py-3 bg-nb-white hover:bg-nb-pink border-[2.5px] sm:border-[3px] border-nb-black rounded-xl shadow-[3px_3px_0px_var(--nb-black)] font-display font-black text-xs sm:text-sm uppercase text-nb-black tracking-wide hover:translate-y-0.5 hover:translate-x-0.5 hover:shadow-[1.5px_1.5px_0px_var(--nb-black)] active:translate-y-0.75 active:shadow-none transition-all cursor-pointer flex items-center gap-2"
-          >
-            <span>Meet The Team</span>
-            <span>👥</span>
           </button>
         </div>
       </div>
