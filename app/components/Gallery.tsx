@@ -170,7 +170,7 @@ export default function Gallery() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 mb-8 sm:mb-10 text-center relative z-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-10 text-center relative z-10">
         <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-black text-nb-black uppercase tracking-tight">
           Gallery
         </h2>

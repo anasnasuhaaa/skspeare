@@ -161,7 +161,7 @@ export default function MembersSection() {
     <section
       id="team"
       ref={sectionRef}
-      className="py-16 sm:py-24 px-4 relative overflow-hidden"
+      className="py-16 sm:py-24 relative overflow-hidden"
     >
       {/* Local Decorative Particles & Sparkles (Safe Zone) */}
       <div
@@ -217,7 +217,7 @@ export default function MembersSection() {
         </div>
       </div>
 
-      <div className="container mx-auto max-w-6xl relative z-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Title */}
         <div className="text-center mb-10 sm:mb-14 gsap-team-title">
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-black text-nb-black uppercase tracking-tight">

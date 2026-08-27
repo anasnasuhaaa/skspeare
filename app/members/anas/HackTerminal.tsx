@@ -2,13 +2,220 @@
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { X } from "lucide-react";
+import { X, Volume2, VolumeX } from "lucide-react";
 
 interface HackTerminalProps {
   isOpen: boolean;
   onClose: () => void;
   onHackSuccess: () => void;
   onCredentialSubmit?: () => void;
+}
+
+// Powerful & Dynamic Web Audio API Sound Generator for HackTerminal
+class TerminalSoundEngine {
+  private ctx: AudioContext | null = null;
+  public enabled = true;
+
+  private getContext(): AudioContext | null {
+    if (!this.enabled || typeof window === "undefined") return null;
+    try {
+      if (!this.ctx) {
+        const AudioCtx =
+          window.AudioContext ||
+          (window as unknown as { webkitAudioContext: typeof AudioContext })
+            .webkitAudioContext;
+        if (AudioCtx) {
+          this.ctx = new AudioCtx();
+        }
+      }
+      if (this.ctx && this.ctx.state === "suspended") {
+        this.ctx.resume();
+      }
+      return this.ctx;
+    } catch {
+      return null;
+    }
+  }
+
+  // 1. Loud & Punchy Mechanical Keystroke (Dual-layer Click + Thump)
+  playKey(freq = 1050 + (Math.random() - 0.5) * 400) {
+    const ctx = this.getContext();
+    if (!ctx) return;
+    try {
+      const now = ctx.currentTime;
+
+      // Layer A: Crisp mechanical high click
+      const oscA = ctx.createOscillator();
+      const gainA = ctx.createGain();
+      oscA.type = "square";
+      oscA.frequency.setValueAtTime(freq, now);
+      oscA.frequency.exponentialRampToValueAtTime(freq * 0.5, now + 0.03);
+
+      gainA.gain.setValueAtTime(0.18, now);
+      gainA.gain.exponentialRampToValueAtTime(0.0001, now + 0.035);
+
+      oscA.connect(gainA);
+      gainA.connect(ctx.destination);
+      oscA.start(now);
+      oscA.stop(now + 0.04);
+
+      // Layer B: Body thump
+      const oscB = ctx.createOscillator();
+      const gainB = ctx.createGain();
+      oscB.type = "sine";
+      oscB.frequency.setValueAtTime(220, now);
+      oscB.frequency.exponentialRampToValueAtTime(90, now + 0.04);
+
+      gainB.gain.setValueAtTime(0.14, now);
+      gainB.gain.exponentialRampToValueAtTime(0.0001, now + 0.045);
+
+      oscB.connect(gainB);
+      gainB.connect(ctx.destination);
+      oscB.start(now);
+      oscB.stop(now + 0.05);
+    } catch {}
+  }
+
+  // 2. Heavy Cyberpunk Error / Access Denied Alarm (Dual detuned sawtooth + Sub drop)
+  playError() {
+    const ctx = this.getContext();
+    if (!ctx) return;
+    try {
+      const now = ctx.currentTime;
+
+      // Osc 1
+      const osc1 = ctx.createOscillator();
+      const gain1 = ctx.createGain();
+      osc1.type = "sawtooth";
+      osc1.frequency.setValueAtTime(175, now);
+      osc1.frequency.linearRampToValueAtTime(75, now + 0.35);
+
+      gain1.gain.setValueAtTime(0.35, now);
+      gain1.gain.exponentialRampToValueAtTime(0.0001, now + 0.38);
+
+      osc1.connect(gain1);
+      gain1.connect(ctx.destination);
+      osc1.start(now);
+      osc1.stop(now + 0.4);
+
+      // Osc 2 (Detuned chorus for abrasive grit)
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.type = "sawtooth";
+      osc2.frequency.setValueAtTime(182, now);
+      osc2.frequency.linearRampToValueAtTime(70, now + 0.35);
+
+      gain2.gain.setValueAtTime(0.3, now);
+      gain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.38);
+
+      osc2.connect(gain2);
+      gain2.connect(ctx.destination);
+      osc2.start(now);
+      osc2.stop(now + 0.4);
+    } catch {}
+  }
+
+  // 3. High-Energy Cyber Scan / Radar Sweep
+  playScan(freq = 1100) {
+    const ctx = this.getContext();
+    if (!ctx) return;
+    try {
+      const now = ctx.currentTime;
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, now);
+      osc.frequency.exponentialRampToValueAtTime(freq * 2.2, now + 0.07);
+
+      gain.gain.setValueAtTime(0.22, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.09);
+
+      // Harmonizer
+      const oscHarmonic = ctx.createOscillator();
+      const gainHarmonic = ctx.createGain();
+      oscHarmonic.type = "triangle";
+      oscHarmonic.frequency.setValueAtTime(freq * 0.5, now);
+      gainHarmonic.gain.setValueAtTime(0.12, now);
+      gainHarmonic.gain.exponentialRampToValueAtTime(0.0001, now + 0.07);
+
+      oscHarmonic.connect(gainHarmonic);
+      gainHarmonic.connect(ctx.destination);
+      oscHarmonic.start(now);
+      oscHarmonic.stop(now + 0.08);
+    } catch {}
+  }
+
+  // 4. Power Surge / Breach Whoosh (Bass drop impact)
+  playBreachSurge() {
+    const ctx = this.getContext();
+    if (!ctx) return;
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(450, now);
+      osc.frequency.exponentialRampToValueAtTime(55, now + 0.45);
+
+      gain.gain.setValueAtTime(0.35, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.5);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.55);
+    } catch {}
+  }
+
+  // 5. Triumphant 8-Bit Cyber Victory Fanfare (Multi-layered synth arpeggio + sub boom)
+  playAccessGranted() {
+    const ctx = this.getContext();
+    if (!ctx) return;
+    try {
+      const now = ctx.currentTime;
+
+      // Sub boom impact
+      const sub = ctx.createOscillator();
+      const subGain = ctx.createGain();
+      sub.type = "sine";
+      sub.frequency.setValueAtTime(140, now);
+      sub.frequency.exponentialRampToValueAtTime(40, now + 0.6);
+      subGain.gain.setValueAtTime(0.4, now);
+      subGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.65);
+      sub.connect(subGain);
+      subGain.connect(ctx.destination);
+      sub.start(now);
+      sub.stop(now + 0.7);
+
+      // Triumphant Cyber Arpeggio: C4, E4, G4, C5, E5, G5, C6, E6
+      const notes = [261.63, 329.63, 392.0, 523.25, 659.25, 783.99, 1046.5, 1318.51];
+      notes.forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const startTime = now + i * 0.075;
+        const noteDuration = i === notes.length - 1 ? 0.6 : 0.28;
+
+        osc.type = i % 2 === 0 ? "triangle" : "square";
+        osc.frequency.setValueAtTime(freq, startTime);
+
+        gain.gain.setValueAtTime(i === notes.length - 1 ? 0.35 : 0.22, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, startTime + noteDuration);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(startTime);
+        osc.stop(startTime + noteDuration + 0.05);
+      });
+    } catch {}
+  }
 }
 
 export default function HackTerminal({
@@ -18,6 +225,9 @@ export default function HackTerminal({
   onCredentialSubmit,
 }: HackTerminalProps) {
   const [shouldRender, setShouldRender] = useState(isOpen);
+  const [soundMuted, setSoundMuted] = useState(false);
+  const soundEngineRef = useRef<TerminalSoundEngine>(new TerminalSoundEngine());
+
   const containerRef = useRef<HTMLDivElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
   const bootTextRef = useRef<HTMLDivElement>(null);
@@ -32,6 +242,11 @@ export default function HackTerminal({
   const [breachText, setBreachText] = useState("");
   const [breachProgress, setBreachProgress] = useState(0);
   const [showAccessGranted, setShowAccessGranted] = useState(false);
+
+  // Sync mute state
+  useEffect(() => {
+    soundEngineRef.current.enabled = !soundMuted;
+  }, [soundMuted]);
 
   useEffect(() => {
     if (isOpen) {
@@ -108,7 +323,7 @@ export default function HackTerminal({
           lineEl.className = "min-h-[1.5em]";
           bootTextRef.current?.appendChild(lineEl);
 
-          // Fast typing effect (~20ms per char)
+          // Fast typing effect (~20ms per char) with punchy audio clicks
           tl.to(
             {},
             {
@@ -118,6 +333,9 @@ export default function HackTerminal({
                 const charCount = Math.floor(progress * line.length);
                 lineEl.textContent =
                   line.substring(0, charCount) + (progress < 1 ? "█" : "");
+                if (charCount > 0 && charCount % 2 === 0) {
+                  soundEngineRef.current.playKey(950 + Math.random() * 450);
+                }
               },
               ease: "none",
             },
@@ -160,9 +378,11 @@ export default function HackTerminal({
     e.preventDefault();
     if (password === "pi2026") {
       setErrorText("");
+      soundEngineRef.current.playBreachSurge();
       if (onCredentialSubmit) onCredentialSubmit();
       startBreachSequence();
     } else {
+      soundEngineRef.current.playError();
       const newAttempts = attemptsLeft - 1;
       setAttemptsLeft(newAttempts);
       setErrorText(
@@ -172,9 +392,9 @@ export default function HackTerminal({
       if (formRef.current) {
         gsap.fromTo(
           formRef.current,
-          { x: -10 },
+          { x: -12 },
           {
-            x: 10,
+            x: 12,
             duration: 0.08,
             yoyo: true,
             repeat: 5,
@@ -192,11 +412,12 @@ export default function HackTerminal({
     const ctx = gsap.context(() => {
       const tl = gsap.timeline();
 
-      // 1. Glitch Burst
+      // 1. Glitch Burst & Sound Surge
       tl.add(() => {
         if (glitchRef.current) {
           glitchRef.current.classList.add("glitch-active");
         }
+        soundEngineRef.current.playScan(700);
       });
 
       // 2. Bypassing Firewall
@@ -209,9 +430,11 @@ export default function HackTerminal({
           { p: 0 },
           {
             p: 100,
-            duration: 0.4,
+            duration: 0.45,
             onUpdate: function () {
-              setBreachProgress(Math.floor(this.targets()[0].p));
+              const p = Math.floor(this.targets()[0].p);
+              setBreachProgress(p);
+              if (p % 12 === 0) soundEngineRef.current.playScan(800 + p * 8);
             },
           }
         );
@@ -220,13 +443,16 @@ export default function HackTerminal({
       tl.add(() => {
         setBreachText("DECRYPTING DATABASE...");
         setBreachProgress(0);
+        soundEngineRef.current.playScan(1200);
       }).to(
         { p: 0 },
         {
           p: 100,
-          duration: 0.5,
+          duration: 0.55,
           onUpdate: function () {
-            setBreachProgress(Math.floor(this.targets()[0].p));
+            const p = Math.floor(this.targets()[0].p);
+            setBreachProgress(p);
+            if (p % 10 === 0) soundEngineRef.current.playScan(1100 + p * 12);
           },
         }
       );
@@ -234,6 +460,7 @@ export default function HackTerminal({
       // 4. Matrix Rain
       tl.add(() => {
         startMatrixRain();
+        soundEngineRef.current.playKey(1600);
       });
 
       // 5. Screen Flash & Access Granted
@@ -241,7 +468,7 @@ export default function HackTerminal({
         terminalRef.current,
         {
           backgroundColor: "#ffffff",
-          duration: 0.08,
+          duration: 0.09,
           yoyo: true,
           repeat: 1,
         },
@@ -249,8 +476,9 @@ export default function HackTerminal({
       )
         .add(() => {
           setShowAccessGranted(true);
+          soundEngineRef.current.playAccessGranted();
         })
-        .to({}, { duration: 0.8 })
+        .to({}, { duration: 0.9 })
         .add(() => {
           document.body.style.overflow = "";
           setShouldRender(false);
@@ -319,16 +547,27 @@ export default function HackTerminal({
             <div className="w-3.5 h-3.5 rounded-full bg-yellow-500"></div>
             <div className="w-3.5 h-3.5 rounded-full bg-green-500"></div>
           </div>
-          <span className="text-[#4ade80] font-mono text-xs md:text-sm font-bold tracking-widest absolute left-1/2 -translate-x-1/2">
+          <span className="text-[#4ade80] font-mono text-xs md:text-sm font-bold tracking-widest">
             root@proxy-shakespeare ~ %
           </span>
-          <button
-            onClick={handleAnimateClose}
-            className="text-[#4ade80] hover:text-white transition-colors cursor-pointer p-1"
-            title="Close"
-          >
-            <X size={18} />
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setSoundMuted(!soundMuted)}
+              className="text-[#4ade80] hover:text-white transition-colors cursor-pointer px-2 py-0.5 border border-[#4ade80]/40 rounded text-xs font-mono flex items-center gap-1.5"
+              title={soundMuted ? "Unmute terminal sounds" : "Mute terminal sounds"}
+            >
+              {soundMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+              <span className="hidden sm:inline">{soundMuted ? "MUTED" : "SFX"}</span>
+            </button>
+            <button
+              onClick={handleAnimateClose}
+              className="text-[#4ade80] hover:text-white transition-colors cursor-pointer p-1"
+              title="Close"
+            >
+              <X size={18} />
+            </button>
+          </div>
         </div>
 
         {/* Terminal Body */}
@@ -376,7 +615,10 @@ export default function HackTerminal({
                       <input
                         type="password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => {
+                          setPassword(e.target.value);
+                          soundEngineRef.current.playKey(1000 + Math.random() * 300);
+                        }}
                         className="bg-transparent border-b-2 border-[#4ade80] outline-none text-[#4ade80] flex-1 font-mono focus:border-white focus:text-white transition-colors text-sm md:text-base px-1 py-0.5"
                         autoFocus
                         placeholder="••••••••"
@@ -428,7 +670,10 @@ export default function HackTerminal({
             {/* Leaked Note Hint */}
             {phase === "login" && (
               <div
-                onClick={() => setPassword("pi2026")}
+                onClick={() => {
+                  setPassword("pi2026");
+                  soundEngineRef.current.playKey(1250);
+                }}
                 className="self-end mt-4 w-40 sm:w-48 bg-[#fef08a] p-3 text-black transform -rotate-3 shadow-lg border-2 border-black rounded cursor-pointer hover:scale-105 active:scale-95 transition-transform select-none"
                 title="Click to auto-fill passcode"
               >

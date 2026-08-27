@@ -68,7 +68,7 @@ export default function AboutSection() {
   }, []);
 
   return (
-    <section id="about" ref={sectionRef} className="pt-22 sm:pt-26 pb-14 sm:pb-20 px-4 relative overflow-hidden">
+    <section id="about" ref={sectionRef} className="pt-22 sm:pt-26 pb-14 sm:pb-20 relative overflow-hidden">
       {/* Local Decorative Particles & Sparkles (Safe Zone) */}
       <div
         aria-hidden="true"
@@ -104,10 +104,10 @@ export default function AboutSection() {
         </div>
       </div>
 
-      <div className="container mx-auto max-w-5xl relative z-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div
           ref={cardRef}
-          className="bg-nb-blue border-4 border-nb-black rounded-2xl shadow-[8px_8px_0px_var(--nb-black)] p-6 sm:p-10 md:p-14 relative overflow-hidden"
+          className="w-full bg-nb-blue border-4 border-nb-black rounded-2xl shadow-[8px_8px_0px_var(--nb-black)] p-6 sm:p-10 md:p-14 relative overflow-hidden"
         >
           {/* Floating stickers for desktop */}
           <div className="floating-sticker hidden sm:block absolute top-6 right-8 px-4 py-1.5 bg-nb-yellow border-[3px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] font-display font-black text-sm uppercase transform rotate-6 z-10">
@@ -136,25 +136,25 @@ export default function AboutSection() {
             </p>
           </div>
 
-          {/* CTA Action Buttons */}
-          <div className="flex flex-wrap gap-3 sm:gap-4 mt-6 sm:mt-8 relative z-10">
+          {/* CTA Action Buttons (Symmetrical 2-column on mobile, auto-flex on desktop) */}
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3 sm:gap-4 mt-6 sm:mt-8 relative z-10 w-full sm:w-auto">
             <button
               onClick={() => {
                 document.getElementById("team")?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="px-5 sm:px-7 py-2.5 sm:py-3 bg-nb-yellow border-[3px] border-nb-black rounded-xl shadow-[4px_4px_0px_var(--nb-black)] font-display font-black text-sm sm:text-base text-nb-black uppercase tracking-wide hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[2px_2px_0px_var(--nb-black)] active:translate-y-[4px] active:translate-x-[4px] active:shadow-[0px_0px_0px_var(--nb-black)] transition-all cursor-pointer flex items-center gap-2"
+              className="w-full sm:w-auto px-4 sm:px-7 py-2.5 sm:py-3 bg-nb-yellow border-[3px] border-nb-black rounded-xl shadow-[3px_3px_0px_var(--nb-black)] sm:shadow-[4px_4px_0px_var(--nb-black)] font-display font-black text-xs sm:text-base text-nb-black uppercase tracking-wide hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[2px_2px_0px_var(--nb-black)] active:translate-y-[3px] active:translate-x-[3px] active:shadow-[0px_0px_0px_var(--nb-black)] transition-all cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 text-center"
             >
               <span>Explore Team</span>
-              <span className="text-base sm:text-lg">↓</span>
+              <span className="text-sm sm:text-lg">↓</span>
             </button>
             <button
               onClick={() => {
                 document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="px-5 sm:px-7 py-2.5 sm:py-3 bg-nb-white border-[3px] border-nb-black rounded-xl shadow-[4px_4px_0px_var(--nb-black)] font-display font-black text-sm sm:text-base text-nb-black uppercase tracking-wide hover:bg-nb-pink hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[2px_2px_0px_var(--nb-black)] active:translate-y-[4px] active:translate-x-[4px] active:shadow-[0px_0px_0px_var(--nb-black)] transition-all cursor-pointer flex items-center gap-2"
+              className="w-full sm:w-auto px-4 sm:px-7 py-2.5 sm:py-3 bg-nb-white border-[3px] border-nb-black rounded-xl shadow-[3px_3px_0px_var(--nb-black)] sm:shadow-[4px_4px_0px_var(--nb-black)] font-display font-black text-xs sm:text-base text-nb-black uppercase tracking-wide hover:bg-nb-pink hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[2px_2px_0px_var(--nb-black)] active:translate-y-[3px] active:translate-x-[3px] active:shadow-[0px_0px_0px_var(--nb-black)] transition-all cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 text-center"
             >
               <span>Gallery</span>
-              <span>📸</span>
+              <span className="text-xs sm:text-base">📸</span>
             </button>
           </div>
 

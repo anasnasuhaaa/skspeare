@@ -70,7 +70,7 @@ export default function Navbar() {
       ref={navRef}
       className="fixed top-0 left-0 right-0 z-90 bg-nb-cream/95 backdrop-blur-sm border-b-[3px] border-nb-black shadow-[0_4px_0_var(--nb-black)]"
     >
-      <div className="container mx-auto px-4 flex items-center justify-between h-15 sm:h-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-15 sm:h-16">
         {/* Logo Text - Neobrutalism Solid Black */}
         <a
           href="#"
@@ -132,7 +132,7 @@ export default function Navbar() {
         className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-nb-cream border-t-[3px] border-nb-black shadow-[0_4px_0_var(--nb-black)] ${isOpen ? "max-h-72 opacity-100 py-3" : "max-h-0 opacity-0 py-0"
           }`}
       >
-        <div className="container mx-auto px-4 flex flex-col gap-2.5">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col gap-2.5">
           {NAV_LINKS.map((link) => {
             const sectionId = link.href.replace("#", "");
             const isActive = activeSection === sectionId;

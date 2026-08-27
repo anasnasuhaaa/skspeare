@@ -32,8 +32,8 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-nb-black text-nb-cream py-10 sm:py-14 px-4 border-t-4 border-nb-black relative z-10">
-        <div className="container mx-auto text-center">
+      <footer className="bg-nb-black text-nb-cream py-10 sm:py-14 border-t-4 border-nb-black relative z-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h3 className="text-2xl sm:text-3xl font-display font-black mb-3 uppercase tracking-tight">
             Proxy Shakespeare
           </h3>
