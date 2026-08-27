@@ -522,7 +522,7 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className={`relative w-full flex-1 min-h-95 sm:min-h-110 md:min-h-122.5 bg-gradient-to-b from-[#0B0E14] via-[#111822] to-[#0F1923] overflow-hidden cursor-crosshair border-x border-b border-[#303946] flex items-center justify-center ${
+        className={`relative w-full flex-1 min-h-95 sm:min-h-110 md:min-h-122.5 bg-linear-to-b from-[#0B0E14] via-[#111822] to-[#0F1923] overflow-hidden cursor-crosshair border-x border-b border-[#303946] flex items-center justify-center ${
           muzzleFlash ? "brightness-150" : ""
         }`}
       >
@@ -628,7 +628,7 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
         </svg>
 
         {/* Overhead Range Spotlight Accents */}
-        <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-[#FF4655]/15 to-transparent pointer-events-none z-1" />
+        <div className="absolute top-0 inset-x-0 h-16 bg-linear-to-b from-[#FF4655]/15 to-transparent pointer-events-none z-1" />
         <div className="absolute top-2 left-6 px-3 py-1 bg-[#161F28] border border-[#FF4655]/40 text-[10px] font-valorant-mono text-[#FF4655] pointer-events-none hidden sm:block">
           ● RANGE LIVE // SECTOR_07
         </div>

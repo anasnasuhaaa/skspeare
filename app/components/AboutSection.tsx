@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Users, Crown, Award } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,7 +17,7 @@ export default function AboutSection() {
     if (!el || !cardRef.current) return;
 
     const ctx = gsap.context(() => {
-      // 1. Neobrutalist "Sticker Slam" Main Entrance Timeline
+      // Main Entrance Timeline triggered on scroll
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: cardRef.current,
@@ -25,93 +26,82 @@ export default function AboutSection() {
         },
       });
 
-      // Card slams down from tilted angle with snappy elastic spring
+      tl.fromTo(
+        ".about-title-badge",
+        { opacity: 0, y: 25, scale: 0.9 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.8)" }
+      );
+
       tl.fromTo(
         cardRef.current,
-        { opacity: 0, y: 70, scale: 0.88, rotation: -3.5 },
+        { opacity: 0, y: 40, scale: 0.96 },
         {
           opacity: 1,
           y: 0,
           scale: 1,
-          rotation: 0,
-          duration: 0.75,
-          ease: "back.out(1.8)",
-        }
+          duration: 0.65,
+          ease: "back.out(1.6)",
+        },
+        "-=0.2"
       );
 
-      // Inner white text box pops in
       if (textBoxRef.current) {
         tl.fromTo(
           textBoxRef.current,
-          { opacity: 0, y: 25, scale: 0.95 },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.45,
-            ease: "back.out(1.5)",
-          },
-          "-=0.35"
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" },
+          "-=0.25"
         );
       }
 
-      // Floating badges pop-in like slapped stickers
-      const stickers = el.querySelectorAll(".floating-sticker");
-      if (stickers.length > 0) {
-        tl.fromTo(
-          stickers,
-          { opacity: 0, scale: 0, rotation: "+=25" },
-          {
-            opacity: 1,
-            scale: 1,
-            duration: 0.45,
-            stagger: 0.12,
-            ease: "back.out(2.2)",
-            onComplete: () => {
-              // Start continuous floating motion after entrance completes
-              stickers.forEach((sticker, i) => {
-                gsap.to(sticker, {
-                  y: i % 2 === 0 ? -8 : 8,
-                  x: i % 3 === 0 ? 4 : -4,
-                  rotation: i % 2 === 0 ? "+=8" : "-=8",
-                  duration: 2.3 + (i % 3) * 0.4,
-                  repeat: -1,
-                  yoyo: true,
-                  ease: "sine.inOut",
-                });
-              });
-            },
-          },
-          "-=0.2"
-        );
-      }
-
-      // Continuous floating motion for background particles
-      const geoParticles = el.querySelectorAll(".geo-particle");
-      geoParticles.forEach((particle, i) => {
-        gsap.to(particle, {
-          y: i % 2 === 0 ? -10 : 10,
-          x: i % 3 === 0 ? 5 : -5,
-          rotation: i % 2 === 0 ? "+=12" : "-=12",
-          duration: 2.2 + (i % 4) * 0.35,
+      // Title badge floating motion
+      const titleBadge = el.querySelector(".about-title-badge");
+      if (titleBadge) {
+        gsap.to(titleBadge, {
+          y: -5,
+          rotation: "+=2",
+          duration: 2.6,
           repeat: -1,
           yoyo: true,
           ease: "sine.inOut",
         });
-      });
+      }
 
-      // Twinkling animation for sparkles
-      const sparkles = el.querySelectorAll(".sparkle-particle");
-      sparkles.forEach((sparkle, i) => {
-        gsap.to(sparkle, {
-          scale: 1.45,
-          opacity: 1,
-          rotation: i % 2 === 0 ? "+=90" : "-=90",
-          duration: 1.2 + (i % 3) * 0.35,
+      // Title word chip wiggle
+      const wordChip = el.querySelector(".about-word-chip");
+      if (wordChip) {
+        gsap.to(wordChip, {
+          scale: 1.06,
+          rotation: "-=3",
+          duration: 1.8,
           repeat: -1,
           yoyo: true,
-          ease: "power1.inOut",
-          delay: (i * 0.15) % 1.2,
+          ease: "sine.inOut",
+        });
+      }
+
+      // Corner star continuous rotation
+      const titleStar = el.querySelector(".about-star-accent");
+      if (titleStar) {
+        gsap.to(titleStar, {
+          rotation: "+=360",
+          duration: 9,
+          repeat: -1,
+          ease: "none",
+        });
+      }
+
+      // Ambient decorative particles motion
+      const geoParticles = el.querySelectorAll(".about-geo-particle");
+      geoParticles.forEach((particle, i) => {
+        gsap.to(particle, {
+          y: i % 2 === 0 ? -6 : 6,
+          x: i % 3 === 0 ? 3 : -3,
+          rotation: i % 2 === 0 ? "+=10" : "-=10",
+          duration: 2.4 + (i % 3) * 0.4,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
         });
       });
     }, el);
@@ -123,121 +113,136 @@ export default function AboutSection() {
     <section
       id="about"
       ref={sectionRef}
-      className="pt-22 sm:pt-26 pb-14 sm:pb-20 relative overflow-hidden"
+      className="py-16 sm:py-24 relative overflow-hidden flex flex-col justify-center items-center bg-nb-cream"
     >
-      {/* Local Decorative Particles & Sparkles (Safe Zone) */}
+      {/* Background Decorative Ambient Particles (Responsive for Mobile & Desktop) */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 pointer-events-none overflow-hidden z-0"
+        className="absolute inset-0 pointer-events-none overflow-hidden z-0 select-none"
       >
-        {/* Top Left Sparkle & Starburst */}
-        <div className="geo-particle absolute top-12 left-[3%] sm:left-[5%] flex items-center justify-center w-8 h-8 sm:w-11 sm:h-11 bg-nb-yellow border-[2.5px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] text-nb-black font-black text-sm sm:text-xl select-none rotate-12">
-          ✦
-        </div>
-        <div className="sparkle-particle absolute top-28 left-[12%] text-nb-pink text-base sm:text-xl font-black select-none opacity-40">
-          ✧
+        {/* Top Left Cross */}
+        <div className="about-geo-particle absolute top-12 left-2.5 sm:left-[4%] flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 bg-nb-lime border-2 border-nb-black rounded-md shadow-[1.5px_1.5px_0px_var(--nb-black)] font-black text-xs sm:text-base text-nb-black rotate-12">
+          +
         </div>
 
-        {/* Top Right Sparkle & Diamond */}
-        <div className="geo-particle absolute top-14 right-[3%] sm:right-[5%] flex items-center justify-center w-7 h-7 sm:w-10 sm:h-10 bg-nb-pink border-[2.5px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] text-nb-black font-black text-xs sm:text-base select-none rotate-45">
+        {/* Top Right Diamond */}
+        <div className="about-geo-particle absolute top-14 right-2.5 sm:right-[5%] flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 bg-nb-pink border-2 border-nb-black rounded-md shadow-[1.5px_1.5px_0px_var(--nb-black)] font-black text-[10px] sm:text-xs text-nb-black rotate-45">
           ◆
         </div>
-        <div className="sparkle-particle absolute top-32 right-[14%] text-nb-yellow text-lg sm:text-2xl font-black select-none opacity-40">
-          ✦
+
+        {/* Bottom Left Star */}
+        <div className="about-geo-particle absolute bottom-12 left-2.5 sm:left-[4%] flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 bg-nb-yellow border-2 border-nb-black rounded-md shadow-[1.5px_1.5px_0px_var(--nb-black)] font-black text-xs text-nb-black -rotate-12">
+          ★
         </div>
 
-        {/* Bottom Left Code Tag (Desktop) & Sparkle */}
-        <div className="geo-particle absolute bottom-8 left-[4%] hidden lg:flex items-center gap-1 px-3 py-1 bg-nb-blue border-[2.5px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] font-mono font-black text-xs text-nb-black select-none -rotate-6">
-          {"</>"} DEV
-        </div>
-        <div className="sparkle-particle absolute bottom-12 left-[18%] hidden sm:block text-nb-lime text-base sm:text-xl font-black select-none opacity-35">
-          ✶
-        </div>
-
-        {/* Bottom Right Sparkle */}
-        <div className="sparkle-particle absolute bottom-10 right-[6%] text-nb-orange text-base sm:text-xl font-black select-none opacity-40">
-          ✦
+        {/* Bottom Right Dot */}
+        <div className="about-geo-particle absolute bottom-12 right-2.5 sm:right-[5%] flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 bg-nb-blue border-2 border-nb-black rounded-full shadow-[1.5px_1.5px_0px_var(--nb-black)] font-black text-xs text-nb-black rotate-6">
+          ✸
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 flex flex-col items-center justify-center">
+        {/* Unified Signature Neobrutalism Title Header (Matches "Meet The Team" & "Photo Gallery") */}
+        <div className="flex flex-col items-center mb-8 sm:mb-12 text-center shrink-0">
+          <div className="relative inline-block">
+            <div className="about-title-badge inline-flex items-center gap-2.5 sm:gap-3 bg-nb-white border-[3.5px] sm:border-4 border-nb-black rounded-2xl shadow-[6px_6px_0px_var(--nb-black)] sm:shadow-[8px_8px_0px_var(--nb-black)] px-6 sm:px-10 py-2.5 sm:py-3.5 -rotate-1 hover:rotate-0 transition-transform duration-300">
+              <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-black text-nb-black uppercase tracking-tight flex items-center gap-2 sm:gap-2.5 flex-wrap justify-center">
+                <span>ABOUT</span>
+                <span className="about-word-chip bg-nb-yellow text-nb-black px-2.5 sm:px-3 py-0.5 border-2 sm:border-[2.5px] border-nb-black rounded-lg sm:rounded-xl shadow-[2px_2px_0px_var(--nb-black)] rotate-2 inline-block">
+                  US
+                </span>
+              </h2>
+            </div>
+            {/* Corner Star Accent */}
+            <div className="about-star-accent absolute -top-2.5 -right-2.5 sm:-right-3 w-6 h-6 sm:w-7 sm:h-7 bg-nb-pink border-2 border-nb-black rounded-full shadow-[1.5px_1.5px_0px_var(--nb-black)] flex items-center justify-center font-black text-[10px] sm:text-xs select-none rotate-12">
+              ★
+            </div>
+          </div>
+        </div>
+
+        {/* Main About Card Container */}
         <div
           ref={cardRef}
-          className="w-full bg-nb-blue border-4 border-nb-black rounded-2xl shadow-[8px_8px_0px_var(--nb-black)] p-6 sm:p-10 md:p-14 relative overflow-hidden will-change-transform"
+          className="w-full bg-nb-blue border-4 border-nb-black rounded-2xl sm:rounded-3xl shadow-[6px_6px_0px_var(--nb-black)] sm:shadow-[8px_8px_0px_var(--nb-black)] p-4 sm:p-6 md:p-8 relative overflow-hidden shrink min-h-0"
         >
-          {/* Neobrutalist Washi Tape / Scotch Tape Stickers */}
+          {/* Neobrutalist Washi Tape Accents */}
           <div
             aria-hidden="true"
-            className="absolute -top-3 left-8 sm:left-14 w-24 sm:w-32 h-6 sm:h-7 bg-nb-cream/75 border-2 border-nb-black/30 backdrop-blur-xs -rotate-6 shadow-[2px_2px_0px_rgba(0,0,0,0.15)] z-20 pointer-events-none select-none"
-          ></div>
+            className="absolute -top-3 left-8 sm:left-14 w-18 sm:w-24 h-4 sm:h-5 bg-nb-cream/80 border-2 border-nb-black/30 backdrop-blur-xs -rotate-6 shadow-[1.5px_1.5px_0px_rgba(0,0,0,0.15)] z-20 pointer-events-none"
+          />
           <div
             aria-hidden="true"
-            className="absolute -top-3 right-8 sm:right-16 w-24 sm:w-28 h-6 sm:h-7 bg-nb-cream/75 border-2 border-nb-black/30 backdrop-blur-xs rotate-3 shadow-[2px_2px_0px_rgba(0,0,0,0.15)] z-20 pointer-events-none select-none"
-          ></div>
+            className="absolute -top-3 right-8 sm:right-14 w-18 sm:w-24 h-4 sm:h-5 bg-nb-cream/80 border-2 border-nb-black/30 backdrop-blur-xs rotate-3 shadow-[1.5px_1.5px_0px_rgba(0,0,0,0.15)] z-20 pointer-events-none"
+          />
 
-          {/* Floating stickers for desktop (Strategically placed on the right side) */}
-          <div className="floating-sticker hidden sm:block absolute top-7 sm:top-9 right-6 sm:right-10 px-4 py-1.5 bg-nb-yellow border-[3px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] font-display font-black text-xs sm:text-sm uppercase transform rotate-6 z-10 select-none">
-            Computer Science
-          </div>
-          <div className="floating-sticker hidden md:block absolute top-[44%] right-6 sm:right-8 -translate-y-1/2 px-4 py-1.5 bg-nb-lime border-[3px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] font-display font-black text-xs sm:text-sm uppercase transform rotate-2 z-10 select-none">
-            Pekan Ilkomerz 62
-          </div>
-          <div className="floating-sticker hidden sm:block absolute bottom-6 sm:bottom-8 right-6 sm:right-10 px-4 py-1.5 bg-nb-pink border-[3px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] font-display font-black text-xs sm:text-sm uppercase transform -rotate-3 z-10 select-none">
-            IPB University
-          </div>
-
-          {/* Heading - Pure bold solid black */}
-          <h1 className="font-display font-black text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-nb-black mb-6 sm:mb-8 leading-none uppercase relative z-10 tracking-tight">
-            PROXY<br className="sm:hidden" /> SHAKESPEARE
-          </h1>
-
+          {/* Simple Clean English Narrative Box */}
           <div
             ref={textBoxRef}
-            className="bg-nb-white p-5 sm:p-7 md:p-8 border-[3px] border-nb-black rounded-xl shadow-[4px_4px_0px_var(--nb-black)] max-w-2xl relative z-10"
+            className="bg-nb-white p-4 sm:p-5 md:p-6 border-[2.5px] sm:border-[3px] border-nb-black rounded-xl sm:rounded-2xl shadow-[3px_3px_0px_var(--nb-black)] mb-4 sm:mb-6"
           >
-            <p className="text-base sm:text-lg md:text-xl text-nb-black font-medium leading-relaxed">
-              Welcome to the profile website of <strong>Proxy Shakespeare</strong>. This project was created as part of the group assignment for{" "}
+            <p className="text-xs sm:text-sm md:text-base text-nb-black font-medium leading-relaxed">
+              Welcome to the official profile website of <strong>Proxy Shakespeare</strong>. This project was created as part of the group assignment for{" "}
               <strong>Pekan Ilkomerz 62</strong>,{" "}
               <strong>Department of Computer Science, IPB University</strong>.
             </p>
-            <p className="mt-3 sm:mt-4 text-base sm:text-lg md:text-xl text-nb-black font-medium leading-relaxed">
-              We unite code, creativity, and the spirit of collaboration in everything we build. ✨
+            <p className="mt-2 sm:mt-2.5 text-xs sm:text-sm md:text-base text-nb-black font-medium leading-relaxed">
+              Guided by our group mentor <strong>Kak Wafi</strong>, we unite code, creativity, and the spirit of collaboration in everything we build. ✨
             </p>
           </div>
 
-          {/* CTA Action Buttons (Symmetrical 2-column on mobile, auto-flex on desktop) */}
-          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3 sm:gap-4 mt-6 sm:mt-8 relative z-10 w-full sm:w-auto">
+          {/* 3 Static Grounded Neobrutalist Info Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
+            <div className="bg-nb-yellow border-2 sm:border-[2.5px] border-nb-black rounded-xl p-2.5 sm:p-3.5 shadow-[2px_2px_0px_var(--nb-black)] flex items-center gap-2.5">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 bg-nb-white border-2 border-nb-black rounded-lg shadow-[1px_1px_0px_var(--nb-black)] flex items-center justify-center shrink-0">
+                <Users size={16} className="text-nb-black" />
+              </div>
+              <div>
+                <div className="font-display font-black text-xs sm:text-sm text-nb-black uppercase">11 Members</div>
+                <div className="font-mono text-[10px] sm:text-[11px] text-nb-black/75">Computer Science 62</div>
+              </div>
+            </div>
+
+            <div className="bg-nb-lime border-2 sm:border-[2.5px] border-nb-black rounded-xl p-2.5 sm:p-3.5 shadow-[2px_2px_0px_var(--nb-black)] flex items-center gap-2.5">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 bg-nb-white border-2 border-nb-black rounded-lg shadow-[1px_1px_0px_var(--nb-black)] flex items-center justify-center shrink-0">
+                <Crown size={16} className="text-nb-black" />
+              </div>
+              <div>
+                <div className="font-display font-black text-xs sm:text-sm text-nb-black uppercase">PJK: Kak Wafi</div>
+                <div className="font-mono text-[10px] sm:text-[11px] text-nb-black/75">Group Mentor</div>
+              </div>
+            </div>
+
+            <div className="bg-nb-pink border-2 sm:border-[2.5px] border-nb-black rounded-xl p-2.5 sm:p-3.5 shadow-[2px_2px_0px_var(--nb-black)] flex items-center gap-2.5">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 bg-nb-white border-2 border-nb-black rounded-lg shadow-[1px_1px_0px_var(--nb-black)] flex items-center justify-center shrink-0">
+                <Award size={16} className="text-nb-black" />
+              </div>
+              <div>
+                <div className="font-display font-black text-xs sm:text-sm text-nb-black uppercase">Pekan Ilkomerz</div>
+                <div className="font-mono text-[10px] sm:text-[11px] text-nb-black/75">IPB University</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3 sm:gap-4 relative z-10 w-full sm:w-auto">
             <button
               onClick={() => {
                 document.getElementById("team")?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="w-full sm:w-auto px-4 sm:px-7 py-2.5 sm:py-3 bg-nb-yellow border-[3px] border-nb-black rounded-xl shadow-[3px_3px_0px_var(--nb-black)] sm:shadow-[4px_4px_0px_var(--nb-black)] font-display font-black text-xs sm:text-base text-nb-black uppercase tracking-wide hover:translate-y-0.5 hover:translate-x-0.5 hover:shadow-[2px_2px_0px_var(--nb-black)] active:translate-y-0.75 active:translate-x-0.75 active:shadow-[0px_0px_0px_var(--nb-black)] transition-all cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 text-center"
+              className="w-full sm:w-auto px-5 sm:px-6 py-2 sm:py-2.5 bg-nb-yellow hover:bg-nb-lime border-[2.5px] sm:border-[3px] border-nb-black rounded-xl shadow-[2.5px_2.5px_0px_var(--nb-black)] font-display font-black text-xs sm:text-sm uppercase text-nb-black tracking-wide hover:translate-y-0.5 hover:translate-x-0.5 hover:shadow-[1px_1px_0px_var(--nb-black)] transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center"
             >
               <span>Explore Team</span>
-              <span className="text-sm sm:text-lg">↓</span>
+              <span className="text-xs sm:text-sm">↓</span>
             </button>
             <button
               onClick={() => {
                 document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="w-full sm:w-auto px-4 sm:px-7 py-2.5 sm:py-3 bg-nb-white border-[3px] border-nb-black rounded-xl shadow-[3px_3px_0px_var(--nb-black)] sm:shadow-[4px_4px_0px_var(--nb-black)] font-display font-black text-xs sm:text-base text-nb-black uppercase tracking-wide hover:bg-nb-pink hover:translate-y-0.5 hover:translate-x-0.5 hover:shadow-[2px_2px_0px_var(--nb-black)] active:translate-y-0.75 active:translate-x-0.75 active:shadow-[0px_0px_0px_var(--nb-black)] transition-all cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 text-center"
+              className="w-full sm:w-auto px-5 sm:px-6 py-2 sm:py-2.5 bg-nb-white hover:bg-nb-pink border-[2.5px] sm:border-[3px] border-nb-black rounded-xl shadow-[2.5px_2.5px_0px_var(--nb-black)] font-display font-black text-xs sm:text-sm uppercase text-nb-black tracking-wide hover:translate-y-0.5 hover:translate-x-0.5 hover:shadow-[1px_1px_0px_var(--nb-black)] transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center"
             >
               <span>Gallery</span>
-              <span className="text-xs sm:text-base">📸</span>
+              <span className="text-xs sm:text-sm">📸</span>
             </button>
-          </div>
-
-          {/* Mobile badges */}
-          <div className="flex flex-wrap gap-2 mt-6 sm:hidden relative z-10">
-            <span className="px-3 py-1 bg-nb-yellow border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] font-bold text-xs">
-              Computer Science
-            </span>
-            <span className="px-3 py-1 bg-nb-pink border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] font-bold text-xs">
-              IPB University
-            </span>
-            <span className="px-3 py-1 bg-nb-lime border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] font-bold text-xs">
-              Pekan Ilkomerz 62
-            </span>
           </div>
         </div>
       </div>

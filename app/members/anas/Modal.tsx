@@ -101,11 +101,11 @@ export default function AnasModal({ isOpen, onClose }: ModalProps) {
   if (!shouldRender) return null;
 
   return (
-    <div className="fixed inset-0 z-1000 flex items-center justify-center p-3 sm:p-4 md:p-6 bg-black/85 backdrop-blur-md scanlines">
-      {/* Retro Toast */}
+    <div className="fixed inset-0 z-1000 flex items-center justify-center p-3 sm:p-4 md:p-6 bg-nb-black/85 backdrop-blur-md scanlines">
+      {/* Neobrutalist Cyber Floating Toast */}
       {toastText && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-1050 bg-black border-2 border-[#4ade80] rounded px-4 py-2 text-[#4ade80] font-mono text-xs shadow-[0_0_15px_rgba(74,222,128,0.5)] flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[#4ade80] animate-ping"></span>
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-1050 bg-nb-yellow border-[3px] border-nb-black rounded-xl px-5 py-2.5 shadow-[4px_4px_0px_var(--nb-black)] font-display font-black text-xs sm:text-sm text-nb-black uppercase tracking-wider animate-in fade-in slide-in-from-bottom-3 duration-200 flex items-center gap-2">
+          <span className="w-2.5 h-2.5 rounded-full bg-nb-black animate-ping" />
           <span>{toastText}</span>
         </div>
       )}
@@ -117,186 +117,198 @@ export default function AnasModal({ isOpen, onClose }: ModalProps) {
         className="absolute inset-0 cursor-pointer"
       />
 
-      {/* Modal Dialog Content */}
+      {/* Modal Dialog Content Chassis */}
       <div
         ref={contentRef}
-        className="w-full max-w-3xl max-h-[75vh] overflow-y-auto no-scrollbar bg-[#0d1117] border-2 border-[#4ade80] rounded-xl shadow-[0_0_25px_rgba(74,222,128,0.25)] p-5 sm:p-6 md:p-8 relative z-10 text-[#4ade80]"
+        className="w-full max-w-3xl max-h-[88vh] overflow-y-auto no-scrollbar bg-[#090d14] border-4 border-nb-black rounded-2xl sm:rounded-3xl shadow-[10px_10px_0px_var(--nb-black)] sm:shadow-[14px_14px_0px_var(--nb-black)] relative z-10 text-white flex flex-col"
         onClick={(e) => e.stopPropagation()}
         style={{
           backgroundImage:
-            "radial-gradient(rgba(74, 222, 128, 0.15) 1px, transparent 1px)",
-          backgroundSize: "20px 20px",
+            "radial-gradient(rgba(74, 222, 128, 0.12) 1.5px, transparent 1.5px)",
+          backgroundSize: "24px 24px",
         }}
       >
-        {/* Corner brackets decoration */}
-        <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-[#4ade80] pointer-events-none"></div>
-        <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-[#4ade80] pointer-events-none"></div>
-        <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-[#4ade80] pointer-events-none"></div>
-        <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-[#4ade80] pointer-events-none"></div>
-
-        {/* Top Bar: Badge & macOS style controls */}
-        <div className="flex justify-between items-center mb-6 pb-3 border-b border-[#4ade80]/30">
-          <div className="inline-block bg-[#4ade80]/15 border border-[#4ade80] text-[#4ade80] px-3 py-1 font-mono text-xs md:text-sm font-bold tracking-widest shadow-[0_0_10px_rgba(74,222,128,0.3)] animate-pulse">
-            ACCESS GRANTED
+        {/* Top Neobrutalist Cyber Header */}
+        <div className="bg-nb-lime border-b-4 border-nb-black px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center relative z-20 select-none text-nb-black">
+          <div className="flex items-center gap-2 font-display font-black text-xs sm:text-sm uppercase tracking-wider">
+            <span className="w-3 h-3 rounded-full bg-nb-black animate-pulse" />
+            <span>ROOT ACCESS // PROFILE VERIFIED</span>
           </div>
-          <div className="flex items-center gap-2 border border-[#4ade80]/30 rounded px-2 py-1 bg-[#0a0f0d]">
+
+          <div className="flex items-center gap-2">
             <button
               onClick={handleAnimateClose}
-              className="p-1 text-[#4ade80] hover:bg-[#4ade80]/20 rounded transition-colors cursor-pointer"
-              title="Minimize"
+              className="w-8 h-8 sm:w-9 sm:h-9 bg-nb-red hover:bg-nb-yellow text-white hover:text-nb-black border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none flex items-center justify-center transition-all cursor-pointer"
+              title="Tutup Modal"
+              aria-label="Tutup modal"
             >
-              <Minus size={14} />
-            </button>
-            <button
-              onClick={handleAnimateClose}
-              className="p-1 text-[#4ade80] hover:bg-[#4ade80]/20 rounded transition-colors cursor-pointer"
-              title="Maximize"
-            >
-              <Square size={12} />
-            </button>
-            <button
-              onClick={handleAnimateClose}
-              className="p-1 text-red-400 hover:bg-red-400/20 rounded transition-colors cursor-pointer"
-              title="Close Modal"
-            >
-              <X size={16} />
+              <X size={18} strokeWidth={3} />
             </button>
           </div>
         </div>
 
-        {/* Header section with photo & name */}
-        <div className="flex flex-col md:flex-row gap-6 mb-6 items-center md:items-start">
-          <div className="relative w-28 h-28 sm:w-36 sm:h-36 shrink-0 group">
-            <div className="absolute inset-0 rounded-full border-2 border-[#4ade80] shadow-[0_0_15px_rgba(74,222,128,0.5)] transition-all duration-300 group-hover:shadow-[0_0_25px_rgba(74,222,128,0.8)]"></div>
-            <div className="absolute inset-1.5 rounded-full overflow-hidden border border-[#4ade80]/50 bg-black">
-              <Image
-                src={anasData.photo}
-                alt={anasData.name}
-                fill
-                sizes="(max-width: 640px) 112px, 144px"
-                className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-              />
-            </div>
-          </div>
+        {/* Modal Inner Body */}
+        <div className="p-5 sm:p-8 md:p-10 flex flex-col gap-6 sm:gap-8 relative z-10">
+          {/* Cyber Corner HUD Brackets */}
+          <div className="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-nb-lime pointer-events-none opacity-60" />
+          <div className="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-nb-lime pointer-events-none opacity-60" />
+          <div className="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-nb-lime pointer-events-none opacity-60" />
+          <div className="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-nb-lime pointer-events-none opacity-60" />
 
-          <div className="pt-2 text-center md:text-left flex-1">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-mono mb-2 drop-shadow-[0_0_8px_rgba(74,222,128,0.4)]">
-              {anasData.name}
-            </h2>
-            <div className="inline-block bg-[#4ade80] text-[#0d1117] px-3 py-1 font-mono font-bold text-xs sm:text-sm uppercase tracking-wider">
-              {anasData.role === "Ketua" ? "LEADER" : anasData.role}
-            </div>
-          </div>
-        </div>
-
-        {/* Terminal Data Section */}
-        <div className="font-mono space-y-3 mb-6 bg-black/50 p-4 sm:p-5 border border-[#4ade80]/30 rounded backdrop-blur-sm text-xs sm:text-sm md:text-base">
-          <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
-            <span className="text-[#4ade80]/70 w-32 shrink-0">{">"} NIM:</span>
-            <div className="flex items-center gap-2">
-              <span className="text-white font-bold">{anasData.nim}</span>
-              <button
-                type="button"
-                onClick={() => handleCopy(anasData.nim, `NIM ${anasData.nim}`)}
-                className="text-[10px] bg-[#4ade80]/15 hover:bg-[#4ade80]/30 text-[#4ade80] px-1.5 py-0.5 rounded cursor-pointer transition-colors"
-                title="Copy NIM"
-              >
-                [COPY]
-              </button>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
-            <span className="text-[#4ade80]/70 w-32 shrink-0">
-              {">"} HOMETOWN:
-            </span>
-            <span className="text-white">{anasData.hometown}</span>
-          </div>
-
-          <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
-            <span className="text-[#4ade80]/70 w-32 shrink-0">{">"} HOBBIES:</span>
-            <div className="flex flex-wrap gap-2">
-              {anasData.hobbies && anasData.hobbies.length > 0 ? (
-                anasData.hobbies.map((hobby, index) => (
-                  <span
-                    key={index}
-                    className="bg-[#4ade80]/10 border border-[#4ade80]/50 text-[#4ade80] px-2.5 py-0.5 text-xs rounded"
-                  >
-                    {hobby}
-                  </span>
-                ))
-              ) : (
-                <span className="text-[#4ade80]/50">[NO DATA]</span>
-              )}
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
-            <span className="text-[#4ade80]/70 w-32 shrink-0">
-              {">"} INSTAGRAM:
-            </span>
-            {anasData.instagramHandle ? (
-              <div className="flex items-center gap-2">
-                <a
-                  href={`https://instagram.com/${anasData.instagramHandle
-                    .replace(/^https?:\/\/(www\.)?instagram\.com\//, "")
-                    .replace(/^@/, "")
-                    .replace(/\/$/, "")}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#4ade80] font-bold hover:underline hover:text-white transition-colors"
-                >
-                  @{anasData.instagramHandle
-                    .replace(/^https?:\/\/(www\.)?instagram\.com\//, "")
-                    .replace(/^@/, "")
-                    .replace(/\/$/, "")}
-                </a>
-                <button
-                  type="button"
-                  onClick={() => handleCopy(`@${anasData.instagramHandle.replace(/^@/, "")}`, `@${anasData.instagramHandle}`)}
-                  className="text-[10px] bg-[#4ade80]/15 hover:bg-[#4ade80]/30 text-[#4ade80] px-1.5 py-0.5 rounded cursor-pointer transition-colors"
-                  title="Copy Instagram handle"
-                >
-                  [COPY]
-                </button>
+          {/* Profile Header (Photo + Title + Badges) */}
+          <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 items-center sm:items-start">
+            {/* Photo Frame */}
+            <div className="relative w-32 h-32 sm:w-40 sm:h-40 shrink-0 rounded-2xl overflow-hidden border-4 border-nb-black shadow-[6px_6px_0px_#4ade80] bg-nb-yellow p-1 group">
+              <div className="relative w-full h-full rounded-xl overflow-hidden bg-black">
+                <Image
+                  src={anasData.photo}
+                  alt={anasData.name}
+                  fill
+                  sizes="(max-width: 640px) 128px, 160px"
+                  className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
+                  priority
+                />
               </div>
-            ) : (
-              <span className="text-[#4ade80]/50">[NO DATA]</span>
+
+              {/* HUD Badge on Avatar */}
+              <div className="absolute bottom-2 right-2 bg-nb-black border-2 border-nb-lime text-nb-lime px-2 py-0.5 rounded-md font-mono text-[9px] font-black shadow-[1px_1px_0px_var(--nb-black)]">
+                0xADMIN
+              </div>
+            </div>
+
+            {/* Title & Identity */}
+            <div className="text-center sm:text-left flex-1">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-nb-pink border-2 border-nb-black rounded-lg font-mono text-xs font-black text-nb-black mb-2.5 shadow-[2px_2px_0px_var(--nb-black)] -rotate-1">
+                <span>👑</span>
+                <span>Ketua Tim // Lead Developer</span>
+              </div>
+
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-black text-white mb-3 tracking-tight leading-tight drop-shadow-[2px_2px_0px_var(--nb-black)] flex items-center justify-center sm:justify-start gap-1">
+                <span>{anasData.name}</span>
+                <span className="cursor-blink text-nb-lime font-mono">_</span>
+              </h2>
+
+              <div className="flex flex-wrap gap-2.5 justify-center sm:justify-start">
+                {anasData.nim && (
+                  <button
+                    type="button"
+                    onClick={() => handleCopy(anasData.nim, `NIM ${anasData.nim}`)}
+                    className="px-3.5 py-1.5 bg-[#131b24] hover:bg-nb-yellow hover:text-nb-black border-2 border-nb-lime rounded-xl shadow-[3px_3px_0px_var(--nb-black)] font-mono font-bold text-xs sm:text-sm text-nb-lime hover:translate-y-0.5 hover:translate-x-0.5 hover:shadow-[1.5px_1.5px_0px_var(--nb-black)] transition-all cursor-pointer flex items-center gap-2"
+                    title="Klik untuk menyalin NIM"
+                  >
+                    <span>NIM: {anasData.nim}</span>
+                    <span className="text-[10px] bg-nb-lime/20 px-1.5 py-0.2 rounded font-mono text-nb-lime">COPY</span>
+                  </button>
+                )}
+
+                {anasData.hometown && (
+                  <span className="px-3.5 py-1.5 bg-[#131b24] border-2 border-[#4ade80]/60 rounded-xl shadow-[3px_3px_0px_var(--nb-black)] font-mono font-bold text-xs sm:text-sm text-white flex items-center gap-1.5">
+                    📍 {anasData.hometown}
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Decrypted Personal Quote Card */}
+          {anasData.quote && (
+            <div
+              onClick={() => handleCopy(`"${anasData.quote}"`, "Quote")}
+              className="bg-[#121824] border-[3px] border-nb-lime rounded-2xl p-5 sm:p-6 shadow-[5px_5px_0px_var(--nb-black)] relative cursor-pointer hover:bg-[#182030] transition-colors group"
+              title="Klik untuk menyalin Quote"
+            >
+              {/* Sticky Top Badge */}
+              <div className="absolute -top-3.5 -left-2 bg-nb-yellow border-2 border-nb-black rounded-lg px-3 py-0.5 font-display font-black text-xs text-nb-black transform -rotate-2 flex items-center gap-1 shadow-[2px_2px_0px_var(--nb-black)]">
+                <span>💬 DECRYPTED_MEMO</span>
+                <span className="text-[10px] opacity-70">✦</span>
+              </div>
+
+              <p className="italic text-base sm:text-lg font-bold text-nb-lime text-center mt-1">
+                &ldquo;{anasData.quote}&rdquo;
+              </p>
+            </div>
+          )}
+
+          {/* Hobbies & Instagram Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            {/* Hobbies */}
+            {anasData.hobbies && anasData.hobbies.length > 0 && (
+              <div className="flex flex-col gap-2.5">
+                <h4 className="font-display font-black text-base sm:text-lg text-white uppercase tracking-wide flex items-center gap-2">
+                  <span className="text-nb-yellow">⚡</span>
+                  <span>Hobbies // Modules</span>
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {anasData.hobbies.map((hobby, i) => (
+                    <span
+                      key={i}
+                      className="px-3.5 py-1.5 bg-[#16202c] border-2 border-nb-lime text-nb-lime font-mono font-bold text-xs sm:text-sm rounded-xl shadow-[3px_3px_0px_var(--nb-black)]"
+                    >
+                      {hobby}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Instagram Link */}
+            {anasData.instagramHandle && (
+              <div className="flex flex-col gap-2.5">
+                <h4 className="font-display font-black text-base sm:text-lg text-white uppercase tracking-wide flex items-center gap-2">
+                  <span className="text-nb-pink">📱</span>
+                  <span>Instagram Feed</span>
+                </h4>
+                <div className="flex items-center gap-2">
+                  <a
+                    href={`https://instagram.com/${anasData.instagramHandle
+                      .replace(/^https?:\/\/(www\.)?instagram\.com\//, "")
+                      .replace(/^@/, "")
+                      .replace(/\/$/, "")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-[#16202c] border-2 border-nb-pink hover:bg-nb-pink hover:text-nb-black rounded-xl shadow-[3px_3px_0px_var(--nb-black)] font-mono font-bold text-xs sm:text-sm text-white transition-all"
+                  >
+                    📸 @{anasData.instagramHandle.replace(/^@/, "")}
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleCopy(
+                        `@${anasData.instagramHandle?.replace(/^@/, "")}`,
+                        `@${anasData.instagramHandle}`
+                      )
+                    }
+                    className="p-2.5 bg-nb-yellow hover:bg-nb-lime border-2 border-nb-black text-nb-black rounded-xl shadow-[2.5px_2.5px_0px_var(--nb-black)] hover:translate-y-0.5 hover:translate-x-0.5 hover:shadow-[1px_1px_0px_var(--nb-black)] transition-all cursor-pointer font-bold text-xs"
+                    title="Salin username Instagram"
+                  >
+                    COPY
+                  </button>
+                </div>
+              </div>
             )}
           </div>
 
-          <div
-            onClick={() => handleCopy(anasData.quote || "", "Quote")}
-            className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 pt-2 cursor-pointer group"
-            title="Click to copy quote"
-          >
-            <span className="text-[#4ade80]/70 w-32 shrink-0">
-              {">"} QUOTE:
-            </span>
-            <div className="text-[#4ade80] italic border-l-2 border-[#4ade80]/50 pl-3 py-0.5 group-hover:bg-[#4ade80]/10 rounded-r transition-colors flex items-center justify-between">
-              <span>{anasData.quote ? `"${anasData.quote}"` : '""'}</span>
-              <span className="text-[10px] opacity-60 ml-2 font-mono">[COPY]</span>
+          {/* Spotify Cyber Audio Player */}
+          {anasData.spotifyTrackUri && (
+            <div className="mt-2 pt-5 border-t-2 border-[#4ade80]/30 border-dashed">
+              <h4 className="font-display font-black text-base sm:text-lg text-white uppercase tracking-wide mb-3 flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-nb-lime animate-ping" />
+                <span>Audio Stream // Favorite Track</span>
+              </h4>
+              <div className="bg-black rounded-2xl overflow-hidden border-[3px] border-nb-lime shadow-[6px_6px_0px_var(--nb-black)]">
+                <SpotifyEmbed
+                  trackUri={anasData.spotifyTrackUri}
+                  isOpen={isOpen}
+                />
+              </div>
             </div>
-          </div>
-        </div>
+          )}
 
-        {/* Spotify Section */}
-        {anasData.spotifyTrackUri && (
-          <div className="mt-6 border border-[#4ade80]/30 p-4 bg-black/50 rounded">
-            <div className="text-[#4ade80]/80 font-mono mb-3 text-xs sm:text-sm flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#4ade80] animate-pulse"></span>
-              {">"} INITIALIZING AUDIO STREAM...
-            </div>
-            <SpotifyEmbed
-              trackUri={anasData.spotifyTrackUri}
-              isOpen={isOpen}
-            />
+          {/* Terminal Bottom Status */}
+          <div className="mt-2 text-center font-mono text-xs text-[#4ade80]/60 flex items-center justify-center gap-2">
+            <span className="cursor-blink text-nb-lime font-bold">_</span>
+            <span>TRANSMISSION COMPLETE // LOGGED AS 0xANAS</span>
           </div>
-        )}
-
-        <div className="mt-4 text-[#4ade80]/50 font-mono text-xs flex items-center justify-center">
-          <span className="cursor-blink mr-2 font-bold text-[#4ade80]">_</span>{" "}
-          END OF FILE
         </div>
       </div>
     </div>

@@ -196,14 +196,8 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
 
       {/* Floating Toast Notification */}
       {toastMessage && (
-        <div
-          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[1060] bg-[#161F28] border border-[#FF4655] px-5 py-2.5 shadow-[0_0_20px_rgba(255,70,85,0.4)] font-valorant-mono text-xs sm:text-sm text-[#ECE8E1] uppercase tracking-wider animate-in fade-in slide-in-from-bottom-3 duration-200 flex items-center gap-2"
-          style={{
-            clipPath:
-              "polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))",
-          }}
-        >
-          <Check size={16} className="text-[#FF4655]" />
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-1060 bg-nb-yellow border-[3px] border-nb-black rounded-xl px-5 py-2.5 shadow-[4px_4px_0px_var(--nb-black)] font-display font-black text-xs sm:text-sm text-nb-black uppercase tracking-wider animate-in fade-in slide-in-from-bottom-3 duration-200 flex items-center gap-2">
+          <span>🎯</span>
           <span>{toastMessage}</span>
         </div>
       )}
@@ -258,7 +252,7 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
           >
             {/* Top Gateway Success Banner */}
             <div
-              className="flex items-center justify-between flex-wrap gap-2 p-3 sm:p-4 bg-gradient-to-r from-[#FF4655]/25 via-[#161F28] to-[#161F28] border-l-4 border-l-[#FF4655] border-y border-r border-[#303946] shadow-[0_0_15px_rgba(255,70,85,0.15)]"
+              className="flex items-center justify-between flex-wrap gap-2 p-3 sm:p-4 bg-linear-to-r from-[#FF4655]/25 via-[#161F28] to-[#161F28] border-l-4 border-l-[#FF4655] border-y border-r border-[#303946] shadow-[0_0_15px_rgba(255,70,85,0.15)]"
               style={{
                 clipPath:
                   "polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%)",

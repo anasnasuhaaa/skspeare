@@ -1,6 +1,7 @@
 import Navbar from "./components/Navbar";
-import AboutSection from "./components/AboutSection";
+import HeroSection from "./components/HeroSection";
 import Marquee from "./components/Marquee";
+import AboutSection from "./components/AboutSection";
 import MembersSection from "./components/MembersSection";
 import Gallery from "./components/Gallery";
 import ScrollToTop from "./components/ScrollToTop";
@@ -15,7 +16,13 @@ export default function Home() {
       <ScrollToTop />
 
       <main className="flex-1">
-        {/* Hero / About Section */}
+        {/* Landing / Hero Section with Kinetic Motion Typography & Photo Showcase */}
+        <HeroSection />
+
+        {/* Marquee Banner between Hero and About */}
+        <Marquee direction="right" />
+
+        {/* About Section */}
         <AboutSection />
 
         {/* Diagonal Marquee Banner (Left) */}
@@ -32,26 +39,15 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-nb-black text-nb-cream py-10 sm:py-14 border-t-4 border-nb-black relative z-10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h3 className="text-2xl sm:text-3xl font-display font-black mb-3 uppercase tracking-tight">
+      <footer className="bg-nb-black text-nb-cream py-6 sm:py-8 border-t-4 border-nb-black relative z-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center gap-1.5">
+          <h3 className="text-lg sm:text-xl font-display font-black uppercase tracking-tight">
             Proxy Shakespeare
           </h3>
-          <p className="text-nb-cream/70 font-mono text-xs sm:text-sm mb-6 max-w-md mx-auto">
+          <p className="text-nb-cream/70 font-mono text-xs sm:text-sm">
             Pekan Ilkomerz 62 · Department of Computer Science · IPB University
           </p>
-          <div className="flex justify-center gap-2 sm:gap-3 flex-wrap">
-            <span className="px-3.5 py-1 bg-nb-yellow text-nb-black font-bold border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] text-xs">
-              Next.js
-            </span>
-            <span className="px-3.5 py-1 bg-nb-green text-nb-black font-bold border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] text-xs">
-              GSAP
-            </span>
-            <span className="px-3.5 py-1 bg-nb-pink text-nb-black font-bold border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] text-xs">
-              Tailwind CSS
-            </span>
-          </div>
-          <p className="mt-8 text-nb-cream/50 text-xs font-mono">
+          <p className="text-nb-cream/40 text-[11px] sm:text-xs font-mono mt-1">
             © 2026 Proxy Shakespeare. All rights reserved.
           </p>
         </div>
