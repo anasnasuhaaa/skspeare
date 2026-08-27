@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const NAV_LINKS = [
   { label: "About", href: "#about" },
@@ -10,6 +10,52 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("about");
+  const navRef = useRef<HTMLElement>(null);
+
+  // Active section scroll spy
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 120;
+      const sections = ["about", "team", "gallery"];
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i]);
+        if (el && el.offsetTop <= scrollPosition) {
+          setActiveSection(sections[i]);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Keyboard Escape key to close mobile menu
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
+
+  // Click outside to close mobile menu
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen]);
 
   const handleClick = (href: string) => {
     setIsOpen(false);
@@ -20,7 +66,10 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-90 bg-nb-cream/95 backdrop-blur-sm border-b-[3px] border-nb-black shadow-[0_4px_0_var(--nb-black)]">
+    <nav
+      ref={navRef}
+      className="fixed top-0 left-0 right-0 z-90 bg-nb-cream/95 backdrop-blur-sm border-b-[3px] border-nb-black shadow-[0_4px_0_var(--nb-black)]"
+    >
       <div className="container mx-auto px-4 flex items-center justify-between h-15 sm:h-16">
         {/* Logo Text - Neobrutalism Solid Black */}
         <a
@@ -36,15 +85,22 @@ export default function Navbar() {
 
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-3">
-          {NAV_LINKS.map((link) => (
-            <button
-              key={link.href}
-              onClick={() => handleClick(link.href)}
-              className="px-4 py-1.5 text-sm font-bold text-nb-black bg-nb-white border-[2.5px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] hover:bg-nb-yellow hover:translate-y-[1.5px] hover:translate-x-[1.5px] hover:shadow-[1.5px_1.5px_0px_var(--nb-black)] transition-all cursor-pointer"
-            >
-              {link.label}
-            </button>
-          ))}
+          {NAV_LINKS.map((link) => {
+            const sectionId = link.href.replace("#", "");
+            const isActive = activeSection === sectionId;
+            return (
+              <button
+                key={link.href}
+                onClick={() => handleClick(link.href)}
+                className={`px-4 py-1.5 text-sm font-bold text-nb-black border-[2.5px] border-nb-black rounded-lg transition-all cursor-pointer ${isActive
+                    ? "bg-nb-yellow shadow-[1.5px_1.5px_0px_var(--nb-black)] translate-y-[1.5px] translate-x-[1.5px]"
+                    : "bg-nb-white shadow-[3px_3px_0px_var(--nb-black)] hover:bg-nb-yellow hover:translate-y-[1.5px] hover:translate-x-[1.5px] hover:shadow-[1.5px_1.5px_0px_var(--nb-black)]"
+                  }`}
+              >
+                {link.label}
+              </button>
+            );
+          })}
         </div>
 
         {/* Mobile Hamburger (CSS Animated Precise X Toggle) */}
@@ -52,6 +108,7 @@ export default function Navbar() {
           onClick={() => setIsOpen(!isOpen)}
           className="md:hidden relative w-10 h-10 bg-nb-white border-[2.5px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] active:translate-y-[1.5px] active:translate-x-[1.5px] active:shadow-[1.5px_1.5px_0px_var(--nb-black)] transition-all cursor-pointer flex items-center justify-center"
           aria-label="Toggle Menu"
+          aria-expanded={isOpen}
         >
           <div className="w-5 h-4 relative flex flex-col justify-between items-center">
             <span
@@ -76,15 +133,22 @@ export default function Navbar() {
           }`}
       >
         <div className="container mx-auto px-4 flex flex-col gap-2.5">
-          {NAV_LINKS.map((link) => (
-            <button
-              key={link.href}
-              onClick={() => handleClick(link.href)}
-              className="px-5 py-2.5 text-left font-bold text-nb-black bg-nb-white border-[2.5px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] hover:bg-nb-yellow hover:translate-y-[1.5px] hover:translate-x-[1.5px] hover:shadow-[1.5px_1.5px_0px_var(--nb-black)] transition-all w-full text-base cursor-pointer"
-            >
-              {link.label}
-            </button>
-          ))}
+          {NAV_LINKS.map((link) => {
+            const sectionId = link.href.replace("#", "");
+            const isActive = activeSection === sectionId;
+            return (
+              <button
+                key={link.href}
+                onClick={() => handleClick(link.href)}
+                className={`px-5 py-2.5 text-left font-bold text-nb-black border-[2.5px] border-nb-black rounded-lg transition-all w-full text-base cursor-pointer ${isActive
+                    ? "bg-nb-yellow shadow-[1.5px_1.5px_0px_var(--nb-black)] translate-y-[1.5px] translate-x-[1.5px]"
+                    : "bg-nb-white shadow-[3px_3px_0px_var(--nb-black)] hover:bg-nb-yellow hover:translate-y-[1.5px] hover:translate-x-[1.5px] hover:shadow-[1.5px_1.5px_0px_var(--nb-black)]"
+                  }`}
+              >
+                {link.label}
+              </button>
+            );
+          })}
         </div>
       </div>
     </nav>

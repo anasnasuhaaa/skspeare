@@ -16,7 +16,7 @@ const anasData: MemberData = {
   // TODO: replace with your hobbies
   hobbies: ["Sleeping"],
   // TODO: replace with your Instagram handle (without @)
-  instagramHandle: "instagram.com/anass.nsh",
+  instagramHandle: "anass.nsh",
   // TODO: replace with your personal quote
   quote: "The only way to do great work is to love what you do.",
   // TODO: replace with your Spotify track URL

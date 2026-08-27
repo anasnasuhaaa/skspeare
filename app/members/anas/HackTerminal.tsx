@@ -52,6 +52,19 @@ export default function HackTerminal({
     };
   }, [isOpen]);
 
+  // Keyboard Escape listener
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        handleAnimateClose();
+      }
+    };
+    if (isOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
+
   // GSAP enter animation
   useEffect(() => {
     if (shouldRender && containerRef.current && terminalRef.current) {
@@ -414,15 +427,21 @@ export default function HackTerminal({
 
             {/* Leaked Note Hint */}
             {phase === "login" && (
-              <div className="self-end mt-4 w-36 sm:w-44 bg-[#fef08a] p-3 text-black transform -rotate-3 shadow-lg border-2 border-black rounded">
-                <div className="font-serif text-[10px] sm:text-xs opacity-75 underline">
-                  note:
+              <div
+                onClick={() => setPassword("pi2026")}
+                className="self-end mt-4 w-40 sm:w-48 bg-[#fef08a] p-3 text-black transform -rotate-3 shadow-lg border-2 border-black rounded cursor-pointer hover:scale-105 active:scale-95 transition-transform select-none"
+                title="Click to auto-fill passcode"
+              >
+                <div className="flex justify-between items-center font-serif text-[10px] sm:text-xs opacity-75 underline">
+                  <span>note:</span>
+                  <span className="text-[9px] font-mono bg-black/10 px-1 rounded">tap to copy</span>
                 </div>
                 <div className="font-sans text-[11px] sm:text-xs font-bold">
                   terminal password:
                 </div>
-                <div className="font-mono text-[10px] sm:text-xs mt-1 bg-yellow-300 p-1 font-bold text-center border border-black/30 rounded">
-                  pi2026
+                <div className="font-mono text-[11px] sm:text-xs mt-1 bg-yellow-300 p-1 font-bold text-center border border-black/30 rounded flex items-center justify-center gap-1">
+                  <span>pi2026</span>
+                  <span className="text-[10px]">⚡</span>
                 </div>
               </div>
             )}

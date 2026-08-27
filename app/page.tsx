@@ -3,12 +3,16 @@ import AboutSection from "./components/AboutSection";
 import Marquee from "./components/Marquee";
 import MembersSection from "./components/MembersSection";
 import Gallery from "./components/Gallery";
+import ScrollToTop from "./components/ScrollToTop";
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-nb-cream overflow-x-hidden flex flex-col">
       {/* Fixed Navbar */}
       <Navbar />
+
+      {/* Floating Scroll To Top Button */}
+      <ScrollToTop />
 
       <main className="flex-1">
         {/* Hero / About Section */}

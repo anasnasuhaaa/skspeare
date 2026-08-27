@@ -22,10 +22,36 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Proxy Shakespeare | Pekan Ilkomerz 62",
   description:
-    "Group profile website for Proxy Shakespeare — Pekan Ilkomerz 62, Program Studi Ilmu Komputer, IPB University.",
+    "Official profile website for Proxy Shakespeare — Pekan Ilkomerz 62, Department of Computer Science, IPB University.",
+  keywords: [
+    "Proxy Shakespeare",
+    "Pekan Ilkomerz 62",
+    "Ilkomerz 62",
+    "Computer Science IPB",
+    "IPB University",
+  ],
+  authors: [{ name: "Proxy Shakespeare Team" }],
+  openGraph: {
+    title: "Proxy Shakespeare | Pekan Ilkomerz 62",
+    description:
+      "Official profile website for Proxy Shakespeare — Pekan Ilkomerz 62, Department of Computer Science, IPB University.",
+    type: "website",
+    locale: "en_US",
+    siteName: "Proxy Shakespeare",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Proxy Shakespeare | Pekan Ilkomerz 62",
+    description:
+      "Official profile website for Proxy Shakespeare — Pekan Ilkomerz 62, Department of Computer Science, IPB University.",
+  },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html
       lang="en"

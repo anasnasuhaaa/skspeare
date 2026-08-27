@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 
@@ -78,16 +78,45 @@ export default function Gallery() {
     }
   };
 
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
+
   const photos = ["/gallery/1.jpeg", "/gallery/2.jpeg", "/gallery/3.jpeg"];
   // Repeat photos 4 times per block (12 items per block)
   const oneBlock = [...photos, ...photos, ...photos, ...photos];
+
+  // Keyboard Escape, Left, Right navigation for Lightbox
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedPhotoIndex === null) return;
+      if (e.key === "Escape") {
+        setSelectedPhotoIndex(null);
+      } else if (e.key === "ArrowLeft") {
+        setSelectedPhotoIndex((prev: number | null) => (prev !== null ? (prev - 1 + photos.length) % photos.length : null));
+      } else if (e.key === "ArrowRight") {
+        setSelectedPhotoIndex((prev: number | null) => (prev !== null ? (prev + 1) % photos.length : null));
+      }
+    };
+
+    if (selectedPhotoIndex !== null) {
+      document.body.style.overflow = "hidden";
+      window.addEventListener("keydown", handleKeyDown);
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedPhotoIndex, photos.length]);
 
   const PhotoBlock = ({ prefix }: { prefix: string }) => (
     <div className="flex gap-4 sm:gap-6 shrink-0 pr-4 sm:pr-6">
       {oneBlock.map((photo, i) => (
         <div
           key={`${prefix}-${i}`}
-          className="shrink-0 w-60 h-45 sm:w-75 sm:h-55 md:w-90 md:h-65 bg-nb-white border-[3px] sm:border-4 border-nb-black rounded-2xl shadow-[4px_4px_0px_var(--nb-black)] sm:shadow-[6px_6px_0px_var(--nb-black)] overflow-hidden relative group hover:-translate-y-1 hover:shadow-[8px_8px_0px_var(--nb-black)] transition-all duration-200"
+          onClick={() => setSelectedPhotoIndex(i % photos.length)}
+          className="shrink-0 w-60 h-45 sm:w-75 sm:h-55 md:w-90 md:h-65 bg-nb-white border-[3px] sm:border-4 border-nb-black rounded-2xl shadow-[4px_4px_0px_var(--nb-black)] sm:shadow-[6px_6px_0px_var(--nb-black)] overflow-hidden relative group hover:-translate-y-1 hover:shadow-[8px_8px_0px_var(--nb-black)] transition-all duration-200 cursor-pointer"
         >
           <Image
             src={photo}
@@ -96,6 +125,12 @@ export default function Gallery() {
             className="object-cover group-hover:scale-105 transition-transform duration-300"
             sizes="(max-width: 640px) 240px, (max-width: 1024px) 300px, 360px"
           />
+          {/* Subtle hover icon overlay */}
+          <div className="absolute inset-0 bg-nb-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+            <span className="px-3 py-1 bg-nb-yellow border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] font-display font-black text-xs text-nb-black uppercase tracking-wider">
+              View Full 🔍
+            </span>
+          </div>
         </div>
       ))}
     </div>
@@ -154,6 +189,70 @@ export default function Gallery() {
           <PhotoBlock prefix="b" />
         </div>
       </div>
+
+      {/* Lightbox Preview Modal */}
+      {selectedPhotoIndex !== null && (
+        <div
+          onClick={() => setSelectedPhotoIndex(null)}
+          className="fixed inset-0 z-1000 bg-nb-black/85 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-nb-white border-4 border-nb-black rounded-2xl shadow-[10px_10px_0px_var(--nb-black)] p-4 sm:p-6 max-w-4xl w-full relative flex flex-col items-center"
+          >
+            {/* Header bar */}
+            <div className="w-full flex items-center justify-between mb-4 border-b-2 border-nb-black pb-3">
+              <span className="px-3 py-1 bg-nb-yellow border-2 border-nb-black rounded-lg font-display font-black text-xs sm:text-sm uppercase">
+                Photo {selectedPhotoIndex + 1} of {photos.length}
+              </span>
+              <button
+                onClick={() => setSelectedPhotoIndex(null)}
+                className="w-8 h-8 sm:w-9 sm:h-9 bg-nb-pink border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] hover:translate-y-px hover:translate-x-px hover:shadow-[1px_1px_0px_var(--nb-black)] flex items-center justify-center font-bold text-base cursor-pointer"
+                aria-label="Close Preview"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Photo Viewport */}
+            <div className="relative w-full aspect-4/3 sm:aspect-16/10 rounded-xl overflow-hidden border-3 border-nb-black bg-nb-black/10">
+              <Image
+                src={photos[selectedPhotoIndex]}
+                alt={`Photo preview ${selectedPhotoIndex + 1}`}
+                fill
+                priority
+                className="object-contain"
+                sizes="(max-width: 1024px) 90vw, 900px"
+              />
+            </div>
+
+            {/* Navigation Buttons */}
+            <div className="flex items-center justify-between w-full mt-4 pt-2">
+              <button
+                onClick={() =>
+                  setSelectedPhotoIndex(
+                    (selectedPhotoIndex - 1 + photos.length) % photos.length
+                  )
+                }
+                className="px-4 sm:px-6 py-2 bg-nb-blue border-2 border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] font-bold text-xs sm:text-sm hover:translate-y-px hover:translate-x-px hover:shadow-[1px_1px_0px_var(--nb-black)] transition-all cursor-pointer flex items-center gap-1.5"
+              >
+                <span>←</span> Previous
+              </button>
+              <span className="font-mono text-xs text-nb-black/60 hidden sm:inline">
+                Use ← / → arrow keys
+              </span>
+              <button
+                onClick={() =>
+                  setSelectedPhotoIndex((selectedPhotoIndex + 1) % photos.length)
+                }
+                className="px-4 sm:px-6 py-2 bg-nb-blue border-2 border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] font-bold text-xs sm:text-sm hover:translate-y-px hover:translate-x-px hover:shadow-[1px_1px_0px_var(--nb-black)] transition-all cursor-pointer flex items-center gap-1.5"
+              >
+                Next <span>→</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

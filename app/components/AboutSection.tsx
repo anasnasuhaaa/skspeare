@@ -136,6 +136,28 @@ export default function AboutSection() {
             </p>
           </div>
 
+          {/* CTA Action Buttons */}
+          <div className="flex flex-wrap gap-3 sm:gap-4 mt-6 sm:mt-8 relative z-10">
+            <button
+              onClick={() => {
+                document.getElementById("team")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="px-5 sm:px-7 py-2.5 sm:py-3 bg-nb-yellow border-[3px] border-nb-black rounded-xl shadow-[4px_4px_0px_var(--nb-black)] font-display font-black text-sm sm:text-base text-nb-black uppercase tracking-wide hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[2px_2px_0px_var(--nb-black)] active:translate-y-[4px] active:translate-x-[4px] active:shadow-[0px_0px_0px_var(--nb-black)] transition-all cursor-pointer flex items-center gap-2"
+            >
+              <span>Explore Team</span>
+              <span className="text-base sm:text-lg">↓</span>
+            </button>
+            <button
+              onClick={() => {
+                document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="px-5 sm:px-7 py-2.5 sm:py-3 bg-nb-white border-[3px] border-nb-black rounded-xl shadow-[4px_4px_0px_var(--nb-black)] font-display font-black text-sm sm:text-base text-nb-black uppercase tracking-wide hover:bg-nb-pink hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[2px_2px_0px_var(--nb-black)] active:translate-y-[4px] active:translate-x-[4px] active:shadow-[0px_0px_0px_var(--nb-black)] transition-all cursor-pointer flex items-center gap-2"
+            >
+              <span>Gallery</span>
+              <span>📸</span>
+            </button>
+          </div>
+
           {/* Mobile badges */}
           <div className="flex flex-wrap gap-2 mt-6 sm:hidden relative z-10">
             <span className="px-3 py-1 bg-nb-yellow border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] font-bold text-xs">

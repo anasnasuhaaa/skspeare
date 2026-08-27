@@ -9,13 +9,14 @@ interface MarqueeProps {
 
 export default function Marquee({ direction = "left" }: MarqueeProps) {
   const trackRef = useRef<HTMLDivElement>(null);
+  const tweenRef = useRef<gsap.core.Tween | null>(null);
 
   useEffect(() => {
     if (!trackRef.current) return;
 
     const ctx = gsap.context(() => {
       if (direction === "right") {
-        gsap.fromTo(
+        tweenRef.current = gsap.fromTo(
           trackRef.current,
           { xPercent: -50 },
           {
@@ -26,7 +27,7 @@ export default function Marquee({ direction = "left" }: MarqueeProps) {
           }
         );
       } else {
-        gsap.fromTo(
+        tweenRef.current = gsap.fromTo(
           trackRef.current,
           { xPercent: 0 },
           {
@@ -41,6 +42,26 @@ export default function Marquee({ direction = "left" }: MarqueeProps) {
 
     return () => ctx.revert();
   }, [direction]);
+
+  const handleMouseEnter = () => {
+    if (tweenRef.current) {
+      gsap.to(tweenRef.current, {
+        timeScale: 0.2,
+        duration: 0.4,
+        ease: "power2.out",
+      });
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (tweenRef.current) {
+      gsap.to(tweenRef.current, {
+        timeScale: 1,
+        duration: 0.4,
+        ease: "power2.in",
+      });
+    }
+  };
 
   const items = Array(8).fill("PROXY SHAKESPEARE ★ PEKAN ILKOMERZ 62");
 
@@ -58,9 +79,13 @@ export default function Marquee({ direction = "left" }: MarqueeProps) {
   );
 
   return (
-    <div className="w-full overflow-hidden py-4 my-2">
+    <div
+      className="w-full overflow-hidden py-4 my-2"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <div
-        className="w-[110%] ml-[-5%] overflow-hidden bg-nb-yellow py-3 sm:py-4 border-y-[3px] border-nb-black shadow-[0_4px_0_var(--nb-black)]"
+        className="w-[110%] ml-[-5%] overflow-hidden bg-nb-yellow py-3 sm:py-4 border-y-[3px] border-nb-black shadow-[0_4px_0_var(--nb-black)] cursor-pointer"
         style={{
           transform: direction === "right" ? "rotate(2deg)" : "rotate(-2deg)",
         }}

@@ -54,6 +54,19 @@ export default function MemberModal({
     }
   }, [shouldRender]);
 
+  // Keyboard Escape listener
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        handleAnimateClose();
+      }
+    };
+    if (isOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
+
   const handleAnimateClose = () => {
     if (backdropRef.current && contentRef.current) {
       gsap.to(backdropRef.current, {
@@ -81,6 +94,20 @@ export default function MemberModal({
   };
 
   if (!shouldRender || !member) return null;
+
+  // Clean Instagram handle
+  const cleanInstagram = member.instagramHandle
+    ? member.instagramHandle
+      .replace(/^https?:\/\/(www\.)?instagram\.com\//, "")
+      .replace(/^@/, "")
+      .replace(/\/$/, "")
+    : "";
+
+  const hasDetails =
+    member.quote ||
+    (member.hobbies && member.hobbies.length > 0) ||
+    cleanInstagram ||
+    member.spotifyTrackUri;
 
   return (
     <div className="fixed inset-0 z-1000 flex items-center justify-center p-4 sm:p-6 md:p-8">
@@ -127,6 +154,11 @@ export default function MemberModal({
               <span className="px-4 py-2 bg-nb-yellow border-[3px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] font-bold text-sm sm:text-base">
                 {ROLE_LABELS[member.role] || member.role}
               </span>
+              {member.nim && (
+                <span className="px-4 py-2 bg-nb-white border-[3px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] font-mono font-bold text-sm sm:text-base">
+                  NIM: {member.nim}
+                </span>
+              )}
               {member.hometown && (
                 <span className="px-4 py-2 bg-nb-lime border-[3px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] font-bold text-sm sm:text-base">
                   📍 {member.hometown}
@@ -169,24 +201,37 @@ export default function MemberModal({
           )}
 
           {/* Instagram */}
-          {member.instagramHandle && (
+          {cleanInstagram && (
             <div className="flex flex-col gap-3">
               <h4 className="font-display font-black text-xl sm:text-2xl text-nb-black uppercase tracking-wide">
                 Instagram
               </h4>
               <div>
                 <a
-                  href={`https://instagram.com/${member.instagramHandle}`}
+                  href={`https://instagram.com/${cleanInstagram}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-5 py-3 bg-nb-white border-[3px] border-nb-black rounded-lg shadow-[4px_4px_0px_var(--nb-black)] hover:bg-nb-pink hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_var(--nb-black)] font-bold text-sm sm:text-base text-nb-black transition-all"
                 >
-                  📸 @{member.instagramHandle}
+                  📸 @{cleanInstagram}
                 </a>
               </div>
             </div>
           )}
         </div>
+
+        {/* Empty state fallback for members with pending details */}
+        {!hasDetails && (
+          <div className="bg-nb-cream/60 border-[3px] border-nb-black border-dashed rounded-2xl p-6 sm:p-8 text-center flex flex-col items-center gap-2">
+            <span className="text-3xl sm:text-4xl">⚡</span>
+            <h4 className="font-display font-black text-lg sm:text-xl text-nb-black uppercase">
+              Pekan Ilkomerz 62 Contributor
+            </h4>
+            <p className="font-mono text-xs sm:text-sm text-nb-black/70 max-w-md">
+              Department of Computer Science · IPB University. Personal bio & social profiles are being compiled.
+            </p>
+          </div>
+        )}
 
         {/* Spotify */}
         {member.spotifyTrackUri && (

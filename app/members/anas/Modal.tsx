@@ -50,6 +50,19 @@ export default function AnasModal({ isOpen, onClose }: ModalProps) {
     }
   }, [shouldRender]);
 
+  // Keyboard Escape listener
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        handleAnimateClose();
+      }
+    };
+    if (isOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
+
   const handleAnimateClose = () => {
     if (backdropRef.current && contentRef.current) {
       gsap.to(backdropRef.current, {
@@ -201,12 +214,18 @@ export default function AnasModal({ isOpen, onClose }: ModalProps) {
             </span>
             {anasData.instagramHandle ? (
               <a
-                href={`https://instagram.com/${anasData.instagramHandle}`}
+                href={`https://instagram.com/${anasData.instagramHandle
+                  .replace(/^https?:\/\/(www\.)?instagram\.com\//, "")
+                  .replace(/^@/, "")
+                  .replace(/\/$/, "")}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[#4ade80] font-bold hover:underline hover:text-white transition-colors"
               >
-                @{anasData.instagramHandle}
+                @{anasData.instagramHandle
+                  .replace(/^https?:\/\/(www\.)?instagram\.com\//, "")
+                  .replace(/^@/, "")
+                  .replace(/\/$/, "")}
               </a>
             ) : (
               <span className="text-[#4ade80]/50">[NO DATA]</span>

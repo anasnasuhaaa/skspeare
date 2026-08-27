@@ -68,24 +68,34 @@ export default function MembersSection() {
         );
       }
 
+      // Neobrutalism tilt-to-upright entrance for member cards
       const cards = el.querySelectorAll(".gsap-member-card");
       if (cards.length > 0) {
-        gsap.fromTo(
-          cards,
-          { opacity: 0, y: 25 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.5,
-            stagger: 0.04,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: el,
-              start: "top 85%",
-              once: true,
+        cards.forEach((card, i) => {
+          const initialTilt = (i % 2 === 0 ? -1 : 1) * (5 + (i % 3) * 2); // alternating -5deg, +7deg, -9deg, +5deg
+          gsap.fromTo(
+            card,
+            {
+              opacity: 0,
+              y: 40,
+              rotation: initialTilt,
+              scale: 0.92,
             },
-          }
-        );
+            {
+              opacity: 1,
+              y: 0,
+              rotation: 0,
+              scale: 1,
+              duration: 0.6,
+              ease: "back.out(1.5)",
+              scrollTrigger: {
+                trigger: card,
+                start: "top 90%",
+                once: true,
+              },
+            }
+          );
+        });
       }
 
       // Floating particles
