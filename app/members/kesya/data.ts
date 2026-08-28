@@ -5,22 +5,22 @@ const kesyaData: MemberData = {
   name: "Kesya Labibah",
   role: "Anggota",
   // TODO: replace with your own NIM
-  nim: "",
-  photo: "/member/demo-user.jpg",
+  nim: "G6401231088",
+  photo: "/member/kela.jpg",
   // TODO: replace with your LinkedIn profile URL
-  linkedinUrl: "",
+  linkedinUrl: "https://www.linkedin.com/in/kesya-labibah-muzni/",
   // TODO: replace with your CV link or file path
-  cvUrl: "",
+  cvUrl: "https://docs.google.com/document/d/1j4i7TzMspRYD-MQGWSNKwXzdljrD2jqnMS-oRBGLw-g/edit?usp=sharing",
   // TODO: replace with your hometown/region
-  hometown: "",
+  hometown: "Bogor, West Java",
   // TODO: replace with your hobbies
-  hobbies: [],
+  hobbies: ["Martial Arts", "Crystal Crafting", "Gaming", "Music"],
   // TODO: replace with your Instagram handle (without @)
-  instagramHandle: "",
+  instagramHandle: "kesyalabibah",
   // TODO: replace with your personal quote
-  quote: "",
+  quote: "Beauty in precision, strength in serenity.",
   // TODO: replace with your Spotify track URL
-  spotifyTrackUri: "",
+  spotifyTrackUri: "https://open.spotify.com/embed/track/6UelLqGlWMcVH1E5c4H7lY",
 };
 
 export default kesyaData;
