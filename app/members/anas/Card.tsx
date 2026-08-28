@@ -73,7 +73,7 @@ export default function AnasCard({ onClick }: { onClick: () => void }) {
 
         {/* Launch Terminal Neobrutalist Action Trigger */}
         <div className="mt-auto w-full flex items-center gap-2 pt-1">
-          <div className="flex-1 py-2 px-3 bg-[#16202c] group-hover:bg-nb-lime border-2 border-nb-black rounded-lg sm:rounded-xl shadow-[2.5px_2.5px_0px_var(--nb-black)] group-hover:shadow-[1.5px_1.5px_0px_var(--nb-black)] group-hover:translate-x-[1px] group-hover:translate-y-[1px] transition-all flex items-center justify-between text-xs font-mono font-black text-nb-lime group-hover:text-nb-black">
+          <div className="flex-1 py-2 px-3 bg-[#16202c] group-hover:bg-nb-lime border-2 border-nb-black rounded-lg sm:rounded-xl shadow-[2.5px_2.5px_0px_var(--nb-black)] group-hover:shadow-[1.5px_1.5px_0px_var(--nb-black)] group-hover:translate-x-px group-hover:translate-y-px transition-all flex items-center justify-between text-xs font-mono font-black text-nb-lime group-hover:text-nb-black">
             <span>{">"} [OPEN TERMINAL]</span>
             <Terminal size={14} className="shrink-0" />
           </div>
@@ -85,10 +85,16 @@ export default function AnasCard({ onClick }: { onClick: () => void }) {
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="w-8 h-8 bg-nb-blue hover:bg-nb-yellow border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none flex items-center justify-center text-nb-black transition-all"
+              className="w-8 h-8 bg-nb-blue hover:bg-nb-yellow border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] hover:translate-x-px hover:translate-y-px hover:shadow-none flex items-center justify-center text-nb-black transition-all"
               title="LinkedIn"
             >
-              <ExternalLink className="w-3.5 h-3.5" strokeWidth={2.5} />
+              <Image
+                src="/linkedin.svg"
+                alt="LinkedIn"
+                width={16}
+                height={16}
+                className="w-3.5 h-3.5 object-contain"
+              />
             </a>
           )}
           {anasData.cvUrl && (
@@ -97,7 +103,7 @@ export default function AnasCard({ onClick }: { onClick: () => void }) {
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="w-8 h-8 bg-nb-pink hover:bg-nb-yellow border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none flex items-center justify-center text-nb-black transition-all"
+              className="w-8 h-8 bg-nb-pink hover:bg-nb-yellow border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] hover:translate-x-px hover:translate-y-px hover:shadow-none flex items-center justify-center text-nb-black transition-all"
               title="CV"
             >
               <FileText className="w-3.5 h-3.5" strokeWidth={2.5} />

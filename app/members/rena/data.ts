@@ -1,7 +1,7 @@
 import { MemberData } from "@/app/types/member";
 
-const farikhaData: MemberData = {
-  slug: "farikha",
+const renaData: MemberData = {
+  slug: "rena",
   name: "Farikha Renata VK",
   role: "Anggota",
   // TODO: replace with your own NIM
@@ -23,4 +23,4 @@ const farikhaData: MemberData = {
   spotifyTrackUri: "",
 };
 
-export default farikhaData;
+export default renaData;

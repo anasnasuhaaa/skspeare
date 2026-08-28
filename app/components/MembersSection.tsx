@@ -27,7 +27,7 @@ const memberModals: Record<
   kevin: dynamic(() => import("../members/kevin/Modal"), { ssr: false }),
   abiyyu: dynamic(() => import("../members/abiyyu/Modal"), { ssr: false }),
   khansa: dynamic(() => import("../members/khansa/Modal"), { ssr: false }),
-  farikha: dynamic(() => import("../members/farikha/Modal"), { ssr: false }),
+  farikha: dynamic(() => import("../members/rena/Modal"), { ssr: false }),
 };
 
 // Anas's HackTerminal

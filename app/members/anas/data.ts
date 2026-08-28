@@ -10,11 +10,11 @@ const anasData: MemberData = {
   // TODO: replace with your LinkedIn profile URL
   linkedinUrl: "https://www.linkedin.com/in/anas-nasuha-026186327",
   // TODO: replace with your CV link or file path
-  cvUrl: "",
+  cvUrl: "https://docs.google.com/document/d/1Psg-B565KSGQYlEkTL_E1TZJ1EQmzZpR-BE84ul8hC0/edit?usp=sharing",
   // TODO: replace with your hometown/region
   hometown: "Indramayu, West Java",
   // TODO: replace with your hobbies
-  hobbies: ["Sleeping"],
+  hobbies: ["Sleeping","Coding", "Gaming", "Eating"],
   // TODO: replace with your Instagram handle (without @)
   instagramHandle: "anass.nsh",
   // TODO: replace with your personal quote

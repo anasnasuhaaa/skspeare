@@ -10,7 +10,7 @@ import radlyData from "@/app/members/radly/data";
 import kevinData from "@/app/members/kevin/data";
 import abiyyuData from "@/app/members/abiyyu/data";
 import khansaData from "@/app/members/khansa/data";
-import farikhaData from "@/app/members/farikha/data";
+import renaData from "@/app/members/rena/data";
 
 const members: MemberData[] = [
   wafiData,
@@ -19,7 +19,7 @@ const members: MemberData[] = [
   aditData,
   kekeData,
   khansaData,
-  farikhaData,
+  renaData,
   salmanData,
   kesyaData,
   abiyyuData,

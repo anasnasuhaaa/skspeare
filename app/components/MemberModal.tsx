@@ -136,7 +136,7 @@ export default function MemberModal({
       >
         {/* Floating Toast Notification */}
         {toastMessage && (
-          <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[1050] bg-nb-yellow border-[3px] border-nb-black rounded-xl px-5 py-2.5 shadow-[4px_4px_0px_var(--nb-black)] font-display font-black text-xs sm:text-sm text-nb-black uppercase tracking-wider animate-in fade-in slide-in-from-bottom-3 duration-200 flex items-center gap-2">
+          <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-1050 bg-nb-yellow border-[3px] border-nb-black rounded-xl px-5 py-2.5 shadow-[4px_4px_0px_var(--nb-black)] font-display font-black text-xs sm:text-sm text-nb-black uppercase tracking-wider animate-in fade-in slide-in-from-bottom-3 duration-200 flex items-center gap-2">
             <span>✨</span>
             <span>{toastMessage}</span>
           </div>

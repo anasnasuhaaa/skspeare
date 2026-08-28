@@ -35,7 +35,7 @@ export default function Card({ onClick }: { onClick: () => void }) {
       />
 
       {/* Decorative Tactical Background Decals */}
-      <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-[#FF4655]/10 via-transparent to-transparent pointer-events-none" />
+      <div className="absolute top-0 right-0 w-24 h-24 bg-linear-to-bl from-[#FF4655]/10 via-transparent to-transparent pointer-events-none" />
       <div className="absolute top-2 left-2 flex gap-1 pointer-events-none opacity-40">
         <span className="w-1 h-1 bg-[#FF4655]" />
         <span className="w-1 h-1 bg-[#ECE8E1]" />
@@ -117,7 +117,13 @@ export default function Card({ onClick }: { onClick: () => void }) {
                 }}
                 title="LinkedIn Profile"
               >
-                <ExternalLink className="w-3.5 h-3.5" strokeWidth={2} />
+                <Image
+                  src="/linkedin.svg"
+                  alt="LinkedIn"
+                  width={16}
+                  height={16}
+                  className="w-3.5 h-3.5 object-contain invert"
+                />
               </a>
             )}
             {data.cvUrl && (
