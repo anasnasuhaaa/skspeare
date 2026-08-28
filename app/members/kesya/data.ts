@@ -5,7 +5,7 @@ const kesyaData: MemberData = {
   name: "Kesya Labibah",
   role: "Anggota",
   // TODO: replace with your own NIM
-  nim: "G6401231088",
+  nim: "M0403251112",
   photo: "/member/kela.jpg",
   // TODO: replace with your LinkedIn profile URL
   linkedinUrl: "https://www.linkedin.com/in/kesya-labibah-muzni/",
