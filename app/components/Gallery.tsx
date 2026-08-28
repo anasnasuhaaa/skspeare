@@ -119,7 +119,7 @@ export default function Gallery() {
 
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
 
-  const photos = ["/gallery/1.jpeg", "/gallery/2.jpeg", "/gallery/3.jpeg"];
+  const photos = ["/gallery/1.jpeg", "/gallery/2.jpeg", "/gallery/3.jpeg", "/gallery/4.jpeg"];
   // Repeat photos 4 times per block (12 items per block)
   const oneBlock = [...photos, ...photos, ...photos, ...photos];
 
