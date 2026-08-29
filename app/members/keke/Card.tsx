@@ -35,7 +35,7 @@ export default function Card({ onClick }: { onClick: () => void }) {
       </div>
 
       {/* Photo Frame with Pixel Art Frame Accent */}
-      <div className="relative w-full aspect-square mb-2.5 sm:mb-4 border-2 sm:border-[3px] border-black bg-gradient-to-tr from-[#ec4899] via-yellow-300 to-[#38bdf8] p-1 shadow-[2.5px_2.5px_0px_#000000] sm:shadow-[3px_3px_0px_#000000] group-hover:shadow-[4px_4px_0px_#ec4899] transition-all">
+      <div className="relative w-full aspect-square mb-2.5 sm:mb-4 border-2 sm:border-[3px] border-black bg-linear-to-tr from-[#ec4899] via-yellow-300 to-[#38bdf8] p-1 shadow-[2.5px_2.5px_0px_#000000] sm:shadow-[3px_3px_0px_#000000] group-hover:shadow-[4px_4px_0px_#ec4899] transition-all">
         <div className="relative w-full h-full border border-black sm:border-2 overflow-hidden bg-[#100a1c]">
           <Image
             src={kekeData.photo}

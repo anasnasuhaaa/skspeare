@@ -17,6 +17,7 @@ import {
 import gsap from "gsap";
 import kekeData from "./data";
 import ClawMachine from "./ClawMachine";
+import Instagram from "@/app/components/InstagramIcon";
 
 const pixelFont = Press_Start_2P({
   weight: "400",
@@ -288,41 +289,6 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
               <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-[#ec4899] pointer-events-none opacity-80" />
 
               {/* ============================================================
-                  ENHANCED JACKPOT CELEBRATION BANNER (RESPONSIVE)
-                  ============================================================ */}
-              <div className="flex items-center justify-between gap-2 p-2.5 sm:p-3.5 bg-linear-to-r from-[#ff4081]/30 via-yellow-400/20 to-[#38bdf8]/30 border-2 sm:border-4 border-yellow-400 shadow-[3px_3px_0px_#000000] sm:shadow-[5px_5px_0px_#000000] relative overflow-hidden">
-                {/* Left Flashing Lights Bulb String */}
-                <div className="flex items-center gap-1 shrink-0">
-                  <span className="w-2 h-2 bg-yellow-400 border border-black animate-pulse shadow-[1px_1px_0px_#000000]" />
-                  <span className="w-2 h-2 bg-[#f43f5e] border border-black animate-ping shadow-[1px_1px_0px_#000000]" />
-                  <span className="w-2 h-2 bg-[#38bdf8] border border-black animate-bounce shadow-[1px_1px_0px_#000000]" />
-                </div>
-
-                {/* Banner Text */}
-                <div className="flex flex-col items-center sm:items-start text-center sm:text-left flex-1 px-1 min-w-0">
-                  <div className="flex items-center gap-1.5 text-yellow-300 max-w-full">
-                    <Sparkles size={13} className="text-yellow-300 animate-spin shrink-0" />
-                    <span
-                      className={`${pixelFont.className} text-[9px] sm:text-xs md:text-sm font-black uppercase tracking-wider text-yellow-300 drop-shadow-[1.5px_1.5px_0px_#000000] truncate`}
-                    >
-                      ★ JACKPOT! HADIAH TERCAPIT ★
-                    </span>
-                    <Sparkles size={13} className="text-yellow-300 animate-spin shrink-0" />
-                  </div>
-                  <span className="text-[9px] sm:text-[11px] text-pink-300 font-mono font-bold tracking-wider mt-0.5 truncate max-w-full">
-                    BONEKA PIXEL SPECIAL EDITION #1 BERHASIL DIAMBIL!
-                  </span>
-                </div>
-
-                {/* Right Level Badge */}
-                <div className="flex items-center gap-1.5 shrink-0">
-                  <div className="bg-[#100a1c] px-2 py-0.5 sm:px-2.5 sm:py-1 border border-yellow-300 text-yellow-400 font-mono text-[9px] sm:text-xs font-black shadow-[1.5px_1.5px_0px_#000000]">
-                    LVL 99
-                  </div>
-                </div>
-              </div>
-
-              {/* ============================================================
                   SECTION 1: BIODATA & IDENTITY (RESPONSIVE)
                   ============================================================ */}
               <div className="bg-[#241734] border-[3px] sm:border-4 border-black shadow-[4px_4px_0px_#000000] sm:shadow-[6px_6px_0px_#000000] p-3.5 sm:p-5 md:p-6 relative">
@@ -416,7 +382,7 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
                   <PixelCornerBrackets color="border-yellow-300" />
 
                   {/* Section Badge */}
-                  <div className="absolute -top-3 left-3 bg-yellow-400 border-2 border-black px-2 py-0.5 font-mono text-black transform -rotate-1 flex items-center gap-1 shadow-[1.5px_1.5px_0px_#000000]">
+                  <div className="absolute -top-5 left-3 bg-yellow-400 border-2 border-black px-2 py-0.5 font-mono text-black transform -rotate-1 flex items-center gap-1 shadow-[1.5px_1.5px_0px_#000000]">
                     <span>💬</span>
                     <span className={`${pixelFont.className} text-[7px] sm:text-[8px] font-black`}>
                       QUOTE // PIXEL MEMO
@@ -492,7 +458,7 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
                             className="flex-1 min-w-0 inline-flex items-center justify-between gap-1.5 px-2.5 py-1.5 bg-[#120a1f] border-2 border-[#ec4899] hover:bg-[#ec4899] hover:text-black shadow-[2px_2px_0px_#000000] font-mono font-bold text-xs text-white transition-all truncate"
                           >
                             <div className="flex items-center gap-1.5 truncate">
-                              <InstagramIcon size={13} className="text-[#ec4899] shrink-0" />
+                              <Instagram size={13} className="text-[#ec4899] shrink-0" />
                               <span className="truncate">@{cleanInstagram}</span>
                             </div>
                             <ExternalLink size={11} className="opacity-70 shrink-0" />
@@ -522,7 +488,7 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
                             className="flex-1 py-1.5 px-2 bg-[#0284c7] hover:bg-yellow-400 hover:text-black border-2 border-black shadow-[2px_2px_0px_#000000] text-xs font-mono font-bold text-white flex items-center justify-center gap-1.5 transition-all truncate"
                           >
                             <Image
-                              src="/linkedin.svg"
+                              src="/linkedin2.svg"
                               alt="LinkedIn"
                               width={13}
                               height={13}

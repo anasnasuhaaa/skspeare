@@ -14,11 +14,13 @@ import {
   Swords,
   Heart,
   Gem,
+  FileText,
 } from "lucide-react";
 import gsap from "gsap";
 import kesyaData from "./data";
 import KatanaPurification from "./KatanaPurification";
 import SpotifyEmbed from "@/app/components/SpotifyEmbed";
+import Instagram from "@/app/components/InstagramIcon";
 
 // Custom SVG Instagram Icon
 const InstagramIcon = ({
@@ -399,37 +401,85 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
                   </div>
                 )}
 
-                {/* Instagram Profile */}
-                {cleanInstagram && (
-                  <div className="flex flex-col gap-2.5">
-                    <h4 className="font-luxury-title font-bold text-sm sm:text-base text-[#F7E7CE] uppercase tracking-wider flex items-center gap-2">
-                      <InstagramIcon size={15} className="text-[#FF2E9E]" />
-                      <span>Instagram Sanctuary</span>
-                    </h4>
+                {/* Sanctuary Connect: Instagram, LinkedIn & CV */}
+                <div className="flex flex-col gap-2.5">
+                  <h4 className="font-luxury-title font-bold text-sm sm:text-base text-[#F7E7CE] uppercase tracking-wider flex items-center gap-2">
+                    <Instagram size={15} className="text-[#FF2E9E]" />
+                    <span>Sanctuary Links // Socials</span>
+                  </h4>
+                  <div className="flex flex-col gap-2">
+                    {/* Instagram */}
+                    {cleanInstagram && (
+                      <div className="flex items-center gap-2">
+                        <a
+                          href={`https://instagram.com/${cleanInstagram}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 inline-flex items-center justify-between gap-2 px-3 sm:px-4 py-2 bg-[#170821] hover:bg-[#B76E79] hover:text-white border border-[#B76E79]/70 hover:border-[#FF2E9E] rounded-xl font-luxury-sans font-bold text-xs sm:text-sm text-[#F7E7CE] transition-all shadow-[0_0_10px_rgba(183,110,121,0.2)] truncate"
+                        >
+                          <div className="flex items-center gap-2 truncate">
+                            <Instagram size={14} className="text-[#FF2E9E] shrink-0" />
+                            <span className="truncate">@{cleanInstagram}</span>
+                          </div>
+                          <ExternalLink size={12} className="opacity-70 shrink-0" />
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleCopy(`@${cleanInstagram}`, `@${cleanInstagram}`)
+                          }
+                          className="p-2.5 bg-[#170821] hover:bg-[#FF2E9E] border border-[#B76E79]/70 text-[#F7E7CE] hover:text-white rounded-xl shadow-[0_0_8px_rgba(183,110,121,0.2)] transition-all cursor-pointer shrink-0"
+                          title="Salin username Instagram"
+                        >
+                          <Copy size={13} />
+                        </button>
+                      </div>
+                    )}
+
+                    {/* LinkedIn & CV */}
                     <div className="flex items-center gap-2">
-                      <a
-                        href={`https://instagram.com/${cleanInstagram}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-[#170821] hover:bg-[#B76E79] hover:text-white border border-[#B76E79]/70 hover:border-[#FF2E9E] rounded-xl font-luxury-sans font-bold text-xs sm:text-sm text-[#F7E7CE] transition-all shadow-[0_0_10px_rgba(183,110,121,0.2)]"
-                      >
-                        <InstagramIcon size={14} className="text-[#FF2E9E]" />
-                        <span>@{cleanInstagram}</span>
-                        <ExternalLink size={12} className="opacity-70" />
-                      </a>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          handleCopy(`@${cleanInstagram}`, `@${cleanInstagram}`)
-                        }
-                        className="p-2.5 bg-[#170821] hover:bg-[#FF2E9E] border border-[#B76E79]/70 text-[#F7E7CE] hover:text-white rounded-xl shadow-[0_0_8px_rgba(183,110,121,0.2)] transition-all cursor-pointer"
-                        title="Salin username Instagram"
-                      >
-                        <Copy size={13} />
-                      </button>
+                      {kesyaData.linkedinUrl && (
+                        <a
+                          href={
+                            kesyaData.linkedinUrl.startsWith("http")
+                              ? kesyaData.linkedinUrl
+                              : `https://${kesyaData.linkedinUrl}`
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 bg-[#170821] hover:bg-[#0284c7] hover:text-white border border-[#B76E79]/70 hover:border-[#38bdf8] rounded-xl font-luxury-sans font-bold text-xs text-[#F7E7CE] transition-all shadow-[0_0_10px_rgba(183,110,121,0.2)] truncate"
+                        >
+                          <Image
+                            src="/linkedin2.svg"
+                            alt="LinkedIn"
+                            width={14}
+                            height={14}
+                            className="w-3.5 h-3.5 object-contain shrink-0"
+                          />
+                          <span className="truncate">LinkedIn</span>
+                          <ExternalLink size={11} className="opacity-70 shrink-0" />
+                        </a>
+                      )}
+
+                      {kesyaData.cvUrl && (
+                        <a
+                          href={
+                            kesyaData.cvUrl.startsWith("http")
+                              ? kesyaData.cvUrl
+                              : `https://${kesyaData.cvUrl}`
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-[#170821] hover:bg-[#FF2E9E] hover:text-white border border-[#B76E79]/70 hover:border-[#FF2E9E] rounded-xl font-luxury-sans font-bold text-xs text-[#F7E7CE] transition-all shadow-[0_0_10px_rgba(183,110,121,0.2)] shrink-0"
+                        >
+                          <FileText size={13} className="shrink-0" />
+                          <span>CV</span>
+                          <ExternalLink size={11} className="opacity-70 shrink-0" />
+                        </a>
+                      )}
                     </div>
                   </div>
-                )}
+                </div>
               </div>
 
               {/* Spotify Audio Embed Player */}

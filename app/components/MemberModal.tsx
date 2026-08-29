@@ -2,10 +2,11 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { X } from "lucide-react";
+import { X, Copy, ExternalLink } from "lucide-react";
 import gsap from "gsap";
 import { MemberData, ROLE_LABELS } from "../types/member";
 import SpotifyEmbed from "./SpotifyEmbed";
+import Instagram from "./InstagramIcon";
 
 interface MemberModalProps {
   member: MemberData | null;
@@ -241,7 +242,9 @@ export default function MemberModal({
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-5 py-3 bg-nb-white border-[3px] border-nb-black rounded-lg shadow-[4px_4px_0px_var(--nb-black)] hover:bg-nb-pink hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_var(--nb-black)] font-bold text-sm sm:text-base text-nb-black transition-all"
                 >
-                  📸 @{cleanInstagram}
+                  <Instagram size={18} className="text-nb-black shrink-0" />
+                  <span>@{cleanInstagram}</span>
+                  <ExternalLink size={14} className="opacity-60 shrink-0" />
                 </a>
                 <button
                   type="button"
@@ -249,7 +252,7 @@ export default function MemberModal({
                   className="p-3 bg-nb-yellow border-[3px] border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] hover:translate-y-0.5 hover:translate-x-0.5 hover:shadow-[1.5px_1.5px_0px_var(--nb-black)] transition-all cursor-pointer font-bold text-sm"
                   title="Copy Instagram username"
                 >
-                  📋
+                  <Copy size={16} />
                 </button>
               </div>
             </div>
