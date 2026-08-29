@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useRef, useState } from "react";
 
 interface SpotifyEmbedProps {
@@ -35,7 +34,7 @@ export default function SpotifyEmbed({ trackUri, isOpen }: SpotifyEmbedProps) {
   if (!iframeSrc) return null;
 
   return (
-    <div className="relative w-full rounded-2xl overflow-hidden border-[3px] border-nb-black shadow-[3px_3px_0px_var(--nb-black)] bg-[#121212] min-h-[152px]">
+    <div className="relative w-full rounded-2xl overflow-hidden border-[3px] border-nb-black shadow-[3px_3px_0px_var(--nb-black)] bg-[#121212] min-h-38">
       {/* Retro Loading Skeleton */}
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-[#181818] z-10 px-4 text-center">

@@ -183,10 +183,10 @@ export default function HeroSection() {
             />
 
             {/* Pinned Bottom Left Stamp inside Photo */}
-            <div className="absolute bottom-2.5 left-2.5 sm:bottom-3.5 sm:left-3.5 bg-nb-lime border-2 border-nb-black rounded-lg px-2.5 py-0.5 font-mono font-black text-[10px] sm:text-xs text-nb-black shadow-[2px_2px_0px_var(--nb-black)] flex items-center gap-1.5">
+            {/* <div className="absolute bottom-2.5 left-2.5 sm:bottom-3.5 sm:left-3.5 bg-nb-lime border-2 border-nb-black rounded-lg px-2.5 py-0.5 font-mono font-black text-[10px] sm:text-xs text-nb-black shadow-[2px_2px_0px_var(--nb-black)] flex items-center gap-1.5">
               <Users size={12} strokeWidth={2.5} />
-              <span>11 SQUAD MEMBERS</span>
-            </div>
+              <span>PJK Kak Wafi</span>
+            </div> */}
           </div>
 
           {/* Bottom Caption Bar */}

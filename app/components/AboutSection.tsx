@@ -234,15 +234,6 @@ export default function AboutSection() {
               <span>Explore Team</span>
               <span className="text-xs sm:text-sm">↓</span>
             </button>
-            <button
-              onClick={() => {
-                document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="w-full sm:w-auto px-5 sm:px-6 py-2 sm:py-2.5 bg-nb-white hover:bg-nb-pink border-[2.5px] sm:border-[3px] border-nb-black rounded-xl shadow-[2.5px_2.5px_0px_var(--nb-black)] font-display font-black text-xs sm:text-sm uppercase text-nb-black tracking-wide hover:translate-y-0.5 hover:translate-x-0.5 hover:shadow-[1px_1px_0px_var(--nb-black)] transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center"
-            >
-              <span>Gallery</span>
-              <span className="text-xs sm:text-sm">📸</span>
-            </button>
           </div>
         </div>
       </div>
