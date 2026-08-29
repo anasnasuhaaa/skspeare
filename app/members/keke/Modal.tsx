@@ -186,9 +186,9 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
 
   const cleanInstagram = kekeData.instagramHandle
     ? kekeData.instagramHandle
-        .replace(/^https?:\/\/(www\.)?instagram\.com\//, "")
-        .replace(/^@/, "")
-        .replace(/\/$/, "")
+      .replace(/^https?:\/\/(www\.)?instagram\.com\//, "")
+      .replace(/^@/, "")
+      .replace(/\/$/, "")
     : "";
 
   return (
@@ -213,37 +213,24 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
       <div
         ref={contentRef}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-2xl lg:max-w-3xl max-h-[85vh] sm:max-h-[88vh] overflow-y-auto overscroll-contain bg-[#1c122c] border-[3px] sm:border-4 border-black shadow-[6px_6px_0px_#000000] sm:shadow-[12px_12px_0px_#000000] z-10 flex flex-col text-white my-auto touch-pan-y [scrollbar-width:thin] [scrollbar-color:#ff4081_#120a1f] [&::-webkit-scrollbar]:w-2 sm:[&::-webkit-scrollbar]:w-2.5 [&::-webkit-scrollbar-track]:bg-[#120a1f] [&::-webkit-scrollbar-track]:border-l-2 [&::-webkit-scrollbar-track]:border-black [&::-webkit-scrollbar-thumb]:bg-[#ff4081] [&::-webkit-scrollbar-thumb]:border-2 [&::-webkit-scrollbar-thumb]:border-black [&::-webkit-scrollbar-thumb:hover]:bg-yellow-400"
+        className="relative w-full max-w-2xl lg:max-w-3xl max-h-[85vh] sm:max-h-[88vh] overflow-hidden bg-[#1c122c] border-[3px] sm:border-4 border-black shadow-[6px_6px_0px_#000000] sm:shadow-[12px_12px_0px_#000000] z-10 flex flex-col text-white my-auto"
       >
         {/* ============================================================
             PHASE 1: CLAW MACHINE MINI-GAME
             ============================================================ */}
         {!isGameCleared ? (
-          <div className="w-full flex flex-col relative">
-            {/* Close Button on Claw Machine */}
-            <button
-              type="button"
-              onClick={handleAnimateClose}
-              className="absolute top-2.5 right-2.5 sm:top-4 sm:right-4 w-7 h-7 sm:w-9 sm:h-9 bg-[#f43f5e] hover:bg-yellow-400 text-white hover:text-black border-2 border-black shadow-[2px_2px_0px_#000000] flex items-center justify-center z-50 transition-all cursor-pointer"
-              title="Tutup Modal"
-              aria-label="Tutup modal"
-            >
-              <X size={16} strokeWidth={3} />
-            </button>
-
+          <div className="w-full flex-1 flex flex-col overflow-hidden">
             <ClawMachine
               onSuccess={() => setIsGameCleared(true)}
               onSkip={() => setIsGameCleared(true)}
+              onClose={handleAnimateClose}
             />
           </div>
         ) : (
           /* ============================================================
               PHASE 2: REVEALED PIXEL ART PROFILE CARD (KEISHA / KEKE)
               ============================================================ */
-          <div
-            ref={profileCardRef}
-            className="flex flex-col bg-gradient-to-b from-[#241734] via-[#1c122c] to-[#0f091c] text-white relative font-mono w-full min-h-0"
-          >
+          <div className="w-full h-full flex flex-col overflow-hidden bg-linear-to-b from-[#241734] via-[#1c122c] to-[#0f091c] text-white relative font-mono">
             {/* Background Scanline Overlay */}
             <div
               className="absolute inset-0 pointer-events-none z-0 opacity-15"
@@ -290,7 +277,10 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
             </div>
 
             {/* Profile Body Content */}
-            <div className="p-3.5 sm:p-5 md:p-7 flex flex-col gap-3.5 sm:gap-5 relative z-10">
+            <div
+              ref={profileCardRef}
+              className="flex-1 overflow-y-auto overscroll-contain p-3.5 sm:p-5 md:p-7 flex flex-col gap-3.5 sm:gap-5 relative z-10 scrollbar-thin [scrollbar-color:#ff4081_#120a1f] [&::-webkit-scrollbar]:w-2 sm:[&::-webkit-scrollbar]:w-2.5 [&::-webkit-scrollbar-track]:bg-[#120a1f] [&::-webkit-scrollbar-track]:border-l-2 [&::-webkit-scrollbar-track]:border-black [&::-webkit-scrollbar-thumb]:bg-[#ff4081] [&::-webkit-scrollbar-thumb]:border-2 [&::-webkit-scrollbar-thumb]:border-black [&::-webkit-scrollbar-thumb:hover]:bg-yellow-400"
+            >
               {/* Outer Frame Corner Accents */}
               <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-[#ec4899] pointer-events-none opacity-80" />
               <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-[#ec4899] pointer-events-none opacity-80" />
@@ -300,7 +290,7 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
               {/* ============================================================
                   ENHANCED JACKPOT CELEBRATION BANNER (RESPONSIVE)
                   ============================================================ */}
-              <div className="flex items-center justify-between gap-2 p-2.5 sm:p-3.5 bg-gradient-to-r from-[#ff4081]/30 via-yellow-400/20 to-[#38bdf8]/30 border-2 sm:border-4 border-yellow-400 shadow-[3px_3px_0px_#000000] sm:shadow-[5px_5px_0px_#000000] relative overflow-hidden">
+              <div className="flex items-center justify-between gap-2 p-2.5 sm:p-3.5 bg-linear-to-r from-[#ff4081]/30 via-yellow-400/20 to-[#38bdf8]/30 border-2 sm:border-4 border-yellow-400 shadow-[3px_3px_0px_#000000] sm:shadow-[5px_5px_0px_#000000] relative overflow-hidden">
                 {/* Left Flashing Lights Bulb String */}
                 <div className="flex items-center gap-1 shrink-0">
                   <span className="w-2 h-2 bg-yellow-400 border border-black animate-pulse shadow-[1px_1px_0px_#000000]" />
@@ -349,7 +339,7 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
                 {/* Photo & Info Row */}
                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center sm:items-start">
                   {/* Photo Frame */}
-                  <div className="relative w-28 h-28 sm:w-36 sm:h-36 shrink-0 border-[3px] sm:border-4 border-black shadow-[4px_4px_0px_#ec4899] bg-gradient-to-tr from-[#ec4899] via-yellow-300 to-[#38bdf8] p-1 group">
+                  <div className="relative w-28 h-28 sm:w-36 sm:h-36 shrink-0 border-[3px] sm:border-4 border-black shadow-[4px_4px_0px_#ec4899] bg-linear-to-tr from-[#ec4899] via-yellow-300 to-[#38bdf8] p-1 group">
                     <div className="relative w-full h-full border-2 border-black overflow-hidden bg-black">
                       <Image
                         src={kekeData.photo}
@@ -361,7 +351,7 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
                       />
 
                       {/* Pixel Sheen Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                      <div className="absolute inset-0 bg-linear-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
                       {/* Corner Accents on Photo */}
                       <PixelCornerBrackets color="border-yellow-300" />
@@ -579,7 +569,7 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
                   </div>
 
                   {/* Spotify Player Container */}
-                  <div className="w-full bg-[#121212] border-2 sm:border-3 border-black shadow-[3px_3px_0px_#000000] overflow-hidden min-h-[152px] relative rounded-none">
+                  <div className="w-full bg-[#121212] border-2 sm:border-3 border-black shadow-[3px_3px_0px_#000000] overflow-hidden min-h-38 relative rounded-none">
                     <iframe
                       src={getSpotifyEmbedUrl(kekeData.spotifyTrackUri)}
                       width="100%"

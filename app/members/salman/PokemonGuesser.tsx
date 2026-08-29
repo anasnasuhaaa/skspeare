@@ -2,12 +2,13 @@
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { Volume2, VolumeX, Sparkles, FastForward } from "lucide-react";
+import { Volume2, VolumeX, Sparkles, FastForward, X } from "lucide-react";
 import gsap from "gsap";
 
 interface PokemonGuesserProps {
   onSuccess: () => void;
   onSkip: () => void;
+  onClose?: () => void;
 }
 
 interface PokemonInfo {
@@ -257,7 +258,11 @@ class PokemonSoundEngine {
   }
 }
 
-export default function PokemonGuesser({ onSuccess, onSkip }: PokemonGuesserProps) {
+export default function PokemonGuesser({
+  onSuccess,
+  onSkip,
+  onClose,
+}: PokemonGuesserProps) {
   // Phase states: 'pokeball' | 'guessing' | 'success'
   const [phase, setPhase] = useState<"pokeball" | "guessing" | "success">("pokeball");
   const [currentIdx, setCurrentIdx] = useState(0);
@@ -290,6 +295,13 @@ export default function PokemonGuesser({ onSuccess, onSkip }: PokemonGuesserProp
       return () => clearTimeout(timer);
     }
   }, [phase, currentIdx]);
+
+  // Ensure image transform resets when changing question
+  useEffect(() => {
+    if (pokemonImgRef.current) {
+      gsap.set(pokemonImgRef.current, { y: 0, scale: 1, clearProps: "transform" });
+    }
+  }, [currentIdx, phase]);
 
   // Pokeball Animation Sequence
   useEffect(() => {
@@ -351,18 +363,23 @@ export default function PokemonGuesser({ onSuccess, onSkip }: PokemonGuesserProp
         setIsCorrect(true);
         soundEngineRef.current.playCorrect();
 
-        // Animate pokemon jump
+        // Animate pokemon jump (3 repeats = 4 cycles so it lands back at y: 0, scale: 1)
         if (pokemonImgRef.current) {
           gsap.fromTo(
             pokemonImgRef.current,
             { y: 0, scale: 1 },
             {
-              y: -25,
-              scale: 1.15,
-              duration: 0.25,
+              y: -14,
+              scale: 1.06,
+              duration: 0.18,
               yoyo: true,
-              repeat: 2,
+              repeat: 3,
               ease: "power1.out",
+              onComplete: () => {
+                if (pokemonImgRef.current) {
+                  gsap.set(pokemonImgRef.current, { y: 0, scale: 1, clearProps: "transform" });
+                }
+              },
             }
           );
         }
@@ -371,6 +388,10 @@ export default function PokemonGuesser({ onSuccess, onSkip }: PokemonGuesserProp
           setIsCorrect(false);
           setInputVal("");
           setShowHint(false);
+
+          if (pokemonImgRef.current) {
+            gsap.set(pokemonImgRef.current, { y: 0, scale: 1, clearProps: "transform" });
+          }
 
           if (currentIdx + 1 < POKEMON_LIST.length) {
             // Next Pokemon
@@ -447,13 +468,12 @@ export default function PokemonGuesser({ onSuccess, onSkip }: PokemonGuesserProp
             {POKEMON_LIST.map((poke, idx) => (
               <div
                 key={poke.name}
-                className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-nb-black flex items-center justify-center font-mono font-black text-[10px] sm:text-xs transition-all duration-300 ${
-                  idx < currentIdx || (idx === currentIdx && isCorrect)
-                    ? "bg-nb-lime text-nb-black scale-110 shadow-[2px_2px_0px_var(--nb-black)]"
-                    : idx === currentIdx
+                className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-nb-black flex items-center justify-center font-mono font-black text-[10px] sm:text-xs transition-all duration-300 ${idx < currentIdx || (idx === currentIdx && isCorrect)
+                  ? "bg-nb-lime text-nb-black scale-110 shadow-[2px_2px_0px_var(--nb-black)]"
+                  : idx === currentIdx
                     ? "bg-nb-yellow text-nb-black animate-bounce shadow-[2px_2px_0px_var(--nb-black)]"
                     : "bg-[#1e293b] text-white/40 opacity-60"
-                }`}
+                  }`}
                 title={poke.name}
               >
                 {idx < currentIdx || (idx === currentIdx && isCorrect) ? "✓" : idx + 1}
@@ -491,6 +511,22 @@ export default function PokemonGuesser({ onSuccess, onSkip }: PokemonGuesserProp
             <FastForward size={13} strokeWidth={2.5} />
             <span>Lewati</span>
           </button>
+
+          {/* Close Button */}
+          {onClose && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onClose();
+              }}
+              className="w-7 h-7 sm:w-8 sm:h-8 bg-nb-red hover:bg-nb-yellow text-white hover:text-nb-black border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none flex items-center justify-center transition-all cursor-pointer"
+              title="Tutup Modal"
+              aria-label="Tutup modal"
+            >
+              <X size={16} strokeWidth={3} />
+            </button>
+          )}
         </div>
       </div>
 
@@ -498,12 +534,11 @@ export default function PokemonGuesser({ onSuccess, onSkip }: PokemonGuesserProp
           STAGE 1: POKEBALL OPENING SEQUENCE
           ============================================================ */}
       {phase === "pokeball" && (
-        <div className="w-full min-h-[380px] sm:min-h-[460px] flex flex-col items-center justify-center p-6 text-center relative overflow-hidden bg-radial from-[#1e293b] via-[#0f172a] to-[#020617]">
+        <div className="w-full min-h-95 sm:min-h-115 flex flex-col items-center justify-center p-6 text-center relative overflow-hidden bg-radial from-[#1e293b] via-[#0f172a] to-[#020617]">
           {/* Background Radial Light Rays */}
           <div
-            className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-500 ${
-              pokeballOpened ? "opacity-100 scale-125" : "opacity-0 scale-75"
-            }`}
+            className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-500 ${pokeballOpened ? "opacity-100 scale-125" : "opacity-0 scale-75"
+              }`}
           >
             <div className="w-96 h-96 rounded-full bg-linear-to-r from-nb-yellow/30 via-nb-lime/20 to-transparent blur-3xl animate-spin duration-3000" />
           </div>
@@ -513,29 +548,25 @@ export default function PokemonGuesser({ onSuccess, onSkip }: PokemonGuesserProp
             <div className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full border-4 border-nb-black shadow-[8px_8px_0px_var(--nb-black)] overflow-hidden bg-white flex flex-col justify-between">
               {/* Top Red Half */}
               <div
-                className={`w-full h-1/2 bg-[#ef4444] border-b-4 border-nb-black transition-transform duration-500 ${
-                  pokeballOpened ? "-translate-y-6 opacity-80" : ""
-                }`}
+                className={`w-full h-1/2 bg-[#ef4444] border-b-4 border-nb-black transition-transform duration-500 ${pokeballOpened ? "-translate-y-6 opacity-80" : ""
+                  }`}
               />
 
               {/* Bottom White Half */}
               <div
-                className={`w-full h-1/2 bg-[#ffffff] border-t-4 border-nb-black transition-transform duration-500 ${
-                  pokeballOpened ? "translate-y-6 opacity-80" : ""
-                }`}
+                className={`w-full h-1/2 bg-[#ffffff] border-t-4 border-nb-black transition-transform duration-500 ${pokeballOpened ? "translate-y-6 opacity-80" : ""
+                  }`}
               />
 
               {/* Center Center Button */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div
-                  className={`w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-white border-4 border-nb-black shadow-[2px_2px_0px_var(--nb-black)] flex items-center justify-center transition-all ${
-                    pokeballOpened ? "scale-125 bg-nb-yellow shadow-[0_0_20px_#facc15]" : ""
-                  }`}
+                  className={`w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-white border-4 border-nb-black shadow-[2px_2px_0px_var(--nb-black)] flex items-center justify-center transition-all ${pokeballOpened ? "scale-125 bg-nb-yellow shadow-[0_0_20px_#facc15]" : ""
+                    }`}
                 >
                   <div
-                    className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-nb-black transition-colors ${
-                      pokeballOpened ? "bg-white animate-ping" : "bg-[#f1f5f9]"
-                    }`}
+                    className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-nb-black transition-colors ${pokeballOpened ? "bg-white animate-ping" : "bg-[#f1f5f9]"
+                      }`}
                   />
                 </div>
               </div>
@@ -557,7 +588,7 @@ export default function PokemonGuesser({ onSuccess, onSkip }: PokemonGuesserProp
           ============================================================ */}
       {phase === "guessing" && (
         <div
-          className={`w-full min-h-[380px] sm:min-h-[460px] flex-1 flex flex-col items-center justify-between p-4 sm:p-6 bg-linear-to-b ${currentPokemon.colorTheme.bg} relative transition-all duration-500`}
+          className={`w-full min-h-95 sm:min-h-115 flex-1 flex flex-col items-center justify-between p-3.5 sm:p-5 md:p-6 bg-linear-to-b ${currentPokemon.colorTheme.bg} relative transition-all duration-500`}
         >
           {/* Subtle Elemental Particles */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-25">
@@ -576,32 +607,32 @@ export default function PokemonGuesser({ onSuccess, onSkip }: PokemonGuesserProp
           </div>
 
           {/* Pokemon Header & Elemental Badge */}
-          <div className="relative z-10 flex flex-col items-center gap-1.5 text-center">
+          <div className="relative z-10 flex flex-col items-center gap-1 text-center shrink-0 mb-1">
             <div className="flex items-center gap-2">
               <span
-                className={`px-3 py-0.5 rounded-full border-2 border-nb-black font-display font-black text-[11px] sm:text-xs uppercase shadow-[2px_2px_0px_var(--nb-black)] ${currentPokemon.colorTheme.badgeBg} ${currentPokemon.colorTheme.badgeText}`}
+                className={`px-3 py-0.5 rounded-full border-2 border-nb-black font-display font-black text-[10px] sm:text-xs uppercase shadow-[2px_2px_0px_var(--nb-black)] ${currentPokemon.colorTheme.badgeBg} ${currentPokemon.colorTheme.badgeText}`}
               >
                 {currentPokemon.typeBadge}
               </span>
-              <span className="bg-nb-black border border-white/30 text-white font-mono text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-md">
+              <span className="bg-nb-black border border-white/30 text-white font-mono text-[9px] sm:text-xs font-bold px-2 py-0.5 rounded-md">
                 NO. 0{currentIdx + 1} / 03
               </span>
             </div>
-            <h3 className="text-xl sm:text-2xl font-display font-black uppercase text-white tracking-wide drop-shadow-[2px_2px_0px_var(--nb-black)]">
-              Siapakah Nama Pokémon Ini?
-            </h3>
-          </div>
 
+          </div>
+          <h3 className="text-base sm:text-xl md:text-2xl font-display font-black uppercase text-white tracking-wide drop-shadow-[2px_2px_0px_var(--nb-black)] mt-0.5">
+            Siapakah Nama Pokémon Ini?
+          </h3>
           {/* Pokemon Image Display Frame */}
           <div
             ref={pokemonImgRef}
-            className={`relative w-36 h-36 sm:w-44 sm:h-44 my-2 rounded-2xl border-4 border-nb-black p-2 bg-black/40 backdrop-blur-xs flex items-center justify-center ${currentPokemon.colorTheme.shadow} transition-all duration-300`}
+            className={`relative w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40 my-1 sm:my-2 rounded-2xl border-4 border-nb-black p-2 bg-black/40 backdrop-blur-xs flex items-center justify-center shrink-0 ${currentPokemon.colorTheme.shadow} transition-all duration-300`}
           >
             {/* Elemental Corner Accents */}
-            <div className="absolute -top-2 -left-2 w-5 h-5 bg-nb-yellow border-2 border-nb-black rounded-md flex items-center justify-center text-[10px] text-nb-black font-black">
+            <div className="absolute -top-2 -left-2 w-4 h-4 sm:w-5 sm:h-5 bg-nb-yellow border-2 border-nb-black rounded-md flex items-center justify-center text-[9px] sm:text-[10px] text-nb-black font-black">
               ★
             </div>
-            <div className="absolute -bottom-2 -right-2 w-5 h-5 bg-nb-yellow border-2 border-nb-black rounded-md flex items-center justify-center text-[10px] text-nb-black font-black">
+            <div className="absolute -bottom-2 -right-2 w-4 h-4 sm:w-5 sm:h-5 bg-nb-yellow border-2 border-nb-black rounded-md flex items-center justify-center text-[9px] sm:text-[10px] text-nb-black font-black">
               ★
             </div>
 
@@ -610,6 +641,7 @@ export default function PokemonGuesser({ onSuccess, onSkip }: PokemonGuesserProp
                 src={currentPokemon.image}
                 alt={`Pokemon Guess #${currentIdx + 1}`}
                 fill
+                sizes="(max-width: 640px) 112px, 160px"
                 className="object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.8)] filter transition-transform duration-300 hover:scale-105"
                 priority
               />
@@ -632,7 +664,6 @@ export default function PokemonGuesser({ onSuccess, onSkip }: PokemonGuesserProp
               onKeyDown={handleKeyDown}
               maxLength={currentPokemon.name.length}
               className="sr-only"
-              autoFocus
               aria-label="Ketik jawaban nama pokemon"
             />
 
@@ -649,17 +680,16 @@ export default function PokemonGuesser({ onSuccess, onSkip }: PokemonGuesserProp
                 return (
                   <div
                     key={i}
-                    className={`w-7 h-9 sm:w-9 sm:h-11 md:w-10 md:h-13 rounded-lg sm:rounded-xl border-[2.5px] sm:border-[3px] border-nb-black flex items-center justify-center font-display font-black text-base sm:text-xl md:text-2xl transition-all duration-150 ${
-                      isCorrect
-                        ? "bg-nb-lime text-nb-black scale-105 shadow-[2px_2px_0px_var(--nb-black)]"
-                        : isWrong
+                    className={`w-7 h-9 sm:w-9 sm:h-11 md:w-10 md:h-13 rounded-lg sm:rounded-xl border-[2.5px] sm:border-[3px] border-nb-black flex items-center justify-center font-display font-black text-base sm:text-xl md:text-2xl transition-all duration-150 ${isCorrect
+                      ? "bg-nb-lime text-nb-black scale-105 shadow-[2px_2px_0px_var(--nb-black)]"
+                      : isWrong
                         ? "bg-nb-red text-white shadow-[2px_2px_0px_var(--nb-black)]"
                         : char
-                        ? "bg-nb-white text-nb-black shadow-[3px_3px_0px_var(--nb-black)] scale-102"
-                        : isCurrent
-                        ? "bg-black/60 border-nb-yellow text-nb-yellow shadow-[0_0_8px_#facc15] animate-pulse"
-                        : "bg-black/30 border-white/20 text-white/30"
-                    }`}
+                          ? "bg-nb-white text-nb-black shadow-[3px_3px_0px_var(--nb-black)] scale-102"
+                          : isCurrent
+                            ? "bg-black/60 border-nb-yellow text-nb-yellow shadow-[0_0_8px_#facc15] animate-pulse"
+                            : "bg-black/30 border-white/20 text-white/30"
+                      }`}
                   >
                     {char || (isCurrent ? "_" : "")}
                   </div>
@@ -708,7 +738,7 @@ export default function PokemonGuesser({ onSuccess, onSkip }: PokemonGuesserProp
           STAGE 3: SUCCESS / GATEWAY UNLOCKED
           ============================================================ */}
       {phase === "success" && (
-        <div className="w-full min-h-[380px] sm:min-h-[460px] flex flex-col items-center justify-center p-6 text-center bg-radial from-[#14532d] via-[#052e16] to-[#020617] animate-in zoom-in-90 duration-300">
+        <div className="w-full min-h-95 sm:min-h-115 flex flex-col items-center justify-center p-6 text-center bg-radial from-[#14532d] via-[#052e16] to-[#020617] animate-in zoom-in-90 duration-300">
           <div className="px-6 sm:px-10 py-6 bg-nb-yellow border-4 border-nb-black rounded-2xl sm:rounded-3xl shadow-[8px_8px_0px_var(--nb-black)] text-nb-black transform -rotate-1 max-w-md">
             <div className="text-4xl sm:text-5xl font-display font-black mb-1">
               🎉 GOTCHA! 🎉

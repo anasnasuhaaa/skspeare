@@ -178,6 +178,7 @@ export default function HeroSection() {
               alt="Proxy Shakespeare Team"
               fill
               priority
+              loading="eager"
               sizes="(max-width: 768px) 100vw, 750px"
               className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
             />

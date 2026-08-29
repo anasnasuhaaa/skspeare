@@ -120,7 +120,7 @@ export default function AnasModal({ isOpen, onClose }: ModalProps) {
       {/* Modal Dialog Content Chassis */}
       <div
         ref={contentRef}
-        className="w-full max-w-3xl max-h-[88vh] overflow-y-auto no-scrollbar bg-[#090d14] border-4 border-nb-black rounded-2xl sm:rounded-3xl shadow-[10px_10px_0px_var(--nb-black)] sm:shadow-[14px_14px_0px_var(--nb-black)] relative z-10 text-white flex flex-col"
+        className="w-full max-w-3xl max-h-[88vh] overflow-hidden bg-[#090d14] border-4 border-nb-black rounded-2xl sm:rounded-3xl shadow-[10px_10px_0px_var(--nb-black)] sm:shadow-[14px_14px_0px_var(--nb-black)] relative z-10 text-white flex flex-col"
         onClick={(e) => e.stopPropagation()}
         style={{
           backgroundImage:
@@ -128,8 +128,8 @@ export default function AnasModal({ isOpen, onClose }: ModalProps) {
           backgroundSize: "24px 24px",
         }}
       >
-        {/* Top Neobrutalist Cyber Header */}
-        <div className="bg-nb-lime border-b-4 border-nb-black px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center relative z-20 select-none text-nb-black">
+        {/* Top Neobrutalist Cyber Header (Sticky / Fixed when scrolling biodata) */}
+        <div className="sticky top-0 z-30 shrink-0 bg-nb-lime border-b-4 border-nb-black px-4 sm:px-6 py-3 sm:py-3.5 flex justify-between items-center select-none text-nb-black">
           <div className="flex items-center gap-2 font-display font-black text-xs sm:text-sm uppercase tracking-wider">
             <span className="w-3 h-3 rounded-full bg-nb-black animate-pulse" />
             <span>ROOT ACCESS // PROFILE VERIFIED</span>
@@ -147,8 +147,8 @@ export default function AnasModal({ isOpen, onClose }: ModalProps) {
           </div>
         </div>
 
-        {/* Modal Inner Body */}
-        <div className="p-5 sm:p-8 md:p-10 flex flex-col gap-6 sm:gap-8 relative z-10">
+        {/* Modal Inner Body (Scrollable content) */}
+        <div className="flex-1 overflow-y-auto no-scrollbar p-5 sm:p-8 md:p-10 flex flex-col gap-6 sm:gap-8 relative z-10">
           {/* Cyber Corner HUD Brackets */}
           <div className="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-nb-lime pointer-events-none opacity-60" />
           <div className="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-nb-lime pointer-events-none opacity-60" />

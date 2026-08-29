@@ -11,11 +11,13 @@ import {
   Info,
   Trophy,
   CheckCircle2,
+  X,
 } from "lucide-react";
 
 interface ShootingRangeProps {
   onSuccess: () => void;
   onSkip: () => void;
+  onClose?: () => void;
 }
 
 interface TargetPosition {
@@ -260,7 +262,11 @@ const TARGET_POSITIONS: TargetPosition[] = [
   { id: 5, x: 50, y: 45, size: 94, label: "BULLSEYE", points: 200 },
 ];
 
-export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps) {
+export default function ShootingRange({
+  onSuccess,
+  onSkip,
+  onClose,
+}: ShootingRangeProps) {
   // Game states: 'briefing' | 'playing' | 'cleared'
   const [gameState, setGameState] = useState<"briefing" | "playing" | "cleared">("briefing");
   const [currentTargetIndex, setCurrentTargetIndex] = useState(0);
@@ -455,11 +461,10 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
             {[0, 1, 2, 3, 4].map((i) => (
               <div
                 key={i}
-                className={`w-5 h-2 -skew-x-12 border transition-all duration-300 ${
-                  i < hitsCount
+                className={`w-5 h-2 -skew-x-12 border transition-all duration-300 ${i < hitsCount
                     ? "bg-[#FF4655] border-[#FF4655] shadow-[0_0_8px_rgba(255,70,85,0.8)]"
                     : "bg-[#1F2326] border-[#303946]"
-                }`}
+                  }`}
                 title={`Target ${i + 1} status`}
               />
             ))}
@@ -512,6 +517,23 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
             <FastForward size={13} strokeWidth={2.5} />
             <span>Lewati</span>
           </button>
+
+          {/* Close Button */}
+          {onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              className="w-7 h-7 sm:w-8 sm:h-8 bg-[#FF4655] hover:bg-[#E03645] text-white flex items-center justify-center transition-all duration-200 cursor-pointer shadow-[0_0_10px_rgba(255,70,85,0.4)]"
+              style={{
+                clipPath:
+                  "polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 4px 100%, 0 calc(100% - 4px))",
+              }}
+              aria-label="Tutup modal"
+              title="Tutup Modal"
+            >
+              <X size={16} strokeWidth={2.5} />
+            </button>
+          )}
         </div>
       </div>
 
@@ -522,9 +544,8 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className={`relative w-full flex-1 min-h-95 sm:min-h-110 md:min-h-122.5 bg-linear-to-b from-[#0B0E14] via-[#111822] to-[#0F1923] overflow-hidden cursor-crosshair border-x border-b border-[#303946] flex items-center justify-center ${
-          muzzleFlash ? "brightness-150" : ""
-        }`}
+        className={`relative w-full flex-1 min-h-95 sm:min-h-110 md:min-h-122.5 bg-linear-to-b from-[#0B0E14] via-[#111822] to-[#0F1923] overflow-hidden cursor-crosshair border-x border-b border-[#303946] flex items-center justify-center ${muzzleFlash ? "brightness-150" : ""
+          }`}
       >
         {/* ============================================================
             🎨 HANDCRAFTED SVG SHOOTING RANGE BOOTH SCENE (Valorant Style)
@@ -638,16 +659,14 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
           <div
             key={hole.id}
             style={{ left: `${hole.x}%`, top: `${hole.y}%` }}
-            className={`absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10 transition-opacity duration-500 ${
-              hole.isHit ? "w-4 h-4" : "w-3 h-3"
-            }`}
+            className={`absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10 transition-opacity duration-500 ${hole.isHit ? "w-4 h-4" : "w-3 h-3"
+              }`}
           >
             <div
-              className={`w-full h-full rounded-full border ${
-                hole.isHit
+              className={`w-full h-full rounded-full border ${hole.isHit
                   ? "bg-[#FF4655] border-[#ECE8E1] shadow-[0_0_8px_#FF4655]"
                   : "bg-black/90 border-gray-600 shadow-[inset_0_1px_2px_black]"
-              }`}
+                }`}
             />
           </div>
         ))}
@@ -757,11 +776,10 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
             }}
             onClick={(e) => handleHitTarget(e, activeTarget)}
             onTouchStart={(e) => handleHitTarget(e, activeTarget)}
-            className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-15 transition-all duration-300 ${
-              isTargetHitAnimating
+            className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-15 transition-all duration-300 ${isTargetHitAnimating
                 ? "scale-125 rotate-45 opacity-0 duration-200"
                 : "animate-in zoom-in-75 duration-200 hover:scale-110 active:scale-95"
-            }`}
+              }`}
             title={`Tembak Target #${currentTargetIndex + 1}`}
           >
             {/* Hanging Rope Wire */}
@@ -841,11 +859,10 @@ export default function ShootingRange({ onSuccess, onSkip }: ShootingRangeProps)
             ============================================================ */}
         <div
           style={{
-            transform: `translateX(calc(-56% + ${gunOffsetX}px)) translateY(${gunOffsetY}px) rotate(${gunAimAngle}deg) ${
-              isGunRecoiling
+            transform: `translateX(calc(-56% + ${gunOffsetX}px)) translateY(${gunOffsetY}px) rotate(${gunAimAngle}deg) ${isGunRecoiling
                 ? "translateY(16px) rotate(-4deg) scale(0.97)"
                 : "translateY(0px) rotate(0deg) scale(1)"
-            }`,
+              }`,
             transformOrigin: "56% 100%",
           }}
           className="absolute -bottom-4 sm:-bottom-6 left-1/2 pointer-events-none z-25 transition-transform duration-100 ease-out flex flex-col items-center"

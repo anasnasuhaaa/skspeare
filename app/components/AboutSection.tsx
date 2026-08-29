@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Users, Crown, Award } from "lucide-react";
+import { Users, Crown, Award, ArrowDown } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -223,16 +223,16 @@ export default function AboutSection() {
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3 sm:gap-4 relative z-10 w-full sm:w-auto">
+          {/* Action Button Centered */}
+          <div className="flex items-center justify-center relative z-10 w-full pt-1">
             <button
               onClick={() => {
                 document.getElementById("team")?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="w-full sm:w-auto px-5 sm:px-6 py-2 sm:py-2.5 bg-nb-yellow hover:bg-nb-lime border-[2.5px] sm:border-[3px] border-nb-black rounded-xl shadow-[2.5px_2.5px_0px_var(--nb-black)] font-display font-black text-xs sm:text-sm uppercase text-nb-black tracking-wide hover:translate-y-0.5 hover:translate-x-0.5 hover:shadow-[1px_1px_0px_var(--nb-black)] transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center"
+              className="px-6 sm:px-8 py-2.5 sm:py-3 bg-nb-yellow hover:bg-nb-lime border-[2.5px] sm:border-[3px] border-nb-black rounded-xl shadow-[3px_3px_0px_var(--nb-black)] font-display font-black text-xs sm:text-sm uppercase text-nb-black tracking-wide hover:translate-y-0.5 hover:translate-x-0.5 hover:shadow-[1.5px_1.5px_0px_var(--nb-black)] active:translate-y-0.75 active:shadow-none transition-all cursor-pointer flex items-center justify-center gap-2 w-auto"
             >
               <span>Explore Team</span>
-              <span className="text-xs sm:text-sm">↓</span>
+              <ArrowDown size={14} strokeWidth={3} className="animate-bounce" />
             </button>
           </div>
         </div>

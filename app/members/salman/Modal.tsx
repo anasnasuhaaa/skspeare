@@ -168,9 +168,9 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
 
   const cleanInstagram = salmanData.instagramHandle
     ? salmanData.instagramHandle
-        .replace(/^https?:\/\/(www\.)?instagram\.com\//, "")
-        .replace(/^@/, "")
-        .replace(/\/$/, "")
+      .replace(/^https?:\/\/(www\.)?instagram\.com\//, "")
+      .replace(/^@/, "")
+      .replace(/\/$/, "")
     : "";
 
   return (
@@ -195,39 +195,26 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
       <div
         ref={contentRef}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-3xl max-h-[88vh] overflow-y-auto no-scrollbar bg-[#0f172a] border-4 border-nb-black rounded-2xl sm:rounded-3xl shadow-[10px_10px_0px_var(--nb-black)] sm:shadow-[14px_14px_0px_var(--nb-black)] z-10 flex flex-col text-white"
+        className="relative w-full max-w-3xl max-h-[88vh] overflow-hidden bg-[#0f172a] border-4 border-nb-black rounded-2xl sm:rounded-3xl shadow-[10px_10px_0px_var(--nb-black)] sm:shadow-[14px_14px_0px_var(--nb-black)] z-10 flex flex-col text-white"
       >
         {/* ============================================================
             1. GATEWAY: POKEMON GUESSING MINI-GAME
             ============================================================ */}
         {!isUnlocked ? (
-          <div className="w-full flex flex-col relative">
-            {/* Close Button on Guesser */}
-            <button
-              type="button"
-              onClick={handleAnimateClose}
-              className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 w-8 h-8 sm:w-9 sm:h-9 bg-nb-red hover:bg-nb-yellow text-white hover:text-nb-black border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] flex items-center justify-center z-50 transition-all cursor-pointer"
-              title="Tutup Modal"
-              aria-label="Tutup modal"
-            >
-              <X size={18} strokeWidth={3} />
-            </button>
-
+          <div className="w-full flex-1 flex flex-col overflow-hidden">
             <PokemonGuesser
               onSuccess={() => setIsUnlocked(true)}
               onSkip={() => setIsUnlocked(true)}
+              onClose={handleAnimateClose}
             />
           </div>
         ) : (
           /* ============================================================
               2. REVEALED POKÉMON TRADING CARD (SALMAN)
               ============================================================ */
-          <div
-            ref={profileCardRef}
-            className="flex flex-col bg-linear-to-b from-[#1e293b] via-[#0f172a] to-[#090d16] text-white relative"
-          >
-            {/* Top Pokemon Trading Card Header Banner */}
-            <div className="bg-nb-yellow border-b-4 border-nb-black px-4 sm:px-6 py-3.5 flex justify-between items-center relative z-20 text-nb-black select-none">
+          <div className="w-full h-full flex flex-col overflow-hidden">
+            {/* Top Pokemon Trading Card Sticky Header Banner */}
+            <div className="sticky top-0 z-30 shrink-0 bg-nb-yellow border-b-4 border-nb-black px-4 sm:px-6 py-3 sm:py-3.5 flex justify-between items-center text-nb-black select-none shadow-[0_2px_0px_var(--nb-black)]">
               {/* Left Pokeball & Trainer Title */}
               <div className="flex items-center gap-2">
                 <PokeballIcon size={24} />
@@ -253,17 +240,20 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
                 <button
                   type="button"
                   onClick={handleAnimateClose}
-                  className="w-8 h-8 sm:w-9 sm:h-9 bg-nb-red hover:bg-nb-yellow text-white hover:text-nb-black border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none flex items-center justify-center transition-all cursor-pointer"
+                  className="w-7 h-7 sm:w-8 sm:h-8 bg-nb-red hover:bg-nb-yellow text-white hover:text-nb-black border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none flex items-center justify-center transition-all cursor-pointer"
                   title="Tutup Modal"
                   aria-label="Tutup modal"
                 >
-                  <X size={18} strokeWidth={3} />
+                  <X size={16} strokeWidth={3} />
                 </button>
               </div>
             </div>
 
             {/* Trading Card Body Content */}
-            <div className="p-5 sm:p-8 md:p-10 flex flex-col gap-6 sm:gap-8 relative z-10">
+            <div
+              ref={profileCardRef}
+              className="flex-1 overflow-y-auto no-scrollbar p-5 sm:p-8 md:p-10 flex flex-col gap-6 sm:gap-8 bg-linear-to-b from-[#1e293b] via-[#0f172a] to-[#090d16] text-white relative z-10"
+            >
               {/* Holographic Card Frame Accent */}
               <div className="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-nb-yellow pointer-events-none opacity-80" />
               <div className="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-nb-yellow pointer-events-none opacity-80" />

@@ -2,13 +2,14 @@
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
-import { Sparkles, Zap, ShieldAlert, FastForward, Swords } from "lucide-react";
+import { Sparkles, Zap, ShieldAlert, FastForward, Swords, X } from "lucide-react";
 import gsap from "gsap";
 import { soundFX } from "./soundEffects";
 
 interface KatanaPurificationProps {
   onSuccess: () => void;
   onSkip: () => void;
+  onClose?: () => void;
 }
 
 // Particle interface for Blood Splatters, 3D Crystals & Rose Petals
@@ -87,6 +88,7 @@ function processTransparentImage(src: string): Promise<string> {
 export default function KatanaPurification({
   onSuccess,
   onSkip,
+  onClose,
 }: KatanaPurificationProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -766,9 +768,8 @@ export default function KatanaPurification({
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerLeave={handlePointerUp}
-      className={`relative w-full h-[520px] sm:h-[580px] md:h-[620px] bg-[#070409] select-none overflow-hidden touch-none md:cursor-none flex flex-col justify-between ${
-        isAberrationActive ? "contrast-150 hue-rotate-15 filter" : ""
-      }`}
+      className={`relative w-full h-130 sm:h-145 md:h-155 bg-[#070409] select-none overflow-hidden touch-none md:cursor-none flex flex-col justify-between ${isAberrationActive ? "contrast-150 hue-rotate-15 filter" : ""
+        }`}
       role="application"
       aria-label="Interactive Katana Slash Minigame"
     >
@@ -837,7 +838,7 @@ export default function KatanaPurification({
           </div>
 
           {/* Hero Closeup Zombie 1 (Fresh / Menacing Target Center) */}
-          <div className="relative w-72 h-80 sm:w-96 sm:h-100 md:w-112 md:h-116 opacity-90 filter contrast-125 brightness-95 drop-shadow-[0_0_30px_rgba(255,46,158,0.5)]">
+          <div className="relative w-72 h-80 sm:w-96 sm:h-100 md:w-md md:h-116 opacity-90 filter contrast-125 brightness-95 drop-shadow-[0_0_30px_rgba(255,46,158,0.5)]">
             <Image
               src={zombie1Src}
               alt="Menacing Zombie Target"
@@ -874,7 +875,7 @@ export default function KatanaPurification({
           </div>
 
           {/* Hero Closeup Zombie 1 */}
-          <div className="relative w-72 h-80 sm:w-96 sm:h-100 md:w-112 md:h-116 opacity-90 filter contrast-125 brightness-95 drop-shadow-[0_0_30px_rgba(255,46,158,0.5)]">
+          <div className="relative w-72 h-80 sm:w-96 sm:h-100 md:w-md md:h-116 opacity-90 filter contrast-125 brightness-95 drop-shadow-[0_0_30px_rgba(255,46,158,0.5)]">
             <Image
               src={zombie1Src}
               alt="Menacing Zombie Target"
@@ -899,21 +900,40 @@ export default function KatanaPurification({
           </span>
         </div>
 
-        {/* Right Instant Skip Button */}
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            soundFX.getContext();
-            onSkip();
-          }}
-          className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 bg-[#1a0c20]/90 hover:bg-[#B76E79] text-[#F7E7CE] hover:text-white border border-[#B76E79]/60 hover:border-[#FF2E9E] rounded-xl font-luxury-sans font-bold text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer pointer-events-auto shadow-[0_0_12px_rgba(183,110,121,0.3)] hover:scale-105"
-          title="Lewati minigame dan langsung buka profil"
-          aria-label="Lewati minigame tebasan katana"
-        >
-          <FastForward size={13} />
-          <span>Lewati</span>
-        </button>
+        {/* Right Controls: Skip + Close Button */}
+        <div className="flex items-center gap-2 pointer-events-auto">
+          {/* Instant Skip Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              soundFX.getContext();
+              onSkip();
+            }}
+            className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 bg-[#1a0c20]/90 hover:bg-[#B76E79] text-[#F7E7CE] hover:text-white border border-[#B76E79]/60 hover:border-[#FF2E9E] rounded-xl font-luxury-sans font-bold text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer shadow-[0_0_12px_rgba(183,110,121,0.3)] hover:scale-105"
+            title="Lewati minigame dan langsung buka profil"
+            aria-label="Lewati minigame tebasan katana"
+          >
+            <FastForward size={13} />
+            <span>Lewati</span>
+          </button>
+
+          {/* Close Button */}
+          {onClose && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onClose();
+              }}
+              className="w-8 h-8 sm:w-9 sm:h-9 bg-[#1a0c20]/90 hover:bg-[#FF2E9E] text-[#F7E7CE] hover:text-white border border-[#B76E79]/60 hover:border-[#FF2E9E] rounded-xl shadow-[0_0_12px_rgba(255,46,158,0.3)] flex items-center justify-center transition-all cursor-pointer hover:scale-105"
+              title="Tutup Modal"
+              aria-label="Tutup modal"
+            >
+              <X size={16} strokeWidth={2.5} />
+            </button>
+          )}
+        </div>
       </div>
 
       {/* ============================================================

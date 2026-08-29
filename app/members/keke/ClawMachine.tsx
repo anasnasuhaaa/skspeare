@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { Press_Start_2P } from "next/font/google";
-import { Volume2, VolumeX, FastForward, Sparkles, Coins } from "lucide-react";
+import { Volume2, VolumeX, FastForward, Sparkles, Coins, X } from "lucide-react";
 
 const pixelFont = Press_Start_2P({
   weight: "400",
@@ -14,6 +14,7 @@ const pixelFont = Press_Start_2P({
 interface ClawMachineProps {
   onSuccess: () => void;
   onSkip: () => void;
+  onClose?: () => void;
 }
 
 // ============================================================
@@ -241,7 +242,11 @@ const DOLL_PILE = [
   { id: 1, src: "/asset/keke/1.png", x: 48, y: 70, rot: 0, scale: 1.15, isTarget: true },
 ];
 
-export default function ClawMachine({ onSuccess, onSkip }: ClawMachineProps) {
+export default function ClawMachine({
+  onSuccess,
+  onSkip,
+  onClose,
+}: ClawMachineProps) {
   // Game States: attempt 1 | 2 | 3
   const [attempt, setAttempt] = useState<number>(1);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -540,6 +545,18 @@ export default function ClawMachine({ onSuccess, onSkip }: ClawMachineProps) {
                 <FastForward size={12} strokeWidth={2.5} />
                 <span>Lewati</span>
               </button>
+
+              {onClose && (
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="w-6 h-6 sm:w-7 sm:h-7 bg-[#f43f5e] hover:bg-yellow-400 text-white hover:text-black border-2 border-black shadow-[1.5px_1.5px_0px_#000000] sm:shadow-[2px_2px_0px_#000000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all cursor-pointer flex items-center justify-center"
+                  title="Tutup Modal"
+                  aria-label="Tutup modal"
+                >
+                  <X size={14} strokeWidth={3} />
+                </button>
+              )}
             </div>
           </div>
 
@@ -561,7 +578,7 @@ export default function ClawMachine({ onSuccess, onSkip }: ClawMachineProps) {
       {/* ============================================================
           MAIN CABINET SECTION (SIDE PILLARS + GLASS CHAMBER)
           ============================================================ */}
-      <div className="w-full flex-1 flex gap-1 sm:gap-2 min-h-[260px] sm:min-h-[340px] md:min-h-[400px] relative">
+      <div className="w-full flex-1 flex gap-1 sm:gap-2 min-h-65 sm:min-h-85 md:min-h-100 relative">
         {/* Left Arcade Pillar / Bezel (Desktop/Tablet only) */}
         <div className="hidden sm:flex w-6 md:w-8 bg-[#1f1035] border-4 border-black shadow-[3px_3px_0px_#000000] flex-col justify-between items-center py-2 shrink-0 z-20">
           <div className="w-2.5 h-2.5 bg-[#ec4899] border border-black" />
@@ -619,13 +636,12 @@ export default function ClawMachine({ onSuccess, onSkip }: ClawMachineProps) {
             {[0, 1, 2, 3, 4, 5, 6, 7].map((bulb) => (
               <div
                 key={bulb}
-                className={`w-2 h-2 sm:w-2.5 sm:h-2.5 border border-black shadow-[1px_1px_0px_#000000] ${
-                  bulb % 3 === 0
+                className={`w-2 h-2 sm:w-2.5 sm:h-2.5 border border-black shadow-[1px_1px_0px_#000000] ${bulb % 3 === 0
                     ? "bg-yellow-400 animate-pulse"
                     : bulb % 3 === 1
-                    ? "bg-pink-500 animate-ping"
-                    : "bg-cyan-400 animate-bounce"
-                }`}
+                      ? "bg-pink-500 animate-ping"
+                      : "bg-cyan-400 animate-bounce"
+                  }`}
               />
             ))}
           </div>
@@ -795,11 +811,10 @@ export default function ClawMachine({ onSuccess, onSkip }: ClawMachineProps) {
               {[1, 2, 3].map((num) => (
                 <div
                   key={num}
-                  className={`w-5 h-5 border-2 border-black flex items-center justify-center font-black text-[10px] ${
-                    attempt >= num
+                  className={`w-5 h-5 border-2 border-black flex items-center justify-center font-black text-[10px] ${attempt >= num
                       ? "bg-[#ff4081] text-white shadow-[1px_1px_0px_#000000]"
                       : "bg-[#332247] text-gray-500"
-                  }`}
+                    }`}
                   title={`Percobaan ${num}`}
                 >
                   {num}
@@ -849,23 +864,22 @@ export default function ClawMachine({ onSuccess, onSkip }: ClawMachineProps) {
               type="button"
               onClick={handleStart}
               disabled={isPlaying || prizeWon}
-              className={`w-full py-2.5 sm:py-3.5 px-3 sm:px-6 border-[3px] sm:border-4 border-black font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer ${
-                isPlaying || prizeWon
+              className={`w-full py-2.5 sm:py-3.5 px-3 sm:px-6 border-[3px] sm:border-4 border-black font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer ${isPlaying || prizeWon
                   ? "bg-gray-600 text-gray-400 opacity-60 cursor-not-allowed shadow-none"
                   : "bg-[#f43f5e] hover:bg-[#fb7185] text-white shadow-[3px_3px_0px_#000000] sm:shadow-[5px_5px_0px_#000000] active:translate-x-1 active:translate-y-1 active:shadow-none hover:-translate-y-0.5"
-              }`}
+                }`}
             >
               <span>🕹️</span>
               <span className="truncate">
                 {isPlaying
                   ? "CAPIT SEDANG BERJALAN..."
                   : prizeWon
-                  ? "🏆 MENANGKAN BONEKA!"
-                  : attempt === 1
-                  ? "[ PRESS START ] PERCOBAAN 1"
-                  : attempt === 2
-                  ? "[ PRESS START ] PERCOBAAN 2"
-                  : "[ PRESS START ] PERCOBAAN TERAKHIR (3/3)"}
+                    ? "🏆 MENANGKAN BONEKA!"
+                    : attempt === 1
+                      ? "[ PRESS START ] PERCOBAAN 1"
+                      : attempt === 2
+                        ? "[ PRESS START ] PERCOBAAN 2"
+                        : "[ PRESS START ] PERCOBAAN TERAKHIR (3/3)"}
               </span>
             </button>
           </div>

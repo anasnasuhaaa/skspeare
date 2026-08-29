@@ -582,7 +582,7 @@ export default function HackTerminal({
               className="px-2.5 sm:px-3 py-1 bg-nb-pink hover:bg-nb-lime text-nb-black border-2 border-nb-black rounded-lg font-display font-black text-xs uppercase shadow-[2px_2px_0px_var(--nb-black)] hover:translate-y-0.5 hover:translate-x-0.5 transition-all cursor-pointer flex items-center gap-1"
               title="Lewati hack sequence dan langsung buka profil"
             >
-              <span>Lewati</span>
+              <span>Skip</span>
               <span>→</span>
             </button>
 
@@ -652,7 +652,6 @@ export default function HackTerminal({
                           soundEngineRef.current.playKey(1000 + Math.random() * 300);
                         }}
                         className="bg-transparent border-b-2 border-[#4ade80]/60 focus:border-nb-lime outline-none text-white font-mono focus:text-nb-lime transition-colors text-sm sm:text-base px-2 py-1 flex-1"
-                        autoFocus
                         placeholder="masukkan passcode..."
                       />
                     </div>
