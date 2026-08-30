@@ -4,6 +4,7 @@ import React, { useState, useCallback, useEffect, useRef, useMemo } from "react"
 import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Search, X } from "lucide-react";
 import { MemberData, ROLE_LABELS } from "../types/member";
 import members from "../data/members";
 import MemberCard from "./MemberCard";
@@ -308,14 +309,18 @@ export default function MembersSection() {
               placeholder="Search member name, role, or hobby..."
               className="w-full bg-nb-white border-[3px] border-nb-black rounded-xl px-4 py-2.5 pl-10 font-bold text-sm sm:text-base text-nb-black placeholder:text-nb-black/50 shadow-[3px_3px_0px_var(--nb-black)] focus:outline-none focus:bg-nb-yellow/15 focus:shadow-[1.5px_1.5px_0px_var(--nb-black)] focus:translate-y-0.5 focus:translate-x-0.5 transition-all"
             />
-            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm select-none pointer-events-none">🔍</span>
+            <Search
+              size={18}
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-nb-black/60 pointer-events-none"
+              strokeWidth={2.5}
+            />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-nb-pink border-2 border-nb-black rounded-full text-xs font-black flex items-center justify-center cursor-pointer hover:scale-110"
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-nb-pink border-2 border-nb-black rounded-full text-xs font-black flex items-center justify-center cursor-pointer hover:scale-110 text-nb-black transition-transform"
                 title="Clear search"
               >
-                ✕
+                <X size={12} strokeWidth={3} />
               </button>
             )}
           </div>

@@ -163,16 +163,16 @@ export default function AboutSection() {
         {/* Main About Card Container */}
         <div
           ref={cardRef}
-          className="w-full bg-nb-blue border-4 border-nb-black rounded-2xl sm:rounded-3xl shadow-[6px_6px_0px_var(--nb-black)] sm:shadow-[8px_8px_0px_var(--nb-black)] p-4 sm:p-6 md:p-8 relative overflow-hidden shrink min-h-0"
+          className="w-full bg-nb-blue border-4 border-nb-black rounded-2xl sm:rounded-3xl shadow-[6px_6px_0px_var(--nb-black)] sm:shadow-[8px_8px_0px_var(--nb-black)] p-4 sm:p-6 md:p-8 relative overflow-visible shrink min-h-0"
         >
-          {/* Neobrutalist Washi Tape Accents */}
+          {/* Neobrutalist Washi Tape Accents (Placed on top of card border) */}
           <div
             aria-hidden="true"
-            className="absolute -top-3 left-8 sm:left-14 w-18 sm:w-24 h-4 sm:h-5 bg-nb-cream/80 border-2 border-nb-black/30 backdrop-blur-xs -rotate-6 shadow-[1.5px_1.5px_0px_rgba(0,0,0,0.15)] z-20 pointer-events-none"
+            className="absolute -top-3 left-10 sm:left-16 w-20 sm:w-28 h-4 sm:h-5 bg-nb-cream/80 border-2 border-nb-black/30 backdrop-blur-xs -rotate-6 z-30 pointer-events-none shadow-[1.5px_1.5px_0px_rgba(0,0,0,0.15)]"
           />
           <div
             aria-hidden="true"
-            className="absolute -top-3 right-8 sm:right-14 w-18 sm:w-24 h-4 sm:h-5 bg-nb-cream/80 border-2 border-nb-black/30 backdrop-blur-xs rotate-3 shadow-[1.5px_1.5px_0px_rgba(0,0,0,0.15)] z-20 pointer-events-none"
+            className="absolute -top-3 right-10 sm:right-16 w-20 sm:w-28 h-4 sm:h-5 bg-nb-cream/80 border-2 border-nb-black/30 backdrop-blur-xs rotate-4 z-30 pointer-events-none shadow-[1.5px_1.5px_0px_rgba(0,0,0,0.15)]"
           />
 
           {/* Simple Clean English Narrative Box */}
