@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { FormEvent } from "react";
 import gsap from "gsap";
 import { X, Volume2, VolumeX } from "lucide-react";
 
@@ -374,7 +375,7 @@ export default function HackTerminal({
     }
   };
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = (e: FormEvent) => {
     e.preventDefault();
     if (password === "pi2026") {
       setErrorText("");
