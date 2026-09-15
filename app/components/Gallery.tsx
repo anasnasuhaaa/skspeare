@@ -3,6 +3,75 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
+import { galleryPhotos } from "@/app/data/gallery";
+
+const rotations = [
+  "-rotate-2",
+  "rotate-2",
+  "-rotate-1",
+  "rotate-3",
+  "-rotate-2",
+  "rotate-1",
+];
+
+type PhotoBlockProps = {
+  prefix: string;
+  onSelectPhoto: (index: number) => void;
+};
+
+function PhotoBlock({ prefix, onSelectPhoto }: PhotoBlockProps) {
+  return (
+    <div className="flex gap-5 sm:gap-8 shrink-0 pr-5 sm:pr-8 py-4 items-center">
+      {galleryPhotos.map((photo, i) => {
+        const tilt = rotations[i % rotations.length];
+
+        return (
+          <button
+            type="button"
+            key={`${prefix}-${photo.id}`}
+            onClick={() => onSelectPhoto(i)}
+            aria-label={`Buka foto ${photo.id}: ${photo.caption}`}
+            className={`shrink-0 w-64 sm:w-78 md:w-88 bg-nb-white border-[3px] sm:border-4 border-nb-black rounded-xl shadow-[5px_5px_0px_var(--nb-black)] sm:shadow-[7px_7px_0px_var(--nb-black)] p-2.5 sm:p-3.5 pb-5 sm:pb-6 relative group cursor-pointer text-left ${tilt} hover:rotate-0 hover:scale-105 hover:-translate-y-2 hover:shadow-[10px_10px_0px_var(--nb-black)] focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-nb-blue transition-all duration-300 ease-out`}
+          >
+            {/* Top Washi Tape / Pin Effect */}
+            <div
+              aria-hidden="true"
+              className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-12 sm:w-16 h-4 sm:h-5 bg-nb-yellow/80 border border-nb-black/40 -rotate-2 z-20 shadow-[1px_1px_0px_rgba(0,0,0,0.15)] pointer-events-none select-none"
+            ></div>
+
+            {/* Photo Viewport */}
+            <div className="relative w-full aspect-4/3 rounded-lg overflow-hidden border-2 border-nb-black bg-nb-black/5">
+              <Image
+                src={photo.src}
+                alt={photo.alt}
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                sizes="(max-width: 640px) 260px, (max-width: 1024px) 320px, 360px"
+              />
+              {/* Hover Badge */}
+              <div className="absolute inset-0 bg-nb-black/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                <span className="px-3 py-1 bg-nb-yellow border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] font-display font-black text-xs text-nb-black uppercase tracking-wider">
+                  View Full 🔍
+                </span>
+              </div>
+            </div>
+
+            {/* Polaroid Bottom Label */}
+            <div className="mt-2.5 sm:mt-3 flex items-center justify-between gap-3 px-1 font-mono text-[10px] sm:text-xs text-nb-black font-bold">
+              <span>★ MEMORY #{String(photo.id).padStart(2, "0")}</span>
+              <span className="opacity-60 text-[9px] sm:text-[10px]">
+                ILKOMERZ 62
+              </span>
+            </div>
+            <p className="mt-2 min-h-10 px-1 whitespace-normal font-sans text-xs sm:text-sm font-semibold leading-snug text-nb-black/75 line-clamp-2">
+              {photo.caption}
+            </p>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function Gallery() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -20,7 +89,7 @@ export default function Gallery() {
         {
           xPercent: -50,
           ease: "none",
-          duration: 28,
+          duration: galleryPhotos.length * 3.5,
           repeat: -1,
         }
       );
@@ -119,10 +188,6 @@ export default function Gallery() {
 
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
 
-  const photos = ["/gallery/1.jpeg", "/gallery/2.jpeg", "/gallery/3.jpeg", "/gallery/4.jpeg", "/gallery/5.jpeg"];
-  // Repeat photos 4 times per block (12 items per block)
-  const oneBlock = [...photos, ...photos, ...photos, ...photos];
-
   // Keyboard Escape, Left, Right navigation for Lightbox
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -130,9 +195,15 @@ export default function Gallery() {
       if (e.key === "Escape") {
         setSelectedPhotoIndex(null);
       } else if (e.key === "ArrowLeft") {
-        setSelectedPhotoIndex((prev: number | null) => (prev !== null ? (prev - 1 + photos.length) % photos.length : null));
+        setSelectedPhotoIndex((prev: number | null) =>
+          prev !== null
+            ? (prev - 1 + galleryPhotos.length) % galleryPhotos.length
+            : null
+        );
       } else if (e.key === "ArrowRight") {
-        setSelectedPhotoIndex((prev: number | null) => (prev !== null ? (prev + 1) % photos.length : null));
+        setSelectedPhotoIndex((prev: number | null) =>
+          prev !== null ? (prev + 1) % galleryPhotos.length : null
+        );
       }
     };
 
@@ -147,53 +218,7 @@ export default function Gallery() {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [selectedPhotoIndex, photos.length]);
-
-  const rotations = ["-rotate-2", "rotate-2", "-rotate-1", "rotate-3", "-rotate-2", "rotate-1"];
-
-  const PhotoBlock = ({ prefix }: { prefix: string }) => (
-    <div className="flex gap-5 sm:gap-8 shrink-0 pr-5 sm:pr-8 py-4 items-center">
-      {oneBlock.map((photo, i) => {
-        const tilt = rotations[i % rotations.length];
-        return (
-          <div
-            key={`${prefix}-${i}`}
-            onClick={() => setSelectedPhotoIndex(i % photos.length)}
-            className={`shrink-0 w-64 sm:w-78 md:w-88 bg-nb-white border-[3px] sm:border-4 border-nb-black rounded-xl shadow-[5px_5px_0px_var(--nb-black)] sm:shadow-[7px_7px_0px_var(--nb-black)] p-2.5 sm:p-3.5 pb-6 sm:pb-8 relative group cursor-pointer ${tilt} hover:rotate-0 hover:scale-105 hover:-translate-y-2 hover:shadow-[10px_10px_0px_var(--nb-black)] transition-all duration-300 ease-out`}
-          >
-            {/* Top Washi Tape / Pin Effect */}
-            <div
-              aria-hidden="true"
-              className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-12 sm:w-16 h-4 sm:h-5 bg-nb-yellow/80 border border-nb-black/40 -rotate-2 z-20 shadow-[1px_1px_0px_rgba(0,0,0,0.15)] pointer-events-none select-none"
-            ></div>
-
-            {/* Photo Viewport */}
-            <div className="relative w-full aspect-4/3 rounded-lg overflow-hidden border-2 border-nb-black bg-nb-black/5">
-              <Image
-                src={photo}
-                alt={`Dokumentasi kegiatan ${(i % 3) + 1}`}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-300"
-                sizes="(max-width: 640px) 260px, (max-width: 1024px) 320px, 360px"
-              />
-              {/* Hover Badge */}
-              <div className="absolute inset-0 bg-nb-black/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-                <span className="px-3 py-1 bg-nb-yellow border-2 border-nb-black rounded-lg shadow-[2px_2px_0px_var(--nb-black)] font-display font-black text-xs text-nb-black uppercase tracking-wider">
-                  View Full 🔍
-                </span>
-              </div>
-            </div>
-
-            {/* Polaroid Bottom Label */}
-            <div className="mt-2.5 sm:mt-3 flex items-center justify-between px-1 font-mono text-[10px] sm:text-xs text-nb-black font-bold">
-              <span>★ MEMORY #0{(i % 3) + 1}</span>
-              <span className="opacity-60 text-[9px] sm:text-[10px]">ILKOMERZ 62</span>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
+  }, [selectedPhotoIndex]);
 
   return (
     <section id="gallery" ref={sectionRef} className="py-14 sm:py-20 overflow-hidden relative">
@@ -257,8 +282,8 @@ export default function Gallery() {
           ref={trackRef}
           className="flex w-fit whitespace-nowrap will-change-transform cursor-grab active:cursor-grabbing"
         >
-          <PhotoBlock prefix="a" />
-          <PhotoBlock prefix="b" />
+          <PhotoBlock prefix="a" onSelectPhoto={setSelectedPhotoIndex} />
+          <PhotoBlock prefix="b" onSelectPhoto={setSelectedPhotoIndex} />
         </div>
       </div>
 
@@ -275,7 +300,7 @@ export default function Gallery() {
             {/* Header bar */}
             <div className="w-full flex items-center justify-between mb-4 border-b-2 border-nb-black pb-3">
               <span className="px-3 py-1 bg-nb-yellow border-2 border-nb-black rounded-lg font-display font-black text-xs sm:text-sm uppercase">
-                Photo {selectedPhotoIndex + 1} of {photos.length}
+                Photo {selectedPhotoIndex + 1} of {galleryPhotos.length}
               </span>
               <button
                 onClick={() => setSelectedPhotoIndex(null)}
@@ -289,21 +314,27 @@ export default function Gallery() {
             {/* Photo Viewport */}
             <div className="relative w-full aspect-4/3 sm:aspect-16/10 rounded-xl overflow-hidden border-3 border-nb-black bg-nb-black/10">
               <Image
-                src={photos[selectedPhotoIndex]}
-                alt={`Photo preview ${selectedPhotoIndex + 1}`}
+                src={galleryPhotos[selectedPhotoIndex].src}
+                alt={galleryPhotos[selectedPhotoIndex].alt}
                 fill
-                priority
+                loading="eager"
                 className="object-contain"
                 sizes="(max-width: 1024px) 90vw, 900px"
               />
             </div>
+
+            {/* Photo Caption */}
+            <p className="w-full mt-4 px-4 py-3 bg-nb-yellow/35 border-2 border-nb-black rounded-xl font-semibold text-sm sm:text-base text-center text-nb-black">
+              {galleryPhotos[selectedPhotoIndex].caption}
+            </p>
 
             {/* Navigation Buttons */}
             <div className="flex items-center justify-between w-full mt-4 pt-2">
               <button
                 onClick={() =>
                   setSelectedPhotoIndex(
-                    (selectedPhotoIndex - 1 + photos.length) % photos.length
+                    (selectedPhotoIndex - 1 + galleryPhotos.length) %
+                      galleryPhotos.length
                   )
                 }
                 className="px-4 sm:px-6 py-2 bg-nb-blue border-2 border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] font-bold text-xs sm:text-sm hover:translate-y-px hover:translate-x-px hover:shadow-[1px_1px_0px_var(--nb-black)] transition-all cursor-pointer flex items-center gap-1.5"
@@ -315,7 +346,9 @@ export default function Gallery() {
               </span>
               <button
                 onClick={() =>
-                  setSelectedPhotoIndex((selectedPhotoIndex + 1) % photos.length)
+                  setSelectedPhotoIndex(
+                    (selectedPhotoIndex + 1) % galleryPhotos.length
+                  )
                 }
                 className="px-4 sm:px-6 py-2 bg-nb-blue border-2 border-nb-black rounded-lg shadow-[3px_3px_0px_var(--nb-black)] font-bold text-xs sm:text-sm hover:translate-y-px hover:translate-x-px hover:shadow-[1px_1px_0px_var(--nb-black)] transition-all cursor-pointer flex items-center gap-1.5"
               >
