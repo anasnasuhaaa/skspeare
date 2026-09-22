@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
-import { Sparkles, ArrowDown, Users } from "lucide-react";
+import { Sparkles, ArrowDown } from "lucide-react";
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -15,47 +15,73 @@ export default function HeroSection() {
     if (!el) return;
 
     const ctx = gsap.context(() => {
-      // 1. Initial Slam Entrance Timeline
-      const tl = gsap.timeline({ defaults: { ease: "back.out(1.8)" } });
+      let hasRun = false;
+      const runEntrance = () => {
+        if (hasRun) return;
+        hasRun = true;
 
-      // Headline items slam in
-      tl.fromTo(
-        ".hero-motion-word",
-        { opacity: 0, y: 40, scale: 0.88, rotation: (i) => (i % 2 === 0 ? -4 : 4) },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          rotation: (i) => (i % 2 === 0 ? -2 : 1),
-          duration: 0.65,
-          stagger: 0.12,
-        }
-      );
+        // 1. Slam Entrance Timeline
+        const tl = gsap.timeline({ defaults: { ease: "back.out(1.8)" } });
 
-      // Photo Showcase Card slams down with spring bounce
-      if (photoCardRef.current) {
+        // Headline items slam in
         tl.fromTo(
-          photoCardRef.current,
-          { opacity: 0, y: 50, scale: 0.92, rotation: 2 },
+          ".hero-motion-word",
+          { opacity: 0, y: 40, scale: 0.88, rotation: (i) => (i % 2 === 0 ? -4 : 4) },
           {
             opacity: 1,
             y: 0,
             scale: 1,
-            rotation: 0,
-            duration: 0.75,
-            ease: "back.out(1.8)",
-          },
-          "-=0.35"
+            rotation: (i) => (i % 2 === 0 ? -2 : 1),
+            duration: 0.65,
+            stagger: 0.12,
+          }
         );
+
+        tl.fromTo(
+          ".hero-philosophy",
+          { opacity: 0, y: 12 },
+          { opacity: 1, y: 0, duration: 0.42, ease: "power2.out" },
+          "-=0.32"
+        );
+
+        // Photo Showcase Card slams down with spring bounce
+        if (photoCardRef.current) {
+          tl.fromTo(
+            photoCardRef.current,
+            { opacity: 0, y: 50, scale: 0.92, rotation: 2 },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              rotation: 0,
+              duration: 0.75,
+              ease: "back.out(1.8)",
+            },
+            "-=0.35"
+          );
+        }
+
+        // Action buttons pop in
+        tl.fromTo(
+          ".hero-cta-btn",
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: 0.35, stagger: 0.08, ease: "power2.out" },
+          "-=0.2"
+        );
+      };
+
+      // Listen for loader completion. The data attribute closes the mount-order race.
+      const handleReady = () => runEntrance();
+      window.addEventListener("proxy:ready", handleReady);
+
+      if (document.documentElement.dataset.proxyReady === "true") {
+        runEntrance();
       }
 
-      // Action buttons pop in
-      tl.fromTo(
-        ".hero-cta-btn",
-        { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 0.35, stagger: 0.08, ease: "power2.out" },
-        "-=0.2"
-      );
+      // Fallback timeout in case loader is bypassed or absent
+      const fallbackTimer = setTimeout(() => {
+        runEntrance();
+      }, 3000);
 
       // Ambient decorative floaters
       const floaters = el.querySelectorAll(".hero-float-item");
@@ -85,9 +111,16 @@ export default function HeroSection() {
           delay: (i * 0.15) % 1.2,
         });
       });
+
+      return () => {
+        window.removeEventListener("proxy:ready", handleReady);
+        clearTimeout(fallbackTimer);
+      };
     }, el);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+    };
   }, []);
 
   return (
@@ -144,9 +177,10 @@ export default function HeroSection() {
               PROXY
             </span>
 
-            {/* SHAKESPEARE Word Plate (Below on mobile) */}
-            <span className="hero-motion-word inline-block relative text-nb-black hover:scale-105 hover:rotate-0 transition-transform duration-200 cursor-default transform rotate-1">
-              SHAKESPEARE
+            {/* SHAKESPEARE Word Plate — SHAKE is the central motion principle */}
+            <span className="hero-motion-word hero-shakespeare-word inline-block relative text-nb-black hover:scale-105 hover:rotate-0 transition-transform duration-200 cursor-default transform rotate-1">
+              <span className="hero-shake-fragment inline-block">SHAKE</span>
+              <span>SPEARE</span>
               {/* Underline Ribbon Highlight */}
               <span
                 aria-hidden="true"

@@ -60,4 +60,16 @@ export const galleryPhotos: readonly GalleryPhoto[] = [
     alt: "Dokumentasi kegiatan ILKOMERZ 62, foto 9",
     caption: "Day 3 Pekan Ilkomerz 62",
   },
+  {
+    id: 10,
+    src: "/gallery/10.jpeg",
+    alt: "Dokumentasi kegiatan ILKOMERZ 62, foto 9",
+    caption: "Day 4 Pekan Ilkomerz 62",
+  },
+  {
+    id: 11,
+    src: "/gallery/11.jpeg",
+    alt: "Dokumentasi kegiatan ILKOMERZ 62, foto 9",
+    caption: "Opening Spectra Pekan Ilkomerz 62",
+  },
 ];
