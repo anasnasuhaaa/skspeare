@@ -2,25 +2,17 @@ import { MemberData } from "@/app/types/member";
 
 const khansaData: MemberData = {
   slug: "khansa",
-  name: "Khansa Afifah A",
+  name: "Khansa Afifah Askarullah",
   role: "Anggota",
-  // TODO: replace with your own NIM
-  nim: "",
-  photo: "/member/demo-user.jpg",
-  // TODO: replace with your LinkedIn profile URL
-  linkedinUrl: "",
-  // TODO: replace with your CV link or file path
-  cvUrl: "",
-  // TODO: replace with your hometown/region
-  hometown: "",
-  // TODO: replace with your hobbies
-  hobbies: [],
-  // TODO: replace with your Instagram handle (without @)
-  instagramHandle: "",
-  // TODO: replace with your personal quote
-  quote: "",
-  // TODO: replace with your Spotify track URL
-  spotifyTrackUri: "",
+  nim: "M0403251121",
+  photo: "/member/khansa-profil.jpeg",
+  linkedinUrl: "https://www.linkedin.com/in/khansa-afifah-askarullah-3785a43b6/",
+  cvUrl: "https://ipb.link/shakespeare-khansaafifahaskarullah-m0403251121-buildyourbrand",
+  hometown: "Bogor, West Java",
+  hobbies: ["Handcraft", "Binge Watch"],
+  instagramHandle: "khnsaffh",
+  quote: "small core with big dream",
+  spotifyTrackUri: "https://open.spotify.com/track/4D7BCuvgdJlYvlX5WlN54t?si=e0ptKXTDSvK9W8Ei3P7Ivw&utm_source=copy-link",
 };
 
 export default khansaData;
