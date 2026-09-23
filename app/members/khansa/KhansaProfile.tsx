@@ -25,12 +25,14 @@ interface KhansaProfileProps {
   onClose?: () => void;
   onReplayGame?: () => void;
   isOpen?: boolean;
+  isStandalone?: boolean;
 }
 
 export default function KhansaProfile({
   onClose,
   onReplayGame,
   isOpen = true,
+  isStandalone = false,
 }: KhansaProfileProps) {
   const [toastText, setToastText] = useState<string | null>(null);
   const [copiedField, setCopiedField] = useState<string | null>(null);

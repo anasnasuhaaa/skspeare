@@ -146,6 +146,7 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
           <div className="w-full max-w-4xl px-3 sm:px-6 my-auto animate-in fade-in zoom-in-95 duration-400">
             {/* Stage 2: Main Kawaii Ocean Profile */}
             <KhansaProfile
+              onClose={handleAnimateClose}
               onReplayGame={() => setStage("game")}
               isStandalone={false}
             />

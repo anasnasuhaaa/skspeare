@@ -169,7 +169,7 @@ export default function LoadingScreen() {
   return (
     <div
       ref={containerRef}
-      className="loading-stage fixed inset-0 z-[9999] isolate flex select-none items-center justify-center overflow-hidden bg-nb-cream p-4 sm:p-6"
+      className="loading-stage fixed inset-0 z-9999 isolate flex select-none items-center justify-center overflow-hidden bg-nb-cream p-4 sm:p-6"
       aria-label="Memuat Proxy Shakespeare"
       aria-live="polite"
       role="status"
@@ -208,16 +208,16 @@ export default function LoadingScreen() {
           </h2>
 
           <div className="loader-reveal my-5 flex items-center gap-3 sm:my-6">
-            <span className="h-[3px] flex-1 bg-nb-black" />
+            <span className="h-0.75 flex-1 bg-nb-black" />
             <p className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-nb-black sm:text-xs">
               Shake the ordinary
             </p>
-            <span className="h-[3px] flex-1 bg-nb-black" />
+            <span className="h-0.75 flex-1 bg-nb-black" />
           </div>
 
           <div className="loader-reveal">
             <div
-              className="h-5 w-full overflow-hidden border-2 border-nb-black bg-nb-cream p-[2px] sm:h-6"
+              className="h-5 w-full overflow-hidden border-2 border-nb-black bg-nb-cream p-0.5 sm:h-6"
               role="progressbar"
               aria-valuemin={0}
               aria-valuemax={100}
