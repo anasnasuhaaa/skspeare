@@ -7,14 +7,10 @@ import {
   RotateCcw,
   Copy,
   ExternalLink,
-  Sparkles,
   MapPin,
   Music,
   FileText,
   Zap,
-  Shield,
-  Flame,
-  Droplets,
   Award,
 } from "lucide-react";
 import gsap from "gsap";

@@ -63,7 +63,7 @@ export default function Card({ onClick }: { onClick: () => void }) {
         <div className="flex items-center gap-1 mb-1">
           <span className="w-1.5 h-1.5 rounded-none bg-pink-400 border border-black animate-pulse shrink-0" />
           <span className="font-mono text-[9px] sm:text-xs font-bold text-pink-400 uppercase tracking-wider truncate">
-            {kekeData.role} // MAGICIAN
+            {kekeData.role} {'//'} MAGICIAN
           </span>
         </div>
 

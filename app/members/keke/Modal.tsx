@@ -8,7 +8,6 @@ import {
   RotateCcw,
   Copy,
   ExternalLink,
-  Sparkles,
   MapPin,
   Music,
   Wand2,
@@ -24,31 +23,6 @@ const pixelFont = Press_Start_2P({
   subsets: ["latin"],
   display: "swap",
 });
-
-// Custom SVG Instagram Icon
-const InstagramIcon = ({
-  size = 16,
-  className = "",
-}: {
-  size?: number;
-  className?: string;
-}) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={className}
-  >
-    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-  </svg>
-);
 
 // Reusable Pixel Corner Brackets component
 const PixelCornerBrackets = ({ color = "border-yellow-300" }: { color?: string }) => (
@@ -334,7 +308,7 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
                     {/* Role Pill */}
                     <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#ff4081] border-2 border-black font-mono text-[10px] sm:text-[11px] font-black text-black mb-1.5 shadow-[1.5px_1.5px_0px_#000000]">
                       <span>✦</span>
-                      <span>{kekeData.role} // Pixel Magician</span>
+                      <span>{kekeData.role} {'//'} Pixel Magician</span>
                     </div>
 
                     {/* Member Name */}

@@ -10,8 +10,6 @@ import {
   ArrowRight,
   Volume2,
   VolumeX,
-  Heart,
-  HelpCircle,
 } from "lucide-react";
 import {
   FaeOutfit,
@@ -23,7 +21,6 @@ import {
   WINGS_OPTIONS,
   PET_OPTIONS,
   DEFAULT_OUTFIT,
-  SKIPPED_OUTFIT,
 } from "./fairyTypes";
 import FaeCharacter from "./FaeCharacter";
 import { soundEngine } from "./soundEngine";

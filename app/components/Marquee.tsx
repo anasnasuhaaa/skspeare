@@ -7,6 +7,23 @@ interface MarqueeProps {
   direction?: "left" | "right";
 }
 
+const items = Array(8).fill("PROXY SHAKESPEARE ★ PEKAN ILKOMERZ 62");
+
+function TextBlock() {
+  return (
+    <div className="flex shrink-0 items-center whitespace-nowrap">
+      {items.map((text, i) => (
+        <span
+          key={i}
+          className="text-base sm:text-xl md:text-2xl font-display font-black text-nb-black uppercase tracking-wider px-4 sm:px-6"
+        >
+          {text}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 export default function Marquee({ direction = "left" }: MarqueeProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const tweenRef = useRef<gsap.core.Tween | null>(null);
@@ -62,21 +79,6 @@ export default function Marquee({ direction = "left" }: MarqueeProps) {
       });
     }
   };
-
-  const items = Array(8).fill("PROXY SHAKESPEARE ★ PEKAN ILKOMERZ 62");
-
-  const TextBlock = () => (
-    <div className="flex shrink-0 items-center whitespace-nowrap">
-      {items.map((text, i) => (
-        <span
-          key={i}
-          className="text-base sm:text-xl md:text-2xl font-display font-black text-nb-black uppercase tracking-wider px-4 sm:px-6"
-        >
-          {text}
-        </span>
-      ))}
-    </div>
-  );
 
   return (
     <div

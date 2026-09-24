@@ -1,7 +1,9 @@
 
-import React, { useEffect, useRef, useState } from "react";
-import { X, Copy, Terminal, FileText, ExternalLink, Music, Code2 } from "lucide-react";
+import React from "react";
+import Image from "next/image";
+import { ExternalLink } from "lucide-react";
 import Instagram from "@/app/components/InstagramIcon";
+
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -31,10 +33,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
         {/* 1. Header Panel */}
         <div className="bg-white/5 border border-white/10 rounded-2xl p-5 flex flex-col sm:flex-row items-center sm:items-start gap-6 mt-4 hover:bg-white/10 transition-colors">
-  <div className="w-32 h-32 shrink-0 rounded-2xl overflow-hidden border border-white/20 bg-black/20">
-    <img 
+  <div className="w-32 h-32 shrink-0 rounded-2xl overflow-hidden border border-white/20 bg-black/20 relative">
+    <Image 
       src="/member/p4.jpeg" 
       alt="Adit"
+      fill
       className="w-full h-full object-cover opacity-100" 
     />
   </div>

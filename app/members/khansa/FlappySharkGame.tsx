@@ -47,9 +47,9 @@ export default function FlappySharkGame({ onComplete, onSkip }: FlappySharkGameP
   // React state for HUD overlays
   const [gameState, setGameState] = useState<"ready" | "playing" | "gameover" | "victory">("ready");
   const [score, setScore] = useState(0);
-  const [highScore, setHighScore] = useState(0);
+  const [, setHighScore] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
-  const [assetsLoaded, setAssetsLoaded] = useState(false);
+  const [, setAssetsLoaded] = useState(false);
 
   // References for game loop state
   const stateRef = useRef({

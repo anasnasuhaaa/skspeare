@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { Crosshair, ExternalLink, FileText, Target } from "lucide-react";
+import { Crosshair, FileText, Target } from "lucide-react";
 import data from "./data";
 
 // ============================================================
@@ -88,7 +88,7 @@ export default function Card({ onClick }: { onClick: () => void }) {
         <div className="flex items-center gap-1.5 mb-1">
           <span className="w-1.5 h-1.5 bg-[#FF4655] rotate-45" />
           <span className="font-valorant-mono text-[10px] sm:text-xs font-semibold text-[#8B978F] tracking-widest uppercase">
-            // {data.role}
+            {'//'} {data.role}
           </span>
         </div>
 

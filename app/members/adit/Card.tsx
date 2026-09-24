@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 interface CardProps {
   onOpenModal: () => void;
@@ -8,10 +9,11 @@ const Card: React.FC<CardProps> = ({ onOpenModal }) => {
   return (
     <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] flex flex-col items-center max-w-[320px] w-full transition-all duration-300 hover:bg-white/20">
       {/* Profile Image Container */}
-      <div className="w-full aspect-square mb-5 rounded-xl overflow-hidden border border-white/30 shadow-inner">
-        <img
-          src="/path-to-aditya-image.jpg" // Replace with actual image path
+      <div className="w-full aspect-square mb-5 rounded-xl overflow-hidden border border-white/30 shadow-inner relative">
+        <Image
+          src="/member/p4.jpeg"
           alt="Muhamad Aditya Firmasyah"
+          fill
           className="w-full h-full object-cover"
         />
       </div>

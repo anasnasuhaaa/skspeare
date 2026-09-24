@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Sparkles } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import FlappySharkGame from "./FlappySharkGame";
 import KhansaProfile from "./KhansaProfile";
 

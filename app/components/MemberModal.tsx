@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import { X, Copy, ExternalLink } from "lucide-react";
 import gsap from "gsap";
@@ -22,12 +22,42 @@ export default function MemberModal({
   children,
 }: MemberModalProps) {
   const [shouldRender, setShouldRender] = useState(isOpen);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
+  if (isOpen && !shouldRender) {
+    setShouldRender(true);
+  }
+
+  const handleAnimateClose = useCallback(() => {
+    if (backdropRef.current && contentRef.current) {
+      gsap.to(backdropRef.current, {
+        opacity: 0,
+        duration: 0.2,
+        ease: "power2.in",
+      });
+      gsap.to(contentRef.current, {
+        scale: 0.95,
+        opacity: 0,
+        y: 20,
+        duration: 0.2,
+        ease: "power2.in",
+        onComplete: () => {
+          document.body.style.overflow = "";
+          setShouldRender(false);
+          onClose();
+        },
+      });
+    } else {
+      document.body.style.overflow = "";
+      setShouldRender(false);
+      onClose();
+    }
+  }, [onClose]);
+
   useEffect(() => {
     if (isOpen) {
-      setShouldRender(true);
       document.body.style.overflow = "hidden";
     } else if (shouldRender) {
       handleAnimateClose();
@@ -35,7 +65,7 @@ export default function MemberModal({
     return () => {
       document.body.style.overflow = "";
     };
-  }, [isOpen]);
+  }, [isOpen, shouldRender, handleAnimateClose]);
 
   useEffect(() => {
     if (shouldRender && backdropRef.current && contentRef.current) {
@@ -66,33 +96,7 @@ export default function MemberModal({
       window.addEventListener("keydown", handleKeyDown);
     }
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen]);
-
-  const handleAnimateClose = () => {
-    if (backdropRef.current && contentRef.current) {
-      gsap.to(backdropRef.current, {
-        opacity: 0,
-        duration: 0.2,
-        ease: "power2.in",
-      });
-      gsap.to(contentRef.current, {
-        scale: 0.95,
-        opacity: 0,
-        y: 20,
-        duration: 0.2,
-        ease: "power2.in",
-        onComplete: () => {
-          document.body.style.overflow = "";
-          setShouldRender(false);
-          onClose();
-        },
-      });
-    } else {
-      document.body.style.overflow = "";
-      setShouldRender(false);
-      onClose();
-    }
-  };
+  }, [isOpen, handleAnimateClose]);
 
   if (!shouldRender || !member) return null;
 
@@ -109,8 +113,6 @@ export default function MemberModal({
     (member.hobbies && member.hobbies.length > 0) ||
     cleanInstagram ||
     member.spotifyTrackUri;
-
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const handleCopy = (text: string, label: string) => {
     if (typeof navigator !== "undefined" && navigator.clipboard) {

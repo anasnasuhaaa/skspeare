@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { X, Sparkles } from "lucide-react";
+import { X } from "lucide-react";
 import gsap from "gsap";
 import { FaeOutfit, DEFAULT_OUTFIT, SKIPPED_OUTFIT } from "./fairyTypes";
 import SecretGardenDoor from "./SecretGardenDoor";
@@ -24,35 +24,9 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
   const backdropRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (isOpen) {
-      setShouldRender(true);
-      document.body.style.overflow = "hidden";
-    } else if (shouldRender) {
-      handleAnimateClose();
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (shouldRender && backdropRef.current && contentRef.current) {
-      const ctx = gsap.context(() => {
-        gsap.fromTo(
-          backdropRef.current,
-          { opacity: 0 },
-          { opacity: 1, duration: 0.35, ease: "power2.out" }
-        );
-        gsap.fromTo(
-          contentRef.current,
-          { scale: 0.98, opacity: 0, y: 15 },
-          { scale: 1, opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }
-        );
-      });
-      return () => ctx.revert();
-    }
-  }, [shouldRender]);
+  if (isOpen && !shouldRender) {
+    setShouldRender(true);
+  }
 
   const handleAnimateClose = useCallback(() => {
     soundEngine.stopAmbientMusic();
@@ -80,6 +54,35 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
       onClose();
     }
   }, [onClose]);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else if (shouldRender) {
+      handleAnimateClose();
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen, shouldRender, handleAnimateClose]);
+
+  useEffect(() => {
+    if (shouldRender && backdropRef.current && contentRef.current) {
+      const ctx = gsap.context(() => {
+        gsap.fromTo(
+          backdropRef.current,
+          { opacity: 0 },
+          { opacity: 1, duration: 0.35, ease: "power2.out" }
+        );
+        gsap.fromTo(
+          contentRef.current,
+          { scale: 0.98, opacity: 0, y: 15 },
+          { scale: 1, opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }
+        );
+      });
+      return () => ctx.revert();
+    }
+  }, [shouldRender]);
 
   // Keyboard Escape listener
   useEffect(() => {

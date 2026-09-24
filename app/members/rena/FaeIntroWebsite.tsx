@@ -270,10 +270,10 @@ export default function FaeIntroWebsite({
             </span>
             <div>
               <h3 className="text-xl sm:text-2xl font-serif font-black uppercase tracking-wider text-[#fffdf7]">
-                Rena's Hobbies
+                Rena&apos;s Hobbies
               </h3>
               <p className="text-xs font-mono text-[#a8e6cf]/80">
-                idk, tbh i don't even have any of them
+                idk, tbh i don&apos;t even have any of them
               </p>
             </div>
           </div>

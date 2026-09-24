@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { X, Sparkles, Gamepad2 } from "lucide-react";
+import { X } from "lucide-react";
 import gsap from "gsap";
 import FlappySharkGame from "./FlappySharkGame";
 import KhansaProfile from "./KhansaProfile";
@@ -20,37 +20,9 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
   const backdropRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // Sync open state & lock body scroll
-  useEffect(() => {
-    if (isOpen) {
-      setShouldRender(true);
-      document.body.style.overflow = "hidden";
-    } else if (shouldRender) {
-      handleAnimateClose();
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
-
-  // Entrance animation
-  useEffect(() => {
-    if (shouldRender && backdropRef.current && contentRef.current) {
-      const ctx = gsap.context(() => {
-        gsap.fromTo(
-          backdropRef.current,
-          { opacity: 0 },
-          { opacity: 1, duration: 0.3, ease: "power2.out" }
-        );
-        gsap.fromTo(
-          contentRef.current,
-          { scale: 0.94, opacity: 0, y: 20 },
-          { scale: 1, opacity: 1, y: 0, duration: 0.35, ease: "back.out(1.4)" }
-        );
-      });
-      return () => ctx.revert();
-    }
-  }, [shouldRender]);
+  if (isOpen && !shouldRender) {
+    setShouldRender(true);
+  }
 
   // Handle animate close
   const handleAnimateClose = useCallback(() => {
@@ -80,6 +52,37 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
       onClose();
     }
   }, [onClose]);
+
+  // Sync open state & lock body scroll
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else if (shouldRender) {
+      handleAnimateClose();
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen, shouldRender, handleAnimateClose]);
+
+  // Entrance animation
+  useEffect(() => {
+    if (shouldRender && backdropRef.current && contentRef.current) {
+      const ctx = gsap.context(() => {
+        gsap.fromTo(
+          backdropRef.current,
+          { opacity: 0 },
+          { opacity: 1, duration: 0.3, ease: "power2.out" }
+        );
+        gsap.fromTo(
+          contentRef.current,
+          { scale: 0.94, opacity: 0, y: 20 },
+          { scale: 1, opacity: 1, y: 0, duration: 0.35, ease: "back.out(1.4)" }
+        );
+      });
+      return () => ctx.revert();
+    }
+  }, [shouldRender]);
 
   // Keyboard Escape listener
   useEffect(() => {

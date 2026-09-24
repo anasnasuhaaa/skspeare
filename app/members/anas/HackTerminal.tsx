@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import type { FormEvent } from "react";
 import gsap from "gsap";
 import { X, Volume2, VolumeX } from "lucide-react";
@@ -249,16 +249,45 @@ export default function HackTerminal({
     soundEngineRef.current.enabled = !soundMuted;
   }, [soundMuted]);
 
+  if (isOpen && !shouldRender) {
+    setShouldRender(true);
+    setPhase("boot");
+    setPassword("");
+    setErrorText("");
+    setAttemptsLeft(3);
+    setShowAccessGranted(false);
+    setBreachText("");
+    setBreachProgress(0);
+  }
+
+  const handleAnimateClose = useCallback(() => {
+    if (containerRef.current && terminalRef.current) {
+      gsap.to(containerRef.current, {
+        opacity: 0,
+        duration: 0.2,
+        ease: "power2.in",
+      });
+      gsap.to(terminalRef.current, {
+        scale: 0.95,
+        opacity: 0,
+        y: 20,
+        duration: 0.2,
+        ease: "power2.in",
+        onComplete: () => {
+          document.body.style.overflow = "";
+          setShouldRender(false);
+          onClose();
+        },
+      });
+    } else {
+      document.body.style.overflow = "";
+      setShouldRender(false);
+      onClose();
+    }
+  }, [onClose]);
+
   useEffect(() => {
     if (isOpen) {
-      setShouldRender(true);
-      setPhase("boot");
-      setPassword("");
-      setErrorText("");
-      setAttemptsLeft(3);
-      setShowAccessGranted(false);
-      setBreachText("");
-      setBreachProgress(0);
       document.body.style.overflow = "hidden";
     } else if (shouldRender) {
       handleAnimateClose();
@@ -266,7 +295,7 @@ export default function HackTerminal({
     return () => {
       document.body.style.overflow = "";
     };
-  }, [isOpen]);
+  }, [isOpen, shouldRender, handleAnimateClose]);
 
   // Keyboard Escape listener
   useEffect(() => {
@@ -279,7 +308,7 @@ export default function HackTerminal({
       window.addEventListener("keydown", handleKeyDown);
     }
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen]);
+  }, [isOpen, handleAnimateClose]);
 
   // GSAP enter animation
   useEffect(() => {
@@ -349,32 +378,6 @@ export default function HackTerminal({
     return () => ctx.revert();
   }, [shouldRender, phase]);
 
-  const handleAnimateClose = () => {
-    if (containerRef.current && terminalRef.current) {
-      gsap.to(containerRef.current, {
-        opacity: 0,
-        duration: 0.2,
-        ease: "power2.in",
-      });
-      gsap.to(terminalRef.current, {
-        scale: 0.95,
-        opacity: 0,
-        y: 20,
-        duration: 0.2,
-        ease: "power2.in",
-        onComplete: () => {
-          document.body.style.overflow = "";
-          setShouldRender(false);
-          onClose();
-        },
-      });
-    } else {
-      document.body.style.overflow = "";
-      setShouldRender(false);
-      onClose();
-    }
-  };
-
   const handleLogin = (e: FormEvent) => {
     e.preventDefault();
     if (password === "pi2026") {
@@ -410,7 +413,7 @@ export default function HackTerminal({
   const startBreachSequence = () => {
     setPhase("breaching");
 
-    const ctx = gsap.context(() => {
+    gsap.context(() => {
       const tl = gsap.timeline();
 
       // 1. Glitch Burst & Sound Surge

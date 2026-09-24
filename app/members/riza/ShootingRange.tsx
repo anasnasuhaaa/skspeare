@@ -713,7 +713,7 @@ export default function ShootingRange({
             </div>
 
             <span className="px-3 py-0.5 bg-[#161F28] border border-[#FF4655]/60 font-valorant-mono text-[11px] font-bold uppercase text-[#ECE8E1] mb-2 tracking-wider">
-              // CONTRACT PROTOCOL
+              {'//'} CONTRACT PROTOCOL
             </span>
 
             <h3 className="text-2xl sm:text-3xl font-valorant-title font-bold text-[#ECE8E1] uppercase tracking-wide mb-2">

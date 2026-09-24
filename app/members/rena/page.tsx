@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Sparkles } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { FaeOutfit, DEFAULT_OUTFIT, SKIPPED_OUTFIT } from "./fairyTypes";
 import SecretGardenDoor from "./SecretGardenDoor";
 import FairyDressUp from "./FairyDressUp";

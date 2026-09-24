@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 
 interface SpotifyEmbedProps {
   trackUri: string;
@@ -7,31 +7,19 @@ interface SpotifyEmbedProps {
 }
 
 export default function SpotifyEmbed({ trackUri, isOpen }: SpotifyEmbedProps) {
-  const [iframeSrc, setIframeSrc] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loadedTrack, setLoadedTrack] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (isOpen && trackUri) {
-      setIsLoading(true);
-      // If the trackUri is already a full embed URL, use it directly
-      // Otherwise, construct the embed URL from a track URI/URL
-      let src = trackUri;
-      if (!src.includes("/embed/")) {
-        // Convert https://open.spotify.com/track/ID to embed URL
-        src = src.replace("open.spotify.com/", "open.spotify.com/embed/");
-      }
-      // Ensure autoplay param
-      if (!src.includes("autoplay")) {
-        src += (src.includes("?") ? "&" : "?") + "autoplay=1";
-      }
-      setIframeSrc(src);
-    } else {
-      setIframeSrc(null);
-      setIsLoading(true);
-    }
-  }, [isOpen, trackUri]);
+  if (!isOpen || !trackUri) return null;
 
-  if (!iframeSrc) return null;
+  let src = trackUri;
+  if (!src.includes("/embed/")) {
+    src = src.replace("open.spotify.com/", "open.spotify.com/embed/");
+  }
+  if (!src.includes("autoplay")) {
+    src += (src.includes("?") ? "&" : "?") + "autoplay=1";
+  }
+
+  const isLoading = loadedTrack !== src;
 
   return (
     <div className="relative w-full rounded-2xl overflow-hidden border-[3px] border-nb-black shadow-[3px_3px_0px_var(--nb-black)] bg-[#121212] min-h-38">
@@ -45,13 +33,13 @@ export default function SpotifyEmbed({ trackUri, isOpen }: SpotifyEmbedProps) {
         </div>
       )}
       <iframe
-        src={iframeSrc}
+        src={src}
         width="100%"
         height="152"
         frameBorder="0"
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         loading="lazy"
-        onLoad={() => setIsLoading(false)}
+        onLoad={() => setLoadedTrack(src)}
         className="block"
         style={{ borderRadius: "12px" }}
       />

@@ -90,8 +90,6 @@ export default function FaeCharacter({
   const hairFrontPath = isHair1 ? activeHair.layerFront : activeHair.layerPath;
 
   // Offsets relative to Body coordinate system
-  const hairOffsetY = activeHair.offsetY || "0%";
-  const accOffsetY = activeAccessory?.offsetY || "0%";
   const wingsOffsetY = activeWings.offsetY || "0%";
 
   return (

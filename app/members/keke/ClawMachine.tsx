@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { Press_Start_2P } from "next/font/google";
-import { Volume2, VolumeX, FastForward, Sparkles, Coins, X } from "lucide-react";
+import { Volume2, VolumeX, FastForward, Coins, X } from "lucide-react";
 
 const pixelFont = Press_Start_2P({
   weight: "400",

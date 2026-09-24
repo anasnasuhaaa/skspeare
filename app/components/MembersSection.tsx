@@ -328,16 +328,16 @@ export default function MembersSection() {
           {/* Filter Chips */}
           <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap justify-center w-full md:w-auto">
             {[
-              { key: "ALL", label: "All", count: members.length },
-              { key: "PJK", label: "PJK", count: pjk.length },
-              { key: "Ketua", label: "Leader", count: ketua.length },
-              { key: "Anggota", label: "Members", count: anggota.length },
+              { key: "ALL" as const, label: "All", count: members.length },
+              { key: "PJK" as const, label: "PJK", count: pjk.length },
+              { key: "Ketua" as const, label: "Leader", count: ketua.length },
+              { key: "Anggota" as const, label: "Members", count: anggota.length },
             ].map((filter) => {
               const isActive = roleFilter === filter.key;
               return (
                 <button
                   key={filter.key}
-                  onClick={() => setRoleFilter(filter.key as any)}
+                  onClick={() => setRoleFilter(filter.key)}
                   className={`px-3 sm:px-3.5 py-1.5 font-display font-black text-xs sm:text-sm uppercase rounded-lg border-[2.5px] border-nb-black cursor-pointer transition-all ${isActive
                     ? "bg-nb-yellow shadow-[1.5px_1.5px_0px_var(--nb-black)] translate-y-0.5 translate-x-0.5"
                     : "bg-nb-white shadow-[3px_3px_0px_var(--nb-black)] hover:bg-nb-yellow hover:translate-y-0.5 hover:translate-x-0.5 hover:shadow-[1.5px_1.5px_0px_var(--nb-black)]"

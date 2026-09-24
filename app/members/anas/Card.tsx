@@ -1,6 +1,6 @@
 "use client";
 
-import { ExternalLink, FileText, Terminal } from "lucide-react";
+import { FileText, Terminal } from "lucide-react";
 import Image from "next/image";
 import anasData from "./data";
 // Export HackTerminal so it can be imported by MembersSection

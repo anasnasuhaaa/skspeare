@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { MessageCircle, Sparkles, X, ChevronUp, ChevronDown } from "lucide-react";
+import { Sparkles, X, ChevronUp, ChevronDown } from "lucide-react";
 import { FaeOutfit } from "./fairyTypes";
 import FaeCharacter from "./FaeCharacter";
 import { soundEngine } from "./soundEngine";
