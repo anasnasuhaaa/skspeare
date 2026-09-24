@@ -68,6 +68,36 @@ export default function HeroSection() {
           { opacity: 1, y: 0, duration: 0.35, stagger: 0.08, ease: "power2.out" },
           "-=0.2"
         );
+
+        // Continuous expanding / breathing floating motion (matching About section)
+        tl.add(() => {
+          const proxyPlate = el.querySelector(".hero-motion-word");
+          if (proxyPlate) {
+            gsap.to(proxyPlate, {
+              scale: 1.06,
+              y: -5,
+              rotation: "+=2",
+              duration: 2.2,
+              repeat: -1,
+              yoyo: true,
+              ease: "sine.inOut",
+            });
+          }
+
+          const shakePlate = el.querySelector(".hero-shakespeare-word");
+          if (shakePlate) {
+            gsap.to(shakePlate, {
+              scale: 1.05,
+              y: -4,
+              rotation: "-=2",
+              duration: 2.6,
+              repeat: -1,
+              yoyo: true,
+              ease: "sine.inOut",
+              delay: 0.3,
+            });
+          }
+        });
       };
 
       // Listen for loader completion. The data attribute closes the mount-order race.
@@ -129,6 +159,12 @@ export default function HeroSection() {
       ref={sectionRef}
       className="min-h-dvh pt-20 pb-12 sm:pt-24 sm:pb-16 relative overflow-hidden flex flex-col justify-center items-center bg-nb-cream"
     >
+      {/* Background Dot & Grid Pattern Texture */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none z-0 nb-bg-pattern"
+      />
+
       {/* Background Decorative Ambient Particles (Fully Responsive for Mobile & Desktop) */}
       <div
         aria-hidden="true"

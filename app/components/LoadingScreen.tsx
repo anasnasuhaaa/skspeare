@@ -87,7 +87,7 @@ export default function LoadingScreen() {
       )
       .to(
         containerRef.current,
-        { backgroundColor: "transparent", duration: 0.35, ease: "power2.out" },
+        { opacity: 0, duration: 0.35, ease: "power2.out" },
         "curtain+=0.3"
       );
   }, [announceReady]);

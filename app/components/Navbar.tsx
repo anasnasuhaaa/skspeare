@@ -73,16 +73,21 @@ export default function Navbar() {
         className="fixed top-0 left-0 right-0 z-90 bg-nb-cream/95 backdrop-blur-sm border-b-[3px] border-nb-black shadow-[0_4px_0_var(--nb-black)]"
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-15 sm:h-16">
-          {/* Logo Text - Neobrutalism Solid Black */}
+          {/* Logo Text - Neobrutalism Crafted Typography */}
           <a
             href="#"
             onClick={(e) => {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
-            className="font-display font-black text-xl sm:text-2xl text-nb-black tracking-tight hover:-translate-y-0.5 transition-transform"
+            className="group inline-flex items-center gap-2 sm:gap-2.5 font-display font-black text-lg sm:text-xl text-nb-black tracking-tight select-none hover:-translate-y-0.5 transition-transform shrink-0 leading-none"
           >
-            Proxy Shakespeare
+            <span className="px-2.5 py-1 sm:py-0.5 bg-nb-yellow border-[2.5px] border-nb-black rounded-lg sm:rounded-xl shadow-[2.5px_2.5px_0px_var(--nb-black)] text-xs sm:text-sm uppercase tracking-wider group-hover:-rotate-2 transition-transform inline-block leading-none">
+              PROXY
+            </span>
+            <span className="tracking-tight uppercase flex items-center font-black text-lg sm:text-xl leading-none">
+              <span>SHAKESPEARE</span>
+            </span>
           </a>
 
           {/* Desktop Links */}
@@ -96,8 +101,8 @@ export default function Navbar() {
                   type="button"
                   onClick={() => handleClick(link.href)}
                   className={`px-4 py-1.5 text-sm font-bold text-nb-black border-[2.5px] border-nb-black rounded-lg transition-all cursor-pointer ${isActive
-                      ? "bg-nb-yellow shadow-[1.5px_1.5px_0px_var(--nb-black)] translate-y-[1.5px] translate-x-[1.5px]"
-                      : "bg-nb-white shadow-[3px_3px_0px_var(--nb-black)] hover:bg-nb-yellow hover:translate-y-[1.5px] hover:translate-x-[1.5px] hover:shadow-[1.5px_1.5px_0px_var(--nb-black)]"
+                    ? "bg-nb-yellow shadow-[1.5px_1.5px_0px_var(--nb-black)] translate-y-[1.5px] translate-x-[1.5px]"
+                    : "bg-nb-white shadow-[3px_3px_0px_var(--nb-black)] hover:bg-nb-yellow hover:translate-y-[1.5px] hover:translate-x-[1.5px] hover:shadow-[1.5px_1.5px_0px_var(--nb-black)]"
                     }`}
                 >
                   {link.label}
@@ -145,8 +150,8 @@ export default function Navbar() {
       <div
         ref={menuRef}
         className={`md:hidden fixed top-18 sm:top-20 right-4 sm:right-6 z-100 w-48 sm:w-52 bg-nb-cream border-[3px] border-nb-black rounded-2xl shadow-[6px_6px_0px_var(--nb-black)] p-3 origin-top-right transition-all duration-200 ease-out ${isOpen
-            ? "scale-100 opacity-100 translate-y-0 pointer-events-auto"
-            : "scale-90 opacity-0 -translate-y-2 pointer-events-none"
+          ? "scale-100 opacity-100 translate-y-0 pointer-events-auto"
+          : "scale-90 opacity-0 -translate-y-2 pointer-events-none"
           }`}
       >
         {/* Top Header Badge */}
@@ -167,8 +172,8 @@ export default function Navbar() {
                 type="button"
                 onClick={() => handleClick(link.href)}
                 className={`w-full text-center px-4 py-2 font-display font-black text-xs uppercase tracking-wider border-2 border-nb-black rounded-xl transition-all cursor-pointer ${isActive
-                    ? "bg-nb-yellow text-nb-black shadow-[2px_2px_0px_var(--nb-black)] translate-y-0.5 translate-x-0.5"
-                    : "bg-nb-white text-nb-black shadow-[2.5px_2.5px_0px_var(--nb-black)] hover:bg-nb-yellow hover:translate-y-0.5 hover:translate-x-0.5 hover:shadow-[1px_1px_0px_var(--nb-black)] active:translate-y-0.5 active:translate-x-0.5 active:shadow-[1px_1px_0px_var(--nb-black)]"
+                  ? "bg-nb-yellow text-nb-black shadow-[2px_2px_0px_var(--nb-black)] translate-y-0.5 translate-x-0.5"
+                  : "bg-nb-white text-nb-black shadow-[2.5px_2.5px_0px_var(--nb-black)] hover:bg-nb-yellow hover:translate-y-0.5 hover:translate-x-0.5 hover:shadow-[1px_1px_0px_var(--nb-black)] active:translate-y-0.5 active:translate-x-0.5 active:shadow-[1px_1px_0px_var(--nb-black)]"
                   }`}
               >
                 {link.label}

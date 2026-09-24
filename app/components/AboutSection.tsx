@@ -115,6 +115,12 @@ export default function AboutSection() {
       ref={sectionRef}
       className="py-16 sm:py-24 relative overflow-hidden flex flex-col justify-center items-center bg-nb-cream"
     >
+      {/* Background Dot & Grid Pattern Texture */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none z-0 nb-bg-pattern"
+      />
+
       {/* Background Decorative Ambient Particles (Responsive for Mobile & Desktop) */}
       <div
         aria-hidden="true"
