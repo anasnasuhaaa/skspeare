@@ -12,7 +12,7 @@ const radlyData: MemberData = {
   // TODO: replace with your CV link or file path
   cvUrl: "https://lnkd.in/p/gAvgMuNq",
   // TODO: replace with your hometown/region
-  hometown: "Depok, west java",
+  hometown: "Bandung, west java",
   // TODO: replace with your hobbies
   hobbies: ["Coding", "Gaming", "Puzzles", "Reading", "Movie watching"],
   // TODO: replace with your Instagram handle (without @)
