@@ -1,7 +1,9 @@
 "use client";
 
-import MemberModal from "@/app/components/MemberModal";
+import { useState } from "react";
 import data from "./data";
+import RhythmTapper from "./RhythmTapper";
+import ProfilePage from "./ProfilePage";
 
 // ============================================================
 // LOCKED — do not change
@@ -16,13 +18,25 @@ export default function Modal({
   isOpen: boolean;
   onClose: () => void;
 }) {
-  // ============================================================
-  // FREE TO CUSTOMIZE
-  // You can pass children to MemberModal for extra decorations,
-  // or completely replace MemberModal with your own modal design.
-  // Change colors, backgrounds, fonts, add animations, stickers,
-  // custom layouts — as long as the required data fields are shown
-  // and isOpen/onClose behavior is preserved.
-  // ============================================================
-  return <MemberModal member={data} isOpen={isOpen} onClose={onClose} />;
+  if (!isOpen) return null;
+
+  return <OpenModal onClose={onClose} />;
+}
+
+function OpenModal({ onClose }: { onClose: () => void }) {
+  const [isUnlocked, setIsUnlocked] = useState(false);
+
+  const closeProfile = () => {
+    onClose();
+  };
+
+  return isUnlocked ? (
+    <ProfilePage member={data} onClose={closeProfile} />
+  ) : (
+    <RhythmTapper
+      onSuccess={() => setIsUnlocked(true)}
+      onSkip={() => setIsUnlocked(true)}
+      onClose={closeProfile}
+    />
+  );
 }
