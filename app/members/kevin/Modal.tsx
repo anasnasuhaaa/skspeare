@@ -87,7 +87,7 @@ export default function Modal({
         <p className="mb-3 font-display text-xs font-black uppercase tracking-[0.18em] text-nb-lime">
           SOCIALS & LINKS
         </p>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex w-full flex-wrap gap-3">
           {cleanInstagram && (
             <a
               href={`https://instagram.com/${cleanInstagram}`}

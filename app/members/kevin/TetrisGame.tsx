@@ -369,26 +369,80 @@ export default function TetrisGame({
   const handleRotate = useCallback(() => rotatePiece(), [rotatePiece]);
   const handleHardDropAction = useCallback(() => hardDrop(), [hardDrop]);
 
+  const gestureStartRef = useRef<{ x: number; y: number; time: number } | null>(null);
+
+  const handleTouchStart = useCallback((event: React.TouchEvent<HTMLDivElement>) => {
+    const touch = event.touches[0];
+    if (!touch) return;
+
+    gestureStartRef.current = {
+      x: touch.clientX,
+      y: touch.clientY,
+      time: Date.now(),
+    };
+
+    event.preventDefault();
+  }, []);
+
+  const handleTouchMove = useCallback((event: React.TouchEvent<HTMLDivElement>) => {
+    if (!gestureStartRef.current) return;
+    event.preventDefault();
+  }, []);
+
+  const handleTouchEnd = useCallback(
+    (event: React.TouchEvent<HTMLDivElement>) => {
+      const start = gestureStartRef.current;
+      gestureStartRef.current = null;
+
+      if (!start) return;
+
+      const touch = event.changedTouches[0];
+      if (!touch) return;
+
+      const dx = touch.clientX - start.x;
+      const dy = touch.clientY - start.y;
+      const elapsed = Date.now() - start.time;
+
+      event.preventDefault();
+
+      if (Math.abs(dx) < 12 && Math.abs(dy) < 12) {
+        handleRotate();
+        return;
+      }
+
+      if (Math.abs(dx) > Math.abs(dy)) {
+        if (dx < -18) {
+          handleMoveLeft();
+        } else if (dx > 18) {
+          handleMoveRight();
+        }
+        return;
+      }
+
+      if (dy > 18) {
+        if (dy > 120 || elapsed < 220) {
+          handleHardDropAction();
+        } else {
+          handleMoveDown();
+        }
+      }
+    },
+    [handleHardDropAction, handleMoveDown, handleMoveLeft, handleMoveRight, handleRotate]
+  );
+
   const controlTutorial = isMobile ? (
-    <div className="space-y-3">
-      <div className="grid grid-cols-3 gap-2 text-xs font-black text-nb-black">
-        <div className="rounded-xl border-[3px] border-nb-black bg-nb-white px-2 py-2 text-center shadow-[3px_3px_0px_var(--nb-black)]">
-          ◀️ Kiri
-        </div>
-        <div className="rounded-xl border-[3px] border-nb-black bg-nb-yellow px-2 py-2 text-center shadow-[3px_3px_0px_var(--nb-black)]">
-          🔄 Rotasi
-        </div>
-        <div className="rounded-xl border-[3px] border-nb-black bg-nb-white px-2 py-2 text-center shadow-[3px_3px_0px_var(--nb-black)]">
-          ▶️ Kanan
-        </div>
+    <div className="space-y-2 text-[10px] font-black text-nb-black">
+      <div className="flex items-center justify-between gap-2 rounded-xl border-[3px] border-nb-black bg-nb-white px-2 py-2 shadow-[3px_3px_0px_var(--nb-black)]">
+        <span>Tap Layar</span>
+        <span>Rotasi Balok</span>
       </div>
-      <div className="grid grid-cols-2 gap-2 text-xs font-black text-nb-black">
-        <div className="rounded-xl border-[3px] border-nb-black bg-nb-pink px-2 py-2 text-center shadow-[3px_3px_0px_var(--nb-black)]">
-          🔽 Turun
-        </div>
-        <div className="rounded-xl border-[3px] border-nb-black bg-nb-lime px-2 py-2 text-center shadow-[3px_3px_0px_var(--nb-black)]">
-          ⏬ Hard Drop
-        </div>
+      <div className="flex items-center justify-between gap-2 rounded-xl border-[3px] border-nb-black bg-nb-pink px-2 py-2 shadow-[3px_3px_0px_var(--nb-black)]">
+        <span>Geser Kiri / Kanan</span>
+        <span>Pindah Posisi</span>
+      </div>
+      <div className="flex items-center justify-between gap-2 rounded-xl border-[3px] border-nb-black bg-nb-lime px-2 py-2 shadow-[3px_3px_0px_var(--nb-black)]">
+        <span>Geser Bawah</span>
+        <span>Turun Lebih Cepat</span>
       </div>
     </div>
   ) : (
@@ -400,10 +454,10 @@ export default function TetrisGame({
   );
 
   return (
-    <div className="fixed inset-0 z-[1000] flex items-center justify-center p-3 sm:p-4">
+    <div className="fixed inset-0 z-[1000] flex items-center justify-center p-2 sm:p-4">
       <div className="absolute inset-0 bg-nb-black/75 backdrop-blur-sm cursor-pointer" onClick={onClose} />
 
-      <div className="relative z-10 w-[min(100%,32rem)] max-h-[90vh] overflow-hidden rounded-[28px] border-[4px] border-nb-black bg-nb-cream shadow-[10px_10px_0px_var(--nb-black)]">
+      <div className={`relative z-10 w-[min(100%,32rem)] ${isMobile ? "max-h-[85vh] overflow-y-auto" : "max-h-[90vh] overflow-hidden"} rounded-[28px] border-[4px] border-nb-black bg-nb-cream shadow-[10px_10px_0px_var(--nb-black)]`}>
         <button
           type="button"
           onClick={onClose}
@@ -434,7 +488,7 @@ export default function TetrisGame({
         </div>
 
         {phase === "intro" ? (
-          <div className="p-4 sm:p-6">
+          <div className="p-3 sm:p-6">
             <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
               <div className="rounded-[24px] border-[4px] border-nb-black bg-nb-black p-4 text-white shadow-[8px_8px_0px_var(--nb-black)]">
                 <div className="mb-3 flex items-center gap-2">
@@ -486,15 +540,20 @@ export default function TetrisGame({
             </div>
           </div>
         ) : (
-          <div className="p-3 sm:p-4">
+          <div className="p-2 sm:p-4">
             <div className="grid gap-3 sm:grid-cols-[240px_minmax(0,1fr)] sm:items-start">
-              <div className="rounded-2xl border-[4px] border-nb-black bg-nb-black p-2 shadow-[6px_6px_0px_var(--nb-black)]">
-                <div className="mx-auto grid w-[220px] max-w-full grid-cols-10 gap-[2px] rounded-xl bg-[#0A0F1D] p-1.5">
+              <div
+                className="rounded-2xl border-[4px] border-nb-black bg-nb-black p-1.5 shadow-[6px_6px_0px_var(--nb-black)] touch-none"
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+              >
+                <div className={`${isMobile ? "mx-auto grid w-[188px] max-w-full" : "mx-auto grid w-[220px] max-w-full"} grid-cols-10 gap-[2px] rounded-xl bg-[#0A0F1D] p-1`}>
                   {displayBoard.flatMap((row, rowIndex) =>
                     row.map((cell, colIndex) => (
                       <div
                         key={`${rowIndex}-${colIndex}`}
-                        className={`aspect-square w-full rounded-[4px] ${getCellClass(cell)}`}
+                        className={`aspect-square w-full rounded-[3px] ${getCellClass(cell)}`}
                       />
                     ))
                   )}
@@ -549,70 +608,6 @@ export default function TetrisGame({
               </div>
             </div>
 
-            {isMobile && (
-              <div className="mt-4 grid grid-cols-3 gap-2 rounded-2xl border-[3px] border-nb-black bg-nb-cream p-3 shadow-[4px_4px_0px_var(--nb-black)]">
-                <button
-                  type="button"
-                  onTouchStart={(event) => {
-                    event.preventDefault();
-                    handleMoveLeft();
-                  }}
-                  onClick={handleMoveLeft}
-                  className="touch-manipulation select-none rounded-xl border-[3px] border-nb-black bg-nb-white p-2 text-xl font-black shadow-[3px_3px_0px_var(--nb-black)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_var(--nb-black)]"
-                  aria-label="Geser kiri"
-                >
-                  <ArrowLeft size={18} />
-                </button>
-                <button
-                  type="button"
-                  onTouchStart={(event) => {
-                    event.preventDefault();
-                    handleRotate();
-                  }}
-                  onClick={handleRotate}
-                  className="touch-manipulation select-none rounded-xl border-[3px] border-nb-black bg-nb-yellow p-2 text-xl font-black shadow-[3px_3px_0px_var(--nb-black)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_var(--nb-black)]"
-                  aria-label="Rotasi"
-                >
-                  <ArrowUp size={18} />
-                </button>
-                <button
-                  type="button"
-                  onTouchStart={(event) => {
-                    event.preventDefault();
-                    handleMoveRight();
-                  }}
-                  onClick={handleMoveRight}
-                  className="touch-manipulation select-none rounded-xl border-[3px] border-nb-black bg-nb-white p-2 text-xl font-black shadow-[3px_3px_0px_var(--nb-black)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_var(--nb-black)]"
-                  aria-label="Geser kanan"
-                >
-                  <ArrowRight size={18} />
-                </button>
-                <button
-                  type="button"
-                  onTouchStart={(event) => {
-                    event.preventDefault();
-                    handleMoveDown();
-                  }}
-                  onClick={handleMoveDown}
-                  className="touch-manipulation select-none rounded-xl border-[3px] border-nb-black bg-nb-pink p-2 text-xl font-black shadow-[3px_3px_0px_var(--nb-black)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_var(--nb-black)]"
-                  aria-label="Turunkan"
-                >
-                  <ArrowDown size={18} />
-                </button>
-                <button
-                  type="button"
-                  onTouchStart={(event) => {
-                    event.preventDefault();
-                    handleHardDropAction();
-                  }}
-                  onClick={handleHardDropAction}
-                  className="touch-manipulation col-span-2 select-none rounded-xl border-[3px] border-nb-black bg-nb-lime p-2 text-xl font-black shadow-[3px_3px_0px_var(--nb-black)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_var(--nb-black)]"
-                  aria-label="Hard drop"
-                >
-                  ⏬
-                </button>
-              </div>
-            )}
 
             {gameOver && (
               <div className="mt-4 flex flex-col gap-3 rounded-2xl border-[3px] border-nb-black bg-nb-red p-4 text-nb-white shadow-[4px_4px_0px_var(--nb-black)] sm:flex-row sm:items-center sm:justify-between">
