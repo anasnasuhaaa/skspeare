@@ -144,7 +144,15 @@ export default function TetrisGame({
   const [score, setScore] = useState(0);
   const [lines, setLines] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const completedRef = useRef(false);
+
+  useEffect(() => {
+    const updateIsMobile = () => setIsMobile(window.innerWidth < 768);
+    updateIsMobile();
+    window.addEventListener("resize", updateIsMobile);
+    return () => window.removeEventListener("resize", updateIsMobile);
+  }, []);
 
   const startGame = useCallback(() => {
     completedRef.current = false;
@@ -355,6 +363,42 @@ export default function TetrisGame({
   const previewGrid = useMemo(() => makePreviewGrid(nextPiece), [nextPiece]);
   const objectiveText = `Target: ${TARGET_SCORE} pts / hapus ${TARGET_LINES} baris`;
 
+  const handleMoveLeft = useCallback(() => movePiece(-1, 0), [movePiece]);
+  const handleMoveRight = useCallback(() => movePiece(1, 0), [movePiece]);
+  const handleMoveDown = useCallback(() => movePiece(0, 1), [movePiece]);
+  const handleRotate = useCallback(() => rotatePiece(), [rotatePiece]);
+  const handleHardDropAction = useCallback(() => hardDrop(), [hardDrop]);
+
+  const controlTutorial = isMobile ? (
+    <div className="space-y-3">
+      <div className="grid grid-cols-3 gap-2 text-xs font-black text-nb-black">
+        <div className="rounded-xl border-[3px] border-nb-black bg-nb-white px-2 py-2 text-center shadow-[3px_3px_0px_var(--nb-black)]">
+          ◀️ Kiri
+        </div>
+        <div className="rounded-xl border-[3px] border-nb-black bg-nb-yellow px-2 py-2 text-center shadow-[3px_3px_0px_var(--nb-black)]">
+          🔄 Rotasi
+        </div>
+        <div className="rounded-xl border-[3px] border-nb-black bg-nb-white px-2 py-2 text-center shadow-[3px_3px_0px_var(--nb-black)]">
+          ▶️ Kanan
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-2 text-xs font-black text-nb-black">
+        <div className="rounded-xl border-[3px] border-nb-black bg-nb-pink px-2 py-2 text-center shadow-[3px_3px_0px_var(--nb-black)]">
+          🔽 Turun
+        </div>
+        <div className="rounded-xl border-[3px] border-nb-black bg-nb-lime px-2 py-2 text-center shadow-[3px_3px_0px_var(--nb-black)]">
+          ⏬ Hard Drop
+        </div>
+      </div>
+    </div>
+  ) : (
+    <ul className="space-y-2 text-sm font-black text-nb-black">
+      <li>• ◄ ► : Geser Kiri / Kanan</li>
+      <li>• ▲ / ▼ : Rotasi / Turun Cepat</li>
+      <li>• Space : Jatuh Langsung (Hard Drop)</li>
+    </ul>
+  );
+
   return (
     <div className="fixed inset-0 z-[1000] flex items-center justify-center p-3 sm:p-4">
       <div className="absolute inset-0 bg-nb-black/75 backdrop-blur-sm cursor-pointer" onClick={onClose} />
@@ -423,12 +467,7 @@ export default function TetrisGame({
 
               <div className="flex flex-col gap-3 rounded-[24px] border-[4px] border-nb-black bg-nb-blue p-4 shadow-[8px_8px_0px_var(--nb-black)]">
                 <p className="font-display text-[10px] uppercase tracking-[0.2em] text-nb-black/70">Kontrol</p>
-                <ul className="space-y-2 text-sm font-black text-nb-black">
-                  <li>• ← / → : Geser</li>
-                  <li>• ↑ : Rotasi</li>
-                  <li>• ↓ : Turun cepat</li>
-                  <li>• Space : Drop</li>
-                </ul>
+                {controlTutorial}
                 <button
                   type="button"
                   onClick={startGame}
@@ -510,40 +549,70 @@ export default function TetrisGame({
               </div>
             </div>
 
-            <div className="mt-4 grid grid-cols-4 gap-2 rounded-2xl border-[3px] border-nb-black bg-nb-cream p-3 shadow-[4px_4px_0px_var(--nb-black)] md:hidden">
-              <button
-                type="button"
-                onClick={() => movePiece(-1, 0)}
-                className="flex h-12 items-center justify-center rounded-xl border-[3px] border-nb-black bg-nb-white text-xl font-black shadow-[3px_3px_0px_var(--nb-black)]"
-                aria-label="Geser kiri"
-              >
-                <ArrowLeft size={18} />
-              </button>
-              <button
-                type="button"
-                onClick={rotatePiece}
-                className="flex h-12 items-center justify-center rounded-xl border-[3px] border-nb-black bg-nb-yellow text-xl font-black shadow-[3px_3px_0px_var(--nb-black)]"
-                aria-label="Rotasi"
-              >
-                <ArrowUp size={18} />
-              </button>
-              <button
-                type="button"
-                onClick={() => movePiece(1, 0)}
-                className="flex h-12 items-center justify-center rounded-xl border-[3px] border-nb-black bg-nb-white text-xl font-black shadow-[3px_3px_0px_var(--nb-black)]"
-                aria-label="Geser kanan"
-              >
-                <ArrowRight size={18} />
-              </button>
-              <button
-                type="button"
-                onClick={() => movePiece(0, 1)}
-                className="flex h-12 items-center justify-center rounded-xl border-[3px] border-nb-black bg-nb-pink text-xl font-black shadow-[3px_3px_0px_var(--nb-black)]"
-                aria-label="Turunkan"
-              >
-                <ArrowDown size={18} />
-              </button>
-            </div>
+            {isMobile && (
+              <div className="mt-4 grid grid-cols-3 gap-2 rounded-2xl border-[3px] border-nb-black bg-nb-cream p-3 shadow-[4px_4px_0px_var(--nb-black)]">
+                <button
+                  type="button"
+                  onTouchStart={(event) => {
+                    event.preventDefault();
+                    handleMoveLeft();
+                  }}
+                  onClick={handleMoveLeft}
+                  className="touch-manipulation select-none rounded-xl border-[3px] border-nb-black bg-nb-white p-2 text-xl font-black shadow-[3px_3px_0px_var(--nb-black)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_var(--nb-black)]"
+                  aria-label="Geser kiri"
+                >
+                  <ArrowLeft size={18} />
+                </button>
+                <button
+                  type="button"
+                  onTouchStart={(event) => {
+                    event.preventDefault();
+                    handleRotate();
+                  }}
+                  onClick={handleRotate}
+                  className="touch-manipulation select-none rounded-xl border-[3px] border-nb-black bg-nb-yellow p-2 text-xl font-black shadow-[3px_3px_0px_var(--nb-black)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_var(--nb-black)]"
+                  aria-label="Rotasi"
+                >
+                  <ArrowUp size={18} />
+                </button>
+                <button
+                  type="button"
+                  onTouchStart={(event) => {
+                    event.preventDefault();
+                    handleMoveRight();
+                  }}
+                  onClick={handleMoveRight}
+                  className="touch-manipulation select-none rounded-xl border-[3px] border-nb-black bg-nb-white p-2 text-xl font-black shadow-[3px_3px_0px_var(--nb-black)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_var(--nb-black)]"
+                  aria-label="Geser kanan"
+                >
+                  <ArrowRight size={18} />
+                </button>
+                <button
+                  type="button"
+                  onTouchStart={(event) => {
+                    event.preventDefault();
+                    handleMoveDown();
+                  }}
+                  onClick={handleMoveDown}
+                  className="touch-manipulation select-none rounded-xl border-[3px] border-nb-black bg-nb-pink p-2 text-xl font-black shadow-[3px_3px_0px_var(--nb-black)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_var(--nb-black)]"
+                  aria-label="Turunkan"
+                >
+                  <ArrowDown size={18} />
+                </button>
+                <button
+                  type="button"
+                  onTouchStart={(event) => {
+                    event.preventDefault();
+                    handleHardDropAction();
+                  }}
+                  onClick={handleHardDropAction}
+                  className="touch-manipulation col-span-2 select-none rounded-xl border-[3px] border-nb-black bg-nb-lime p-2 text-xl font-black shadow-[3px_3px_0px_var(--nb-black)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_var(--nb-black)]"
+                  aria-label="Hard drop"
+                >
+                  ⏬
+                </button>
+              </div>
+            )}
 
             {gameOver && (
               <div className="mt-4 flex flex-col gap-3 rounded-2xl border-[3px] border-nb-black bg-nb-red p-4 text-nb-white shadow-[4px_4px_0px_var(--nb-black)] sm:flex-row sm:items-center sm:justify-between">
